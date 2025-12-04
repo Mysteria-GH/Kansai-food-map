@@ -3,16 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>京阪店鋪收納地圖</title>
+    <title>美食特輯地圖 京阪ver.</title>
     
     <!-- iOS PWA 專用設定 -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="京阪探店">
+    <meta name="apple-mobile-web-app-title" content="美食特輯地圖 京阪ver.">
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/854/854878.png">
     
+    <!-- Android PWA / 瀏覽器專用設定 -->
+    <meta name="theme-color" content="#ffffff">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="https://cdn-icons-png.flaticon.com/512/854/854878.png">
+    <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/854/854878.png">
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        .btn-active:active { transform: scale(0.98); }
+    </style>
     
     <!-- Leaflet CSS & JS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
@@ -39,14 +50,30 @@
         const IconSearch = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>;
         const IconMapPin = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>;
         const IconTrash = () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>;
-        const IconMap = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>;
-        const IconList = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>;
+        const IconArrowRight = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>;
+        const IconArrowLeft = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>;
+        const IconDownload = () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>;
+        // 新增箭頭圖示 (Chevron)
+        const IconChevronDown = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>;
+        const IconChevronUp = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>;
 
         // --- Constants ---
         const LOCATIONS = {
             kyoto: { name: "京都車站", lat: 34.9858, lng: 135.7588, color: "bg-indigo-600" },
             osaka: { name: "大阪梅田", lat: 34.7025, lng: 135.4958, color: "bg-rose-600" }
         };
+
+        const FOOD_TYPES = [
+            { id: 'ramen', label: '拉麵' },
+            { id: 'sukiyaki', label: '壽喜燒' },
+            { id: 'yakiniku', label: '燒肉' },
+            { id: 'other', label: '其它' }
+        ];
+
+        const FILTER_TYPES = [
+            { id: 'all', label: '所有種類' },
+            ...FOOD_TYPES
+        ];
 
         // --- Helper: Distance Calculation ---
         const getDistance = (lat1, lon1, lat2, lon2) => {
@@ -59,17 +86,15 @@
             return R * c;
         };
 
-        // --- Component: MapView (Updated Logic) ---
-        function MapView({ center, shops, mapCategory }) {
+        // --- Component: MapView ---
+        function MapView({ center, shops }) {
             const mapContainerRef = useRef(null);
             const mapInstanceRef = useRef(null);
             const markersRef = useRef([]);
 
-            // 1. 初始化地圖 (只執行一次)
             useEffect(() => {
                 if (!mapContainerRef.current) return;
                 
-                // 修正圖標路徑
                 delete L.Icon.Default.prototype._getIconUrl;
                 L.Icon.Default.mergeOptions({
                     iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
@@ -77,14 +102,12 @@
                     shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
                 });
 
-                // 初始化地圖，先設定到中心點
                 const map = L.map(mapContainerRef.current).setView([center.lat, center.lng], 13);
                 
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: '&copy; OpenStreetMap contributors'
                 }).addTo(map);
 
-                // 添加中心點標記 (車站)
                 const centerIcon = new L.Icon({
                     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png',
                     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -106,12 +129,10 @@
                 };
             }, []); 
 
-            // 2. 當地點或店鋪清單改變時：更新標記 + 自動縮放視角 (FitBounds)
             useEffect(() => {
                 if (!mapInstanceRef.current) return;
                 const map = mapInstanceRef.current;
 
-                // 更新中心點標記位置
                 map.eachLayer((layer) => {
                     if (layer instanceof L.Marker && layer.getIcon().options.iconUrl.includes('gold')) {
                          layer.setLatLng([center.lat, center.lng])
@@ -120,20 +141,23 @@
                     }
                 });
 
-                // 清除舊的店鋪標記
                 markersRef.current.forEach(m => m.remove());
                 markersRef.current = [];
 
-                // 收集所有座標點（包含中心點）以便計算邊界
                 const points = [[center.lat, center.lng]];
 
-                // 添加新的店鋪標記
                 shops.forEach(shop => {
                     points.push([shop.lat, shop.lng]);
+
+                    const foundType = FILTER_TYPES.find(t => t.id === (shop.type || 'other'));
+                    const typeLabel = foundType ? foundType.label : '其它';
 
                     const popupContent = `
                         <div class="p-1">
                             <h3 class="font-bold text-base mb-1">${shop.name}</h3>
+                            <div class="mb-2">
+                                <span class="text-xs bg-gray-100 px-1.5 py-0.5 rounded text-gray-600 border border-gray-300">${typeLabel}</span>
+                            </div>
                             <p class="text-xs text-gray-600 mb-2">${shop.address || '無地址資訊'}</p>
                             <a href="https://maps.google.com/?q=${shop.lat},${shop.lng}" 
                                target="_blank" 
@@ -149,19 +173,15 @@
                     markersRef.current.push(marker);
                 });
 
-                // 自動縮放邏輯
                 if (shops.length > 0) {
-                    // 如果有店鋪，計算包含所有點的邊界框 (Bounds)
                     const bounds = L.latLngBounds(points);
-                    // 調整地圖以符合該邊界框
                     map.fitBounds(bounds, {
-                        padding: [50, 50], // 上下左右保留 50px 緩衝區，避免標記貼在螢幕邊緣
-                        maxZoom: 16,       // 最大縮放層級，避免只有一個點時放太大
+                        padding: [50, 50],
+                        maxZoom: 16,
                         animate: true,
                         duration: 1.0
                     });
                 } else {
-                    // 如果沒有店鋪，平滑移動回中心點，固定 Zoom 13
                     map.flyTo([center.lat, center.lng], 13, { duration: 1.0 });
                 }
 
@@ -172,20 +192,33 @@
 
         // --- Main App Component ---
         function App() {
-            // 從 LocalStorage 讀取資料 (保留使用者輸入紀錄)
+            // ========================================================
+            // ★★★ 核心資料儲存程式碼：初始化 (讀取紀錄) ★★★
+            // ========================================================
             const [shops, setShops] = useState(() => {
                 const saved = localStorage.getItem('kansai_shops');
-                return saved ? JSON.parse(saved) : [];
+                // ↓↓↓ 如果您想要預設載入某些資料，可以將下方的 [] 替換成複製出來的 JSON 代碼
+                return saved ? JSON.parse(saved) : []; 
             });
-            const [inputName, setInputName] = useState('');
-            const [activeTab, setActiveTab] = useState('add');
-            const [mapCategory, setMapCategory] = useState('kyoto');
-            const [loading, setLoading] = useState(false);
-            const [error, setError] = useState(null);
 
+            // ========================================================
+            // ★★★ 核心資料儲存程式碼：更新 (寫入紀錄) ★★★
+            // ========================================================
             useEffect(() => {
                 localStorage.setItem('kansai_shops', JSON.stringify(shops));
             }, [shops]);
+            // ========================================================
+
+            const [inputName, setInputName] = useState('');
+            const [inputType, setInputType] = useState('other'); 
+            const [activeTab, setActiveTab] = useState('add');
+            const [mapCategory, setMapCategory] = useState('kyoto');
+            const [mapFilterType, setMapFilterType] = useState('all'); 
+            const [loading, setLoading] = useState(false);
+            const [error, setError] = useState(null);
+            
+            // 新增：控制列表展開/收起的狀態
+            const [showList, setShowList] = useState(true);
 
             const handleAddShop = async () => {
                 if (!inputName.trim()) return;
@@ -215,13 +248,16 @@
                             lat,
                             lng,
                             category,
+                            type: inputType, 
                             address: place.display_name
                         };
 
                         setShops([newShop, ...shops]);
                         setInputName('');
+                        // 新增後自動展開列表，讓使用者看到新項目
+                        setShowList(true);
                     } else {
-                        setError('找不到該店舖，請嘗試更精確的名稱（例如加上地區名）。');
+                        setError('找不到該店舖，請嘗試更精確的名稱。');
                     }
                 } catch (err) {
                     setError('搜尋時發生錯誤，請檢查網路連線。');
@@ -234,33 +270,79 @@
                 setShops(shops.filter(shop => shop.id !== id));
             };
 
+            const handleExport = () => {
+                const dataStr = JSON.stringify(shops);
+                navigator.clipboard.writeText(dataStr).then(() => {
+                    alert("✅ 資料已複製！\n\n您可以將這段代碼貼上到程式碼中 useState 的預設值 [] 裡面，這樣您的資料就會變成預設值。");
+                }).catch(err => {
+                    console.error('複製失敗:', err);
+                    alert("複製失敗，請手動複製 console 中的資料");
+                });
+            };
+
             const filteredShops = useMemo(() => {
-                return shops.filter(shop => shop.category === mapCategory);
-            }, [shops, mapCategory]);
+                return shops.filter(shop => {
+                    const matchLocation = shop.category === mapCategory;
+                    const shopType = shop.type || 'other';
+                    const matchType = mapFilterType === 'all' || shopType === mapFilterType;
+                    return matchLocation && matchType;
+                });
+            }, [shops, mapCategory, mapFilterType]);
+
+            const goToMap = (category) => {
+                setMapCategory(category);
+                setActiveTab('map');
+            };
 
             return (
                 <div className="flex flex-col h-screen">
-                    {/* Header */}
-                    <header className="bg-white shadow-sm p-4 pt-safe-top z-10 sticky top-0">
+                    <header className="bg-white shadow-sm p-4 pt-safe-top z-10 sticky top-0 relative">
+                        {activeTab === 'map' && (
+                            <button 
+                                onClick={() => setActiveTab('add')}
+                                className="absolute left-2 top-1/2 -translate-y-1/2 p-2 text-gray-600 hover:text-blue-600 active:scale-90 transition-transform"
+                                aria-label="返回"
+                            >
+                                <IconArrowLeft />
+                            </button>
+                        )}
                         <h1 className="text-xl font-bold text-center text-gray-800 flex items-center justify-center gap-2">
                             <span className="text-blue-600"><IconMapPin className="w-6 h-6"/></span>
-                            京阪探店地圖
+                            美食特輯地圖 京阪ver.
                         </h1>
                     </header>
 
-                    {/* Main Content */}
                     <main className="flex-1 overflow-hidden relative">
-                        {/* Tab 1: Add List */}
                         {activeTab === 'add' && (
                             <div className="h-full overflow-y-auto p-4 max-w-md mx-auto">
                                 <div className="bg-white p-4 rounded-xl shadow-sm mb-6">
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">輸入想去的店舖名稱</label>
+                                    <div className="mb-3">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">選擇美食類別</label>
+                                        <div className="flex flex-wrap gap-2">
+                                            {FOOD_TYPES.map(t => (
+                                                <button
+                                                    key={t.id}
+                                                    onClick={() => setInputType(t.id)}
+                                                    className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
+                                                        inputType === t.id
+                                                            ? 'bg-blue-100 text-blue-700 border-blue-300'
+                                                            : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100'
+                                                    }`}
+                                                >
+                                                    {t.label}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">輸入店鋪名稱</label>
+                                    
                                     <div className="flex gap-2">
                                         <input
                                             type="text"
                                             value={inputName}
                                             onChange={(e) => setInputName(e.target.value)}
-                                            placeholder="例：清水寺、一蘭拉麵 梅田店"
+                                            placeholder="例：一蘭拉麵"
                                             className="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                                             onKeyDown={(e) => e.key === 'Enter' && handleAddShop()}
                                         />
@@ -276,62 +358,109 @@
                                             )}
                                         </button>
                                     </div>
+
                                     {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4 mb-6">
-                                    <div className="bg-indigo-50 p-4 rounded-xl border border-indigo-100 text-center">
+                                    <button 
+                                        onClick={() => goToMap('kyoto')}
+                                        className="bg-indigo-50 p-4 rounded-xl border border-indigo-100 text-center hover:bg-indigo-100 transition-colors btn-active group"
+                                    >
                                         <h3 className="text-indigo-800 font-bold text-lg">京都附近</h3>
-                                        <p className="text-3xl font-black text-indigo-600">
+                                        <p className="text-3xl font-black text-indigo-600 mb-2">
                                             {shops.filter(s => s.category === 'kyoto').length}
                                         </p>
-                                        <span className="text-xs text-indigo-400">店舖數量</span>
-                                    </div>
-                                    <div className="bg-rose-50 p-4 rounded-xl border border-rose-100 text-center">
+                                        <div className="text-xs text-indigo-500 font-bold flex items-center justify-center gap-1 opacity-80 group-hover:opacity-100">
+                                            <span>查看地圖</span>
+                                            <IconArrowRight />
+                                        </div>
+                                    </button>
+                                    
+                                    <button 
+                                        onClick={() => goToMap('osaka')}
+                                        className="bg-rose-50 p-4 rounded-xl border border-rose-100 text-center hover:bg-rose-100 transition-colors btn-active group"
+                                    >
                                         <h3 className="text-rose-800 font-bold text-lg">大阪附近</h3>
-                                        <p className="text-3xl font-black text-rose-600">
+                                        <p className="text-3xl font-black text-rose-600 mb-2">
                                             {shops.filter(s => s.category === 'osaka').length}
                                         </p>
-                                        <span className="text-xs text-rose-400">店舖數量</span>
-                                    </div>
+                                        <div className="text-xs text-rose-500 font-bold flex items-center justify-center gap-1 opacity-80 group-hover:opacity-100">
+                                            <span>查看地圖</span>
+                                            <IconArrowRight />
+                                        </div>
+                                    </button>
                                 </div>
 
-                                <h3 className="text-gray-500 text-sm font-bold mb-3 uppercase tracking-wider">最近新增</h3>
-                                <div className="space-y-3 pb-20">
-                                    {shops.length === 0 ? (
-                                        <div className="text-center py-10 text-gray-400">
-                                            <p>還沒有收藏任何店舖</p>
-                                            <p className="text-sm">試著搜尋並加入吧！</p>
-                                        </div>
-                                    ) : (
-                                        [...shops].reverse().map(shop => (
-                                            <div key={shop.id} className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 flex justify-between items-center group">
-                                                <div className="flex-1 min-w-0 pr-2">
-                                                    <h4 className="font-bold text-gray-800 truncate">{shop.name}</h4>
-                                                    <div className="flex items-center gap-2 mt-1">
-                                                        <span className={`text-xs px-2 py-0.5 rounded-full text-white shrink-0 ${shop.category === 'kyoto' ? 'bg-indigo-500' : 'bg-rose-500'}`}>
-                                                            {shop.category === 'kyoto' ? '京都圈' : '大阪圈'}
-                                                        </span>
-                                                        <p className="text-xs text-gray-500 truncate">{shop.displayName}</p>
-                                                    </div>
-                                                </div>
-                                                <button 
-                                                    onClick={() => handleDelete(shop.id)}
-                                                    className="text-gray-400 hover:text-red-500 p-2 shrink-0"
-                                                >
-                                                    <IconTrash />
-                                                </button>
+                                {/* 修改：增加展開/收起按鈕 */}
+                                <div className="flex items-center justify-between mb-3">
+                                    <h3 className="text-gray-500 text-sm font-bold uppercase tracking-wider">最近新增</h3>
+                                    <button
+                                        onClick={() => setShowList(!showList)}
+                                        className="text-gray-400 hover:text-gray-600 p-1 rounded-full hover:bg-gray-100 transition-colors"
+                                        aria-label={showList ? "收起列表" : "展開列表"}
+                                    >
+                                        {showList ? <IconChevronUp /> : <IconChevronDown />}
+                                    </button>
+                                </div>
+
+                                {/* 修改：條件渲染列表 */}
+                                {showList && (
+                                    <div className="space-y-3 pb-6">
+                                        {shops.length === 0 ? (
+                                            <div className="text-center py-10 text-gray-400">
+                                                <p>還沒有收藏任何店舖</p>
                                             </div>
-                                        ))
-                                    )}
+                                        ) : (
+                                            [...shops].reverse().map(shop => {
+                                                const foundType = FILTER_TYPES.find(t => t.id === (shop.type || 'other'));
+                                                const typeLabel = foundType ? foundType.label : '其它';
+                                                return (
+                                                    <div key={shop.id} className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 flex justify-between items-center group">
+                                                        <div className="flex-1 min-w-0 pr-2">
+                                                            <h4 className="font-bold text-gray-800 truncate">{shop.name}</h4>
+                                                            <div className="flex items-center gap-2 mt-1 flex-wrap">
+                                                                <span className={`text-xs px-2 py-0.5 rounded-full text-white shrink-0 ${shop.category === 'kyoto' ? 'bg-indigo-500' : 'bg-rose-500'}`}>
+                                                                    {shop.category === 'kyoto' ? '京都' : '大阪'}
+                                                                </span>
+                                                                <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 border border-gray-200 shrink-0">
+                                                                    {typeLabel}
+                                                                </span>
+                                                            </div>
+                                                            <p className="text-xs text-gray-500 truncate mt-1">{shop.displayName}</p>
+                                                        </div>
+                                                        <button 
+                                                            onClick={() => handleDelete(shop.id)}
+                                                            className="text-gray-400 hover:text-red-500 p-2 shrink-0"
+                                                        >
+                                                            <IconTrash />
+                                                        </button>
+                                                    </div>
+                                                );
+                                            })
+                                        )}
+                                    </div>
+                                )}
+
+                                {/* 輸出功能區塊 */}
+                                <div className="pt-6 pb-20 border-t border-gray-200 text-center">
+                                    <button 
+                                        onClick={handleExport}
+                                        className="inline-flex items-center gap-2 text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-full text-sm font-medium transition-colors"
+                                    >
+                                        <IconDownload />
+                                        輸出所有紀錄
+                                    </button>
+                                    <p className="text-xs text-gray-400 mt-2">
+                                        點擊複製資料，可用於備份或貼回程式碼中
+                                    </p>
                                 </div>
                             </div>
                         )}
 
-                        {/* Tab 2: Map Mode */}
                         {activeTab === 'map' && (
                             <div className="h-full flex flex-col">
-                                <div className="flex p-2 gap-2 bg-white shadow-sm z-10 shrink-0">
+                                <div className="flex p-2 gap-2 bg-white shadow-sm z-20 shrink-0">
                                     <button
                                         onClick={() => setMapCategory('kyoto')}
                                         className={`flex-1 py-3 rounded-lg font-bold transition-all ${
@@ -354,41 +483,31 @@
                                     </button>
                                 </div>
                                 
+                                <div className="bg-gray-50 border-b border-gray-200 px-2 py-2 flex gap-2 overflow-x-auto scrollbar-hide shrink-0 z-10 whitespace-nowrap">
+                                    {FILTER_TYPES.map(t => (
+                                        <button
+                                            key={t.id}
+                                            onClick={() => setMapFilterType(t.id)}
+                                            className={`px-4 py-1.5 rounded-full text-xs font-bold transition-colors border ${
+                                                mapFilterType === t.id
+                                                    ? (mapCategory === 'kyoto' ? 'bg-indigo-100 text-indigo-700 border-indigo-300' : 'bg-rose-100 text-rose-700 border-rose-300')
+                                                    : 'bg-white text-gray-500 border-gray-200 hover:bg-gray-100'
+                                            }`}
+                                        >
+                                            {t.label}
+                                        </button>
+                                    ))}
+                                </div>
+                                
                                 <div className="flex-1 relative z-0">
                                     <MapView 
                                         center={LOCATIONS[mapCategory]} 
                                         shops={filteredShops} 
-                                        mapCategory={mapCategory}
                                     />
                                 </div>
                             </div>
                         )}
                     </main>
-
-                    {/* Bottom Nav */}
-                    <nav className="bg-white border-t border-gray-200 pb-safe z-20">
-                        <div className="flex justify-around items-center h-16">
-                            <button
-                                onClick={() => setActiveTab('add')}
-                                className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${
-                                    activeTab === 'add' ? 'text-blue-600' : 'text-gray-400'
-                                }`}
-                            >
-                                <IconList />
-                                <span className="text-xs font-medium">我的清單</span>
-                            </button>
-                            
-                            <button
-                                onClick={() => setActiveTab('map')}
-                                className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${
-                                    activeTab === 'map' ? 'text-blue-600' : 'text-gray-400'
-                                }`}
-                            >
-                                <IconMap />
-                                <span className="text-xs font-medium">查看地圖</span>
-                            </button>
-                        </div>
-                    </nav>
                 </div>
             );
         }
