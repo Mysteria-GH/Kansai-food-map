@@ -49,18 +49,25 @@
         // --- Icons ---
         const IconSearch = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>;
         const IconMapPin = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>;
-        const IconTrash = () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>;
+        const IconTrash = () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>;
         const IconArrowRight = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>;
         const IconArrowLeft = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>;
         const IconDownload = () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>;
-        // 新增箭頭圖示 (Chevron)
         const IconChevronDown = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>;
         const IconChevronUp = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>;
+        const IconChevronLeft = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>;
+        const IconChevronRight = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>;
 
         // --- Constants ---
         const LOCATIONS = {
             kyoto: { name: "京都車站", lat: 34.9858, lng: 135.7588, color: "bg-indigo-600" },
-            osaka: { name: "大阪梅田", lat: 34.7025, lng: 135.4958, color: "bg-rose-600" }
+            osaka: { name: "大阪梅田", lat: 34.7025, lng: 135.4958, color: "bg-rose-600" } 
+        };
+
+        const OSAKA_SUBLOCATIONS = {
+            umeda: { id: 'umeda', name: "大阪梅田", lat: 34.7025, lng: 135.4958 },
+            shinsaibashi: { id: 'shinsaibashi', name: "心齋橋", lat: 34.6723, lng: 135.5013 },
+            namba: { id: 'namba', name: "大阪難波", lat: 34.6655, lng: 135.5010 }
         };
 
         const FOOD_TYPES = [
@@ -75,6 +82,12 @@
             ...FOOD_TYPES
         ];
 
+        const DISTANCE_TYPES = [
+            { id: 'all', label: 'All' },
+            { id: 'near', label: '≤ 1 KM' },
+            { id: 'far', label: '> 1 KM' }
+        ];
+
         // --- Helper: Distance Calculation ---
         const getDistance = (lat1, lon1, lat2, lon2) => {
             const R = 6371; 
@@ -84,6 +97,15 @@
                       Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2); 
             const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
             return R * c;
+        };
+
+        // --- Helper: Get labels from IDs ---
+        const getFoodTypeLabels = (typeIds) => {
+            const ids = Array.isArray(typeIds) ? typeIds : [typeIds || 'other'];
+            return ids.map(id => {
+                const found = FOOD_TYPES.find(t => t.id === id);
+                return found ? found.label : '其它';
+            });
         };
 
         // --- Component: MapView ---
@@ -149,14 +171,16 @@
                 shops.forEach(shop => {
                     points.push([shop.lat, shop.lng]);
 
-                    const foundType = FILTER_TYPES.find(t => t.id === (shop.type || 'other'));
-                    const typeLabel = foundType ? foundType.label : '其它';
+                    const labels = getFoodTypeLabels(shop.type);
+                    const tagsHtml = labels.map(label => 
+                        `<span style="font-size: 11px; background-color: #f3f4f6; padding: 2px 6px; border-radius: 4px; border: 1px solid #e5e7eb; color: #4b5563; display: inline-block; margin-right: 4px; margin-bottom: 2px;">${label}</span>`
+                    ).join('');
 
                     const popupContent = `
                         <div class="p-1">
                             <h3 class="font-bold text-base mb-1">${shop.name}</h3>
-                            <div class="mb-2">
-                                <span class="text-xs bg-gray-100 px-1.5 py-0.5 rounded text-gray-600 border border-gray-300">${typeLabel}</span>
+                            <div class="mb-2" style="display: flex; flex-wrap: wrap;">
+                                ${tagsHtml}
                             </div>
                             <p class="text-xs text-gray-600 mb-2">${shop.address || '無地址資訊'}</p>
                             <a href="https://maps.google.com/?q=${shop.lat},${shop.lng}" 
@@ -197,8 +221,58 @@
             // ========================================================
             const [shops, setShops] = useState(() => {
                 const saved = localStorage.getItem('kansai_shops');
-                // ↓↓↓ 如果您想要預設載入某些資料，可以將下方的 [] 替換成複製出來的 JSON 代碼
-                return saved ? JSON.parse(saved) : []; 
+                
+                // 預設資料
+                const defaultShops = [
+                    { id: 1, name: "花丸軒 法善寺店(道頓堀+24小時+濃郁豚骨醬油+魯豬五花叉燒+蒜片+炒飯+煎餃)", displayName: "花丸軒 法善寺店", lat: 34.6675, lng: 135.5028, category: "osaka", type: ["ramen"], address: "道頓堀/法善寺" },
+                    { id: 2, name: "しゃぶしゃぶ・すき焼き専門店 しゃぶ長(心齋橋+中午套餐+和牛壽喜燒)", displayName: "しゃぶ長", lat: 34.6728, lng: 135.5013, category: "osaka", type: ["sukiyaki"], address: "心齋橋" },
+                    { id: 3, name: "お食事処 美登里(大阪豬排丼+量大)", displayName: "お食事処 美登里", lat: 34.6695, lng: 135.5496, category: "osaka", type: ["other"], address: "大阪東成區" },
+                    { id: 4, name: "Melt Chocolate(心齋橋+現切熱巧克力)", displayName: "Melt Chocolate", lat: 34.6775, lng: 135.4993, category: "osaka", type: ["other"], address: "心齋橋/南船場" },
+                    { id: 5, name: "大阪燒 千房(道頓堀)", displayName: "千房 道頓堀", lat: 34.6685, lng: 135.5035, category: "osaka", type: ["other"], address: "道頓堀" },
+                    { id: 6, name: "肉の隠れ家 おあがり 嵐山本店(和牛火山+桂川風景)", displayName: "肉の隠れ家 おあがり", lat: 35.0116, lng: 135.6766, category: "kyoto", type: ["other"], address: "嵐山" },
+                    { id: 7, name: "すきやき・しゃぶしゃぶ大牧場 千日前店(難波站+神戶和牛壽喜燒吃到飽)", displayName: "大牧場 千日前店", lat: 34.6667, lng: 135.5042, category: "osaka", type: ["sukiyaki"], address: "千日前/難波" },
+                    { id: 8, name: "焼肉こじま離れ 大阪江坂(漢堡排)", displayName: "焼肉こじま離れ", lat: 34.7595, lng: 135.4965, category: "osaka", type: ["other"], address: "江坂" },
+                    { id: 9, name: "厚切り仙台牛タンと黒毛和牛食べ放題 焼肉倶楽部 梅田店", displayName: "焼肉倶楽部 梅田店", lat: 34.7035, lng: 135.5000, category: "osaka", type: ["yakiniku"], address: "梅田" },
+                    { id: 10, name: "しゃぶ禅 梅田店(黑毛和牛壽喜燒吃到飽)", displayName: "しゃぶ禅 梅田店", lat: 34.7005, lng: 135.4965, category: "osaka", type: ["sukiyaki"], address: "梅田" },
+                    { id: 11, name: "焼肉ジャパン LINKS UMEDA店(梅田+神戶牛)", displayName: "焼肉ジャパン", lat: 34.7050, lng: 135.4970, category: "osaka", type: ["yakiniku"], address: "LINKS UMEDA" },
+                    { id: 12, name: "すき焼 しゃぶしゃぶつかだ KITTE大阪(梅田kitte百貨+關西和牛壽喜燒)", displayName: "すき焼 しゃぶしゃぶつかだ", lat: 34.7015, lng: 135.4945, category: "osaka", type: ["sukiyaki"], address: "KITTE大阪" },
+                    { id: 13, name: "和牛一頭買い 焼肉ホルモン黒野 ウラなんば本店(難波+黑毛和牛)", displayName: "焼肉ホルモン黒野", lat: 34.6645, lng: 135.5030, category: "osaka", type: ["yakiniku"], address: "裏難波" },
+                    { id: 14, name: "手づくりハンバーグの店 とくら 京都三条店(Juicy Hamburger Steak+ルクア大阪也有)", displayName: "とくら 京都三条店", lat: 35.0089, lng: 135.7681, category: "kyoto", type: ["other"], address: "京都三条" },
+                    { id: 15, name: "板前焼肉 一光 住之江本店(黑毛和牛)", displayName: "板前焼肉 一光", lat: 34.6094, lng: 135.4735, category: "osaka", type: ["yakiniku"], address: "住之江" },
+                    { id: 16, name: "TAKUMEAT STORE(新大阪站+燒肉)", displayName: "TAKUMEAT STORE", lat: 34.7335, lng: 135.5003, category: "osaka", type: ["yakiniku"], address: "新大阪" },
+                    { id: 17, name: "地焼うなぎ 法善寺山かづ(難波站+關西地燒鰻魚飯)", displayName: "法善寺山かづ", lat: 34.6672, lng: 135.5020, category: "osaka", type: ["other"], address: "法善寺" },
+                    { id: 18, name: "黄金出汁しゃぶと江戸前寿司 肉のあさつ 梅田お初天神店(梅田+黑毛和牛壽喜燒定食+免費白飯?+特定時間)", displayName: "肉のあさつ", lat: 34.7000, lng: 135.5015, category: "osaka", type: ["sukiyaki"], address: "梅田お初天神" },
+                    { id: 19, name: "スキヤキフジオ なんばCITY店(難波+個人壽喜燒)", displayName: "スキヤキフジオ", lat: 34.6642, lng: 135.5025, category: "osaka", type: ["sukiyaki"], address: "難波CITY" },
+                    { id: 20, name: "焼肉ごりちゃんお初天神店(東梅田+黑毛和牛)", displayName: "焼肉ごりちゃん", lat: 34.7010, lng: 135.5010, category: "osaka", type: ["yakiniku"], address: "東梅田" },
+                    { id: 21, name: "CAFE ANNON なんば本店(難波+鬆餅?)", displayName: "CAFE ANNON", lat: 34.6660, lng: 135.5035, category: "osaka", type: ["other"], address: "難波" },
+                    { id: 22, name: "和牛専門 牛めし 前田優(難波+A5和牛+牛丼)", displayName: "和牛専門 牛めし 前田優", lat: 34.6670, lng: 135.5060, category: "osaka", type: ["other"], address: "千日前/日本橋" },
+                    { id: 23, name: "釜飯と海鮮 暁(心齋橋+創作海鮮+海鮮釜飯)", displayName: "釜飯と海鮮 暁", lat: 34.6735, lng: 135.5020, category: "osaka", type: ["other"], address: "心齋橋" },
+                    { id: 24, name: "かつ丼 千代松豪仁(四ツ橋駅)", displayName: "かつ丼 千代松豪仁", lat: 34.6729, lng: 135.4966, category: "osaka", type: ["other"], address: "四ツ橋" },
+                    { id: 25, name: "厚切り仙台牛タンと黒毛和牛食べ放題 焼肉倶楽部 天王寺店", displayName: "焼肉倶楽部 天王寺店", lat: 34.6478, lng: 135.5148, category: "osaka", type: ["yakiniku"], address: "天王寺" },
+                    { id: 26, name: "＃KOKUBAN (コクバン)(歐姆飯+漢堡排)", displayName: "KOKUBAN", lat: 34.6650, lng: 135.5000, category: "osaka", type: ["other"], address: "難波/心齋橋" },
+                    { id: 27, name: "焼き鳥 おでん 坊っちゃん茶屋町店(梅田+平價串燒+昭和風?)", displayName: "坊っちゃん茶屋町店", lat: 34.7070, lng: 135.4990, category: "osaka", type: ["other"], address: "梅田茶屋町" },
+                    { id: 28, name: "焼肉 㐂舌 法善寺(午間定食+牛蓋飯+茶泡飯+包間)", displayName: "焼肉 㐂舌", lat: 34.6675, lng: 135.5030, category: "osaka", type: ["yakiniku"], address: "法善寺" },
+                    { id: 29, name: "帰ってきた 宮田麺児(沾麵)", displayName: "帰ってきた 宮田麺児", lat: 34.6720, lng: 135.5035, category: "osaka", type: ["ramen"], address: "心齋橋" },
+                    { id: 30, name: "まるよし(木津壽司)", displayName: "まるよし", lat: 34.6569, lng: 135.4984, category: "osaka", type: ["other"], address: "木津市場" },
+                    { id: 31, name: "焼肉うしごろ 梅田店(和牛燒肉+全程代烤)", displayName: "焼肉うしごろ", lat: 34.7040, lng: 135.4960, category: "osaka", type: ["yakiniku"], address: "梅田" },
+                    { id: 32, name: "大和茶大福專門店 GRAN CHA(奈良+大福)", displayName: "GRAN CHA", lat: 34.6815, lng: 135.8290, category: "osaka", type: ["other"], address: "奈良" },
+                    { id: 33, name: "中谷堂(奈良+艾草麻糬)", displayName: "中谷堂", lat: 34.6820, lng: 135.8298, category: "osaka", type: ["other"], address: "奈良" },
+                    { id: 34, name: "三大和牛食べ比べ 焼肉 つなぐ(難波+個室燒肉+神戶牛)", displayName: "焼肉 つなぐ", lat: 34.6660, lng: 135.5020, category: "osaka", type: ["yakiniku"], address: "難波" },
+                    { id: 35, name: "すき焼き しゃぶしゃぶ 肉寿司 食べ放題 和牛ざんまい 心斎橋店(宮崎牛壽喜燒+串燒+吃到飽+四種套餐)", displayName: "和牛ざんまい", lat: 34.6715, lng: 135.5015, category: "osaka", type: ["sukiyaki"], address: "心齋橋" },
+                    { id: 36, name: "すき焼き・しゃぶしゃぶ きよ助(個人鍋)", displayName: "きよ助", lat: 34.6690, lng: 135.5010, category: "osaka", type: ["sukiyaki"], address: "難波" },
+                    { id: 37, name: "大阪福島 WAgyu鬼く 焼肉(新福島站+黑毛和牛+冷麵)", displayName: "WAgyu鬼く", lat: 34.6967, lng: 135.4800, category: "osaka", type: ["yakiniku"], address: "福島" },
+                    { id: 38, name: "人類みな麵類(應該是這家?+西中島+18~22+炒飯+醬油拉麵+鮭魚卵)", displayName: "人類みな麵類", lat: 34.7262, lng: 135.5005, category: "osaka", type: ["ramen"], address: "西中島南方" },
+                    { id: 39, name: "牛舌的柠檬(超厚碳烤牛舌+牛舌後段[軟嫩]+味噌醬+檸檬飲+咖哩牛舌+免費續飯)", displayName: "牛たんの檸檬 大阪", lat: 34.6665, lng: 135.5040, category: "osaka", type: ["yakiniku"], address: "難波/日本橋" },
+                    { id: 40, name: "やさい串巻き なるとや(應該是這家?+野菜捲+居酒屋)", displayName: "なるとや", lat: 34.6680, lng: 135.5025, category: "osaka", type: ["other"], address: "難波" },
+                    { id: 41, name: "MooM Cafe(舒芙蕾煎餅)", displayName: "MooM Cafe", lat: 34.8517, lng: 135.6178, category: "osaka", type: ["other"], address: "高槻" },
+                    { id: 42, name: "黒毛和牛タンとハラミ 焼肉龍 難波千日前店(黑毛和牛燒肉+螃蟹海鮮+吃到飽)", displayName: "焼肉龍", lat: 34.6655, lng: 135.5038, category: "osaka", type: ["yakiniku"], address: "千日前" },
+                    { id: 43, name: "めん処 つるはん KITTE大阪店(西梅田站+黑毛和牛+壽喜燒烏龍麵)", displayName: "めん処 つるはん", lat: 34.7015, lng: 135.4945, category: "osaka", type: ["sukiyaki"], address: "KITTE大阪" },
+                    { id: 44, name: "パンとエスプレッソと堺筋俱楽部(Brunch+百年銀行+麵包咖啡廳+一個月前預約)", displayName: "堺筋俱楽部", lat: 34.6750, lng: 135.5065, category: "osaka", type: ["other"], address: "堺筋" },
+                    { id: 45, name: "らーめん志高(豚骨+炒飯+座位少)", displayName: "らーめん志高", lat: 34.6019, lng: 135.4920, category: "osaka", type: ["ramen"], address: "住吉" },
+                    { id: 46, name: "The 33 Tea＆Bar Terrace(梅田+絕景+歐姆飯+午間套餐)", displayName: "The 33", lat: 34.6995, lng: 135.4930, category: "osaka", type: ["other"], address: "西梅田" }
+                ];
+
+                return saved ? JSON.parse(saved) : defaultShops; 
             });
 
             // ========================================================
@@ -210,24 +284,60 @@
             // ========================================================
 
             const [inputName, setInputName] = useState('');
-            const [inputType, setInputType] = useState('other'); 
+            const [inputType, setInputType] = useState(['other']); 
             const [activeTab, setActiveTab] = useState('add');
             const [mapCategory, setMapCategory] = useState('kyoto');
+            const [osakaSubLocation, setOsakaSubLocation] = useState('umeda');
             const [mapFilterType, setMapFilterType] = useState('all'); 
+            const [mapFilterDistance, setMapFilterDistance] = useState('all');
             const [loading, setLoading] = useState(false);
             const [error, setError] = useState(null);
             
-            // 新增：控制列表展開/收起的狀態
             const [showList, setShowList] = useState(true);
+            
+            // 新增：分頁狀態
+            const [currentPage, setCurrentPage] = useState(1);
+            const ITEMS_PER_PAGE = 5;
+
+            const currentCenter = useMemo(() => {
+                if (mapCategory === 'kyoto') {
+                    return LOCATIONS.kyoto;
+                } else {
+                    return OSAKA_SUBLOCATIONS[osakaSubLocation] || LOCATIONS.osaka;
+                }
+            }, [mapCategory, osakaSubLocation]);
+
+            const handleInputTypeClick = (id) => {
+                if (id === 'other') {
+                    setInputType(['other']);
+                } else {
+                    let newTypes;
+                    if (inputType.includes('other') && inputType.length === 1) {
+                        newTypes = [id];
+                    } else {
+                        if (inputType.includes(id)) {
+                            newTypes = inputType.filter(t => t !== id);
+                        } else {
+                            newTypes = [...inputType, id];
+                        }
+                    }
+                    if (newTypes.length === 0) {
+                        newTypes = ['other'];
+                    }
+                    setInputType(newTypes);
+                }
+            };
 
             const handleAddShop = async () => {
                 if (!inputName.trim()) return;
                 setLoading(true);
                 setError(null);
 
+                const searchName = inputName.split(/[\(（]/)[0].trim();
+
                 try {
                     const response = await fetch(
-                        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(inputName + ' 日本')}&limit=1`
+                        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchName + ' 日本')}&limit=1`
                     );
                     const data = await response.json();
 
@@ -243,7 +353,7 @@
 
                         const newShop = {
                             id: Date.now(),
-                            name: inputName,
+                            name: inputName, 
                             displayName: place.display_name.split(',')[0],
                             lat,
                             lng,
@@ -254,10 +364,11 @@
 
                         setShops([newShop, ...shops]);
                         setInputName('');
-                        // 新增後自動展開列表，讓使用者看到新項目
                         setShowList(true);
+                        // 新增後跳回第一頁
+                        setCurrentPage(1);
                     } else {
-                        setError('找不到該店舖，請嘗試更精確的名稱。');
+                        setError('找不到該店舖，請嘗試更精確的名稱，或確認括號位置是否正確。');
                     }
                 } catch (err) {
                     setError('搜尋時發生錯誤，請檢查網路連線。');
@@ -273,26 +384,42 @@
             const handleExport = () => {
                 const dataStr = JSON.stringify(shops);
                 navigator.clipboard.writeText(dataStr).then(() => {
-                    alert("✅ 資料已複製！\n\n您可以將這段代碼貼上到程式碼中 useState 的預設值 [] 裡面，這樣您的資料就會變成預設值。");
+                    alert("✅ 資料已複製！");
                 }).catch(err => {
                     console.error('複製失敗:', err);
-                    alert("複製失敗，請手動複製 console 中的資料");
                 });
             };
 
             const filteredShops = useMemo(() => {
                 return shops.filter(shop => {
                     const matchLocation = shop.category === mapCategory;
-                    const shopType = shop.type || 'other';
-                    const matchType = mapFilterType === 'all' || shopType === mapFilterType;
-                    return matchLocation && matchType;
+                    
+                    const shopTypes = Array.isArray(shop.type) ? shop.type : [shop.type || 'other'];
+                    const matchType = mapFilterType === 'all' || shopTypes.includes(mapFilterType);
+                    
+                    let matchDistance = true;
+                    if (mapFilterDistance !== 'all') {
+                         const dist = getDistance(shop.lat, shop.lng, currentCenter.lat, currentCenter.lng);
+                         if (mapFilterDistance === 'near') {
+                             matchDistance = dist <= 1;
+                         } else if (mapFilterDistance === 'far') {
+                             matchDistance = dist > 1;
+                         }
+                    }
+
+                    return matchLocation && matchType && matchDistance;
                 });
-            }, [shops, mapCategory, mapFilterType]);
+            }, [shops, mapCategory, mapFilterType, mapFilterDistance, currentCenter]);
 
             const goToMap = (category) => {
                 setMapCategory(category);
                 setActiveTab('map');
             };
+
+            // 分頁邏輯
+            const reversedShops = useMemo(() => [...shops].reverse(), [shops]);
+            const totalPages = Math.ceil(reversedShops.length / ITEMS_PER_PAGE) || 1;
+            const currentShops = reversedShops.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
             return (
                 <div className="flex flex-col h-screen">
@@ -317,15 +444,15 @@
                             <div className="h-full overflow-y-auto p-4 max-w-md mx-auto">
                                 <div className="bg-white p-4 rounded-xl shadow-sm mb-6">
                                     <div className="mb-3">
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">選擇美食類別</label>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">選擇美食類別 (可複選)</label>
                                         <div className="flex flex-wrap gap-2">
                                             {FOOD_TYPES.map(t => (
                                                 <button
                                                     key={t.id}
-                                                    onClick={() => setInputType(t.id)}
+                                                    onClick={() => handleInputTypeClick(t.id)}
                                                     className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
-                                                        inputType === t.id
-                                                            ? 'bg-blue-100 text-blue-700 border-blue-300'
+                                                        inputType.includes(t.id)
+                                                            ? 'bg-black text-white border-black'
                                                             : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100'
                                                     }`}
                                                 >
@@ -342,7 +469,7 @@
                                             type="text"
                                             value={inputName}
                                             onChange={(e) => setInputName(e.target.value)}
-                                            placeholder="例：一蘭拉麵"
+                                            placeholder="例：一蘭拉麵(必點豚骨)"
                                             className="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                                             onKeyDown={(e) => e.key === 'Enter' && handleAddShop()}
                                         />
@@ -392,7 +519,6 @@
                                     </button>
                                 </div>
 
-                                {/* 修改：增加展開/收起按鈕 */}
                                 <div className="flex items-center justify-between mb-3">
                                     <h3 className="text-gray-500 text-sm font-bold uppercase tracking-wider">最近新增</h3>
                                     <button
@@ -404,28 +530,28 @@
                                     </button>
                                 </div>
 
-                                {/* 修改：條件渲染列表 */}
                                 {showList && (
                                     <div className="space-y-3 pb-6">
-                                        {shops.length === 0 ? (
+                                        {currentShops.length === 0 ? (
                                             <div className="text-center py-10 text-gray-400">
                                                 <p>還沒有收藏任何店舖</p>
                                             </div>
                                         ) : (
-                                            [...shops].reverse().map(shop => {
-                                                const foundType = FILTER_TYPES.find(t => t.id === (shop.type || 'other'));
-                                                const typeLabel = foundType ? foundType.label : '其它';
+                                            currentShops.map(shop => {
+                                                const labels = getFoodTypeLabels(shop.type);
                                                 return (
                                                     <div key={shop.id} className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 flex justify-between items-center group">
                                                         <div className="flex-1 min-w-0 pr-2">
-                                                            <h4 className="font-bold text-gray-800 truncate">{shop.name}</h4>
+                                                            <h4 className="font-bold text-gray-800 break-words whitespace-pre-wrap text-sm leading-snug">{shop.name}</h4>
                                                             <div className="flex items-center gap-2 mt-1 flex-wrap">
                                                                 <span className={`text-xs px-2 py-0.5 rounded-full text-white shrink-0 ${shop.category === 'kyoto' ? 'bg-indigo-500' : 'bg-rose-500'}`}>
                                                                     {shop.category === 'kyoto' ? '京都' : '大阪'}
                                                                 </span>
-                                                                <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 border border-gray-200 shrink-0">
-                                                                    {typeLabel}
-                                                                </span>
+                                                                {labels.map((label, idx) => (
+                                                                    <span key={idx} className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 border border-gray-200 shrink-0">
+                                                                        {label}
+                                                                    </span>
+                                                                ))}
                                                             </div>
                                                             <p className="text-xs text-gray-500 truncate mt-1">{shop.displayName}</p>
                                                         </div>
@@ -439,10 +565,32 @@
                                                 );
                                             })
                                         )}
+
+                                        {/* 分頁控制項 */}
+                                        {reversedShops.length > ITEMS_PER_PAGE && (
+                                            <div className="flex justify-center items-center gap-4 pt-2">
+                                                <button 
+                                                    disabled={currentPage === 1}
+                                                    onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                                                    className="p-1 rounded-full hover:bg-gray-100 disabled:opacity-30 transition-colors text-gray-600"
+                                                >
+                                                    <IconChevronLeft />
+                                                </button>
+                                                <span className="text-xs text-gray-500 font-medium">
+                                                    {currentPage} / {totalPages}
+                                                </span>
+                                                <button 
+                                                    disabled={currentPage === totalPages}
+                                                    onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                                                    className="p-1 rounded-full hover:bg-gray-100 disabled:opacity-30 transition-colors text-gray-600"
+                                                >
+                                                    <IconChevronRight />
+                                                </button>
+                                            </div>
+                                        )}
                                     </div>
                                 )}
 
-                                {/* 輸出功能區塊 */}
                                 <div className="pt-6 pb-20 border-t border-gray-200 text-center">
                                     <button 
                                         onClick={handleExport}
@@ -460,6 +608,7 @@
 
                         {activeTab === 'map' && (
                             <div className="h-full flex flex-col">
+                                {/* 第一層：地區選擇 */}
                                 <div className="flex p-2 gap-2 bg-white shadow-sm z-20 shrink-0">
                                     <button
                                         onClick={() => setMapCategory('kyoto')}
@@ -482,7 +631,44 @@
                                         大阪附近
                                     </button>
                                 </div>
+
+                                {/* 第二層 A：大阪子地點選單 (只在選擇大阪時顯示) */}
+                                {mapCategory === 'osaka' && (
+                                    <div className="bg-rose-50 border-b border-rose-100 px-2 py-2 flex gap-2 shrink-0 z-10">
+                                        {Object.values(OSAKA_SUBLOCATIONS).map(loc => (
+                                            <button
+                                                key={loc.id}
+                                                onClick={() => setOsakaSubLocation(loc.id)}
+                                                className={`flex-1 py-1.5 rounded-full text-xs font-bold transition-colors border ${
+                                                    osakaSubLocation === loc.id
+                                                        ? 'bg-rose-600 text-white border-rose-600'
+                                                        : 'bg-white text-rose-600 border-rose-200 hover:bg-rose-100'
+                                                }`}
+                                            >
+                                                {loc.name}
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+
+                                {/* 第二層 B：距離篩選 */}
+                                <div className="bg-white border-b border-gray-100 px-2 pb-2 pt-2 flex gap-2 shrink-0 z-10 justify-center">
+                                    {DISTANCE_TYPES.map(d => (
+                                        <button
+                                            key={d.id}
+                                            onClick={() => setMapFilterDistance(d.id)}
+                                            className={`px-3 py-1 rounded-md text-xs font-bold transition-colors border ${
+                                                mapFilterDistance === d.id
+                                                    ? 'bg-green-200 text-green-900 border-green-300'
+                                                    : 'bg-white text-gray-500 border-gray-200 hover:bg-gray-50'
+                                            }`}
+                                        >
+                                            {d.label}
+                                        </button>
+                                    ))}
+                                </div>
                                 
+                                {/* 第三層：種類篩選 (水平捲動) */}
                                 <div className="bg-gray-50 border-b border-gray-200 px-2 py-2 flex gap-2 overflow-x-auto scrollbar-hide shrink-0 z-10 whitespace-nowrap">
                                     {FILTER_TYPES.map(t => (
                                         <button
@@ -490,7 +676,7 @@
                                             onClick={() => setMapFilterType(t.id)}
                                             className={`px-4 py-1.5 rounded-full text-xs font-bold transition-colors border ${
                                                 mapFilterType === t.id
-                                                    ? (mapCategory === 'kyoto' ? 'bg-indigo-100 text-indigo-700 border-indigo-300' : 'bg-rose-100 text-rose-700 border-rose-300')
+                                                    ? 'bg-black text-white border-black'
                                                     : 'bg-white text-gray-500 border-gray-200 hover:bg-gray-100'
                                             }`}
                                         >
@@ -501,7 +687,7 @@
                                 
                                 <div className="flex-1 relative z-0">
                                     <MapView 
-                                        center={LOCATIONS[mapCategory]} 
+                                        center={currentCenter} 
                                         shops={filteredShops} 
                                     />
                                 </div>
