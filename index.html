@@ -32,7 +32,7 @@
             overflow: hidden;
         }
         .accordion-content.open {
-            max-height: 500px;
+            max-height: 600px;
             opacity: 1;
         }
     </style>
@@ -86,13 +86,20 @@
             namba: { id: 'namba', name: "大阪難波", lat: 34.6655, lng: 135.5010 }
         };
 
+        const KYOTO_SUBLOCATIONS = {
+            kyoto_station: { id: 'kyoto_station', name: "京都車站", lat: 34.9858, lng: 135.7588 },
+            uji_station: { id: 'uji_station', name: "宇治車站", lat: 34.8893, lng: 135.8018 }
+        };
+
         const FOOD_TYPES = [
             { id: 'ramen', label: '拉麵' },
             { id: 'sukiyaki', label: '壽喜燒' },
             { id: 'yakiniku', label: '燒肉' },
             { id: 'sushi', label: '壽司' },
             { id: 'ricebowl', label: '丼飯' },
+            { id: 'curry', label: '咖哩飯' }, // 新增
             { id: 'hamburger', label: '漢堡排' },
+            { id: 'eel', label: '鰻魚' }, // 新增
             { id: 'cafe', label: '咖啡廳' },
             { id: 'other', label: '其它' }
         ];
@@ -108,9 +115,10 @@
             { id: 'far', label: '> 1 KM' }
         ];
 
-        // 特徵篩選
+        // 特徵篩選 (更新)
         const SPECIAL_TYPES = [
             { id: 'wagyu', label: '和牛' },
+            { id: 'beef_tongue', label: '牛舌' }, // 新增
             { id: 'all_you_can_eat', label: '吃到飽' }
         ];
 
@@ -119,9 +127,9 @@
             { id: 1, name: "花丸軒 法善寺店(道頓堀+24小時+濃郁豚骨醬油+魯豬五花叉燒+蒜片+炒飯+煎餃)", displayName: "花丸軒 法善寺店", lat: 34.6675, lng: 135.5028, category: "osaka", type: ["ramen"], address: "道頓堀/法善寺", hours: "24小時營業" },
             { id: 2, name: "しゃぶしゃぶ・すき焼き専門店 しゃぶ長(心齋橋+中午套餐+和牛壽喜燒)", displayName: "しゃぶ長", lat: 34.6728, lng: 135.5013, category: "osaka", type: ["sukiyaki"], address: "心齋橋", hours: "11:30-13:30, 17:30-23:00 (週日公休)" },
             { id: 3, name: "お食事処 美登里(大阪豬排丼+量大)", displayName: "お食事処 美登里", lat: 34.6695, lng: 135.5496, category: "osaka", type: ["ricebowl"], address: "大阪東成區", hours: "11:00-19:00 (週二公休)" },
-            { id: 4, name: "Melt Chocolate(心齋橋+現切熱巧克力)", displayName: "Melt Chocolate", lat: 34.6775, lng: 135.4993, category: "osaka", type: ["cafe"], address: "心齋橋/南船場", hours: "11:00-20:00" },
+            { id: 4, name: "Melt Chocolate(心齋橋+現切熱巧克力)", displayName: "Melt Chocolate", lat: 34.6775, lng: 135.4993, category: "osaka", type: ["cafe", "other"], address: "心齋橋/南船場", hours: "11:00-20:00" },
             { id: 5, name: "大阪燒 千房(道頓堀)", displayName: "千房 道頓堀", lat: 34.6685, lng: 135.5035, category: "osaka", type: ["other"], address: "道頓堀", hours: "11:00-23:00" },
-            { id: 6, name: "肉の隠れ家 おあがり 嵐山本店(和牛火山+桂川風景)", displayName: "肉の隠れ家 おあがり", lat: 35.0116, lng: 135.6766, category: "kyoto", type: ["ricebowl"], address: "嵐山", hours: "11:00-15:00" },
+            { id: 6, name: "肉の隠れ家 おあがり 嵐山本店(和牛火山+桂川風景)", displayName: "肉の隠れ家 おあがり", lat: 35.0116, lng: 135.6766, category: "kyoto", type: ["ricebowl", "other"], address: "嵐山", hours: "11:00-15:00" },
             { id: 7, name: "すきやき・しゃぶしゃぶ大牧場 千日前店(難波站+神戶和牛壽喜燒吃到飽)", displayName: "大牧場 千日前店", lat: 34.6667, lng: 135.5042, category: "osaka", type: ["sukiyaki"], address: "千日前/難波", hours: "11:00-15:00, 17:00-23:00" },
             { id: 8, name: "焼肉こじま離れ 大阪江坂(漢堡排)", displayName: "焼肉こじま離れ", lat: 34.7595, lng: 135.4965, category: "osaka", type: ["yakiniku", "hamburger"], address: "江坂", hours: "11:30-14:30, 17:00-23:00" },
             { id: 9, name: "厚切り仙台牛タンと黒毛和牛食べ放題 焼肉倶楽部 梅田店", displayName: "焼肉倶楽部 梅田店", lat: 34.7035, lng: 135.5000, category: "osaka", type: ["yakiniku"], address: "梅田", hours: "16:00-23:00" },
@@ -132,34 +140,40 @@
             { id: 14, name: "手づくりハンバーグの店 とくら 京都三条店(Juicy Hamburger Steak+ルクア大阪也有)", displayName: "とくら 京都三条店", lat: 35.0089, lng: 135.7681, category: "kyoto", type: ["hamburger"], address: "京都三条", hours: "11:00-15:00, 17:00-22:00 (週三公休)" },
             { id: 15, name: "板前焼肉 一光 住之江本店(黑毛和牛)", displayName: "板前焼肉 一光", lat: 34.6094, lng: 135.4735, category: "osaka", type: ["yakiniku"], address: "住之江", hours: "17:00-23:00 (週二公休)" },
             { id: 16, name: "TAKUMEAT STORE(新大阪站+燒肉)", displayName: "TAKUMEAT STORE", lat: 34.7335, lng: 135.5003, category: "osaka", type: ["yakiniku"], address: "新大阪", hours: "11:00-22:00" },
-            { id: 17, name: "地焼うなぎ 法善寺山かづ(難波站+關西地燒鰻魚飯)", displayName: "法善寺山かづ", lat: 34.6672, lng: 135.5020, category: "osaka", type: ["other"], address: "法善寺", hours: "11:00-15:00, 17:00-21:00" },
+            { id: 17, name: "地焼うなぎ 法善寺山かづ(難波站+關西地燒鰻魚飯)", displayName: "法善寺山かづ", lat: 34.6672, lng: 135.5020, category: "osaka", type: ["eel", "ricebowl"], address: "法善寺", hours: "11:00-15:00, 17:00-21:00" },
             { id: 18, name: "黄金出汁しゃぶと江戸前寿司 肉のあさつ 梅田お初天神店(梅田+黑毛和牛壽喜燒定食+免費白飯?+特定時間)", displayName: "肉のあさつ", lat: 34.7000, lng: 135.5015, category: "osaka", type: ["sukiyaki", "sushi"], address: "梅田お初天神", hours: "12:00-23:00" },
             { id: 19, name: "スキヤキフジオ なんばCITY店(難波+個人壽喜燒)", displayName: "スキヤキフジオ", lat: 34.6642, lng: 135.5025, category: "osaka", type: ["sukiyaki"], address: "難波CITY", hours: "11:00-22:00" },
             { id: 20, name: "焼肉ごりちゃんお初天神店(東梅田+黑毛和牛)", displayName: "焼肉ごりちゃん", lat: 34.7010, lng: 135.5010, category: "osaka", type: ["yakiniku"], address: "東梅田", hours: "17:00-07:00 (隔日)" },
-            { id: 21, name: "CAFE ANNON なんば本店(難波+鬆餅?)", displayName: "CAFE ANNON", lat: 34.6660, lng: 135.5035, category: "osaka", type: ["cafe"], address: "難波", hours: "11:00-23:00" },
+            { id: 21, name: "CAFE ANNON なんば本店(難波+鬆餅?)", displayName: "CAFE ANNON", lat: 34.6660, lng: 135.5035, category: "osaka", type: ["cafe", "other"], address: "難波", hours: "11:00-23:00" },
             { id: 22, name: "和牛専門 牛めし 前田優(難波+A5和牛+牛丼)", displayName: "和牛専門 牛めし 前田優", lat: 34.6670, lng: 135.5060, category: "osaka", type: ["ricebowl"], address: "千日前/日本橋", hours: "11:30-16:00, 17:00-22:30" },
-            { id: 23, name: "釜飯と海鮮 暁(心齋橋+創作海鮮+海鮮釜飯)", displayName: "釜飯と海鮮 暁", lat: 34.6735, lng: 135.5020, category: "osaka", type: ["ricebowl"], address: "心齋橋", hours: "11:30-15:00, 17:00-23:00" },
+            { id: 23, name: "釜飯と海鮮 暁(心齋橋+創作海鮮+海鮮釜飯)", displayName: "釜飯と海鮮 暁", lat: 34.6735, lng: 135.5020, category: "osaka", type: ["ricebowl", "other"], address: "心齋橋", hours: "11:30-15:00, 17:00-23:00" },
             { id: 24, name: "かつ丼 千代松豪仁(四ツ橋駅)", displayName: "かつ丼 千代松豪仁", lat: 34.6729, lng: 135.4966, category: "osaka", type: ["ricebowl"], address: "四ツ橋", hours: "11:00-15:00, 17:30-21:30" },
             { id: 25, name: "厚切り仙台牛タンと黒毛和牛食べ放題 焼肉倶楽部 天王寺店", displayName: "焼肉倶楽部 天王寺店", lat: 34.6478, lng: 135.5148, category: "osaka", type: ["yakiniku"], address: "天王寺", hours: "16:00-23:00" },
-            { id: 26, name: "＃KOKUBAN (コクバン)(歐姆飯+漢堡排)", displayName: "KOKUBAN", lat: 34.6650, lng: 135.5000, category: "osaka", type: ["hamburger"], address: "難波/心齋橋", hours: "11:30-15:00, 17:30-22:00" },
+            { id: 26, name: "＃KOKUBAN (コクバン)(歐姆飯+漢堡排)", displayName: "KOKUBAN", lat: 34.6650, lng: 135.5000, category: "osaka", type: ["hamburger", "other"], address: "難波/心齋橋", hours: "11:30-15:00, 17:30-22:00" },
             { id: 27, name: "焼き鳥 おでん 坊っちゃん茶屋町店(梅田+平價串燒+昭和風?)", displayName: "坊っちゃん茶屋町店", lat: 34.7070, lng: 135.4990, category: "osaka", type: ["other"], address: "梅田茶屋町", hours: "17:00-23:00" },
             { id: 28, name: "焼肉 㐂舌 法善寺(午間定食+牛蓋飯+茶泡飯+包間)", displayName: "焼肉 㐂舌", lat: 34.6675, lng: 135.5030, category: "osaka", type: ["yakiniku", "ricebowl"], address: "法善寺", hours: "11:00-15:00, 17:00-23:00" },
             { id: 29, name: "帰ってきた 宮田麺児(沾麵)", displayName: "帰ってきた 宮田麺児", lat: 34.6720, lng: 135.5035, category: "osaka", type: ["ramen"], address: "心齋橋", hours: "11:00-16:00, 17:30-22:00" },
             { id: 30, name: "まるよし(木津壽司)", displayName: "まるよし", lat: 34.6569, lng: 135.4984, category: "osaka", type: ["sushi"], address: "木津市場", hours: "05:00-13:00 (週三/週日公休)" },
             { id: 31, name: "焼肉うしごろ 梅田店(和牛燒肉+全程代烤)", displayName: "焼肉うしごろ", lat: 34.7040, lng: 135.4960, category: "osaka", type: ["yakiniku"], address: "梅田", hours: "11:30-15:00, 17:00-23:30" },
-            { id: 32, name: "三大和牛食べ比べ 焼肉 つなぐ(難波+個室燒肉+神戶牛)", displayName: "焼肉 つなぐ", lat: 34.6660, lng: 135.5020, category: "osaka", type: ["yakiniku"], address: "難波", hours: "17:00-23:00" },
-            { id: 33, name: "すき焼き しゃぶしゃぶ 肉寿司 食べ放題 和牛ざんまい 心斎橋店(宮崎牛壽喜燒+串燒+吃到飽+四種套餐)", displayName: "和牛ざんまい", lat: 34.6715, lng: 135.5015, category: "osaka", type: ["sukiyaki", "sushi"], address: "心齋橋", hours: "16:00-23:00" },
-            { id: 34, name: "すき焼き・しゃぶしゃぶ きよ助(個人鍋)", displayName: "きよ助", lat: 34.6690, lng: 135.5010, category: "osaka", type: ["sukiyaki"], address: "難波", hours: "17:00-23:00" },
-            { id: 35, name: "大阪福島 WAgyu鬼く 焼肉(新福島站+黑毛和牛+冷麵)", displayName: "WAgyu鬼く", lat: 34.6967, lng: 135.4800, category: "osaka", type: ["yakiniku"], address: "福島", hours: "17:00-24:00" },
-            { id: 36, name: "人類みな麵類(應該是這家?+西中島+18~22+炒飯+醬油拉麵+鮭魚卵)", displayName: "人類みな麵類", lat: 34.7262, lng: 135.5005, category: "osaka", type: ["ramen"], address: "西中島南方", hours: "10:00-03:00 (隔日)" },
-            { id: 37, name: "牛舌的柠檬(超厚碳烤牛舌+牛舌後段[軟嫩]+味噌醬+檸檬飲+咖哩牛舌+免費續飯)", displayName: "牛たんの檸檬 大阪", lat: 34.6665, lng: 135.5040, category: "osaka", type: ["yakiniku"], address: "難波/日本橋", hours: "11:30-15:00, 17:00-22:00" },
-            { id: 38, name: "やさい串巻き なるとや(應該是這家?+野菜捲+居酒屋)", displayName: "なるとや", lat: 34.6680, lng: 135.5025, category: "osaka", type: ["other"], address: "難波", hours: "17:00-24:00" },
-            { id: 39, name: "MooM Cafe(舒芙蕾煎餅)", displayName: "MooM Cafe", lat: 34.8517, lng: 135.6178, category: "osaka", type: ["cafe"], address: "高槻", hours: "11:00-18:00 (週一公休)" },
-            { id: 40, name: "黒毛和牛タンとハラミ 焼肉龍 難波千日前店(黑毛和牛燒肉+螃蟹海鮮+吃到飽)", displayName: "焼肉龍", lat: 34.6655, lng: 135.5038, category: "osaka", type: ["yakiniku"], address: "千日前", hours: "16:00-24:00" },
-            { id: 41, name: "めん処 つるはん KITTE大阪店(西梅田站+黑毛和牛+壽喜燒烏龍麵)", displayName: "めん処 つるはん", lat: 34.7015, lng: 135.4945, category: "osaka", type: ["sukiyaki", "other"], address: "KITTE大阪", hours: "11:00-23:00" },
-            { id: 42, name: "パンとエスプレッソと堺筋俱楽部(Brunch+百年銀行+麵包咖啡廳+一個月前預約)", displayName: "堺筋俱楽部", lat: 34.6750, lng: 135.5065, category: "osaka", type: ["cafe"], address: "堺筋", hours: "08:00-20:00" },
-            { id: 43, name: "らーめん志高(豚骨+炒飯+座位少)", displayName: "らーめん志高", lat: 34.6019, lng: 135.4920, category: "osaka", type: ["ramen"], address: "住吉", hours: "11:00-15:00, 18:00-20:30 (週三/四公休)" },
-            { id: 44, name: "The 33 Tea＆Bar Terrace(梅田+絕景+歐姆飯+午間套餐)", displayName: "The 33", lat: 34.6995, lng: 135.4930, category: "osaka", type: ["cafe"], address: "西梅田", hours: "11:00-23:00" }
+            { id: 34, name: "三大和牛食べ比べ 焼肉 つなぐ(難波+個室燒肉+神戶牛)", displayName: "焼肉 つなぐ", lat: 34.6660, lng: 135.5020, category: "osaka", type: ["yakiniku"], address: "難波", hours: "17:00-23:00" },
+            { id: 35, name: "すき焼き しゃぶしゃぶ 肉寿司 食べ放題 和牛ざんまい 心斎橋店(宮崎牛壽喜燒+串燒+吃到飽+四種套餐)", displayName: "和牛ざんまい", lat: 34.6715, lng: 135.5015, category: "osaka", type: ["sukiyaki", "sushi"], address: "心齋橋", hours: "16:00-23:00" },
+            { id: 36, name: "すき焼き・しゃぶしゃぶ きよ助(個人鍋)", displayName: "きよ助", lat: 34.6690, lng: 135.5010, category: "osaka", type: ["sukiyaki"], address: "難波", hours: "17:00-23:00" },
+            { id: 37, name: "大阪福島 WAgyu鬼く 焼肉(新福島站+黑毛和牛+冷麵)", displayName: "WAgyu鬼く", lat: 34.6967, lng: 135.4800, category: "osaka", type: ["yakiniku"], address: "福島", hours: "17:00-24:00" },
+            { id: 38, name: "人類みな麵類(應該是這家?+西中島+18~22+炒飯+醬油拉麵+鮭魚卵)", displayName: "人類みな麵類", lat: 34.7262, lng: 135.5005, category: "osaka", type: ["ramen"], address: "西中島南方", hours: "10:00-03:00 (隔日)" },
+            { id: 39, name: "牛舌的柠檬(超厚碳烤牛舌+牛舌後段[軟嫩]+味噌醬+檸檬飲+咖哩牛舌+免費續飯)", displayName: "牛たんの檸檬 大阪", lat: 34.6665, lng: 135.5040, category: "osaka", type: ["yakiniku"], address: "難波/日本橋", hours: "11:30-15:00, 17:00-22:00" },
+            { id: 40, name: "やさい串巻き なるとや(應該是這家?+野菜捲+居酒屋)", displayName: "なるとや", lat: 34.6680, lng: 135.5025, category: "osaka", type: ["other"], address: "難波", hours: "17:00-24:00" },
+            { id: 41, name: "MooM Cafe(舒芙蕾煎餅)", displayName: "MooM Cafe", lat: 34.8517, lng: 135.6178, category: "osaka", type: ["cafe", "other"], address: "高槻", hours: "11:00-18:00 (週一公休)" },
+            { id: 42, name: "黒毛和牛タンとハラミ 焼肉龍 難波千日前店(黑毛和牛燒肉+螃蟹海鮮+吃到飽)", displayName: "焼肉龍", lat: 34.6655, lng: 135.5038, category: "osaka", type: ["yakiniku"], address: "千日前", hours: "16:00-24:00" },
+            { id: 43, name: "めん処 つるはん KITTE大阪店(西梅田站+黑毛和牛+壽喜燒烏龍麵)", displayName: "めん処 つるはん", lat: 34.7015, lng: 135.4945, category: "osaka", type: ["sukiyaki", "other"], address: "KITTE大阪", hours: "11:00-23:00" },
+            { id: 44, name: "パンとエスプレッソと堺筋俱楽部(Brunch+百年銀行+麵包咖啡廳+一個月前預約)", displayName: "堺筋俱楽部", lat: 34.6750, lng: 135.5065, category: "osaka", type: ["cafe", "other"], address: "堺筋", hours: "08:00-20:00" },
+            { id: 45, name: "らーめん志高(豚骨+炒飯+座位少)", displayName: "らーめん志高", lat: 34.6019, lng: 135.4920, category: "osaka", type: ["ramen"], address: "住吉", hours: "11:00-15:00, 18:00-20:30 (週三/四公休)" },
+            { id: 46, name: "The 33 Tea＆Bar Terrace(梅田+絕景+歐姆飯+午間套餐)", displayName: "The 33", lat: 34.6995, lng: 135.4930, category: "osaka", type: ["cafe", "other"], address: "西梅田", hours: "11:00-23:00" },
+            // 新增店鋪
+            { id: 47, name: "Gion Duck Rice(待發現)", displayName: "Gion Duck Rice", lat: 35.0037, lng: 135.7778, category: "kyoto", type: ["ricebowl"], address: "祇園", hours: "11:00-15:00, 17:30-21:30" },
+            { id: 48, name: "カレーショップ ダール(歐風咖哩+小菜)", displayName: "カレーショップ ダール", lat: 34.6850, lng: 135.5165, category: "osaka", type: ["curry"], address: "谷町四丁目", hours: "11:00-20:00 (週日公休)" },
+            { id: 49, name: "炭ト羽釜 どげん(親子丼+燒肉)", displayName: "炭ト羽釜 どげん", lat: 34.6455, lng: 135.5150, category: "osaka", type: ["ricebowl", "yakiniku"], address: "天王寺/阿倍野", hours: "17:00-24:00 (週末午餐 11:30-14:00)" },
+            { id: 50, name: "鰻屋 瀬がわ(烏丸+町家+鰻魚飯)", displayName: "鰻屋 瀬がわ", lat: 35.0045, lng: 135.7595, category: "kyoto", type: ["eel"], address: "烏丸", hours: "11:00-14:00, 17:00-21:30" },
+            { id: 51, name: "大阪焼肉 焼肉Lab 難波店(吃到飽)", displayName: "焼肉Lab 難波店", lat: 34.6658, lng: 135.5015, category: "osaka", type: ["yakiniku"], address: "難波", hours: "17:00-23:00 (週末 12:00-23:00)" }
         ];
 
         // --- Helper: Shop Status (Open, Closing Soon, Closed, Unknown) ---
@@ -211,18 +225,36 @@
             return 'closed';
         };
 
-        // --- Helper: Copy Text ---
-        const copyShopName = (fullName) => {
-            const name = fullName.split(/[\(（]/)[0].trim();
-            navigator.clipboard.writeText(name).then(() => {
-                alert(`已複製店名：${name}`);
-            }).catch(err => console.error('複製失敗', err));
+        // --- Helper: Copy Text (Legacy Fallback) ---
+        const copyToClipboard = (text, successMessage) => {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-9999px";
+            textArea.style.top = "0";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    if (successMessage) alert(successMessage);
+                } else {
+                    console.error('Fallback copy failed.');
+                }
+            } catch (err) {
+                console.error('Fallback copy failed', err);
+            }
+            document.body.removeChild(textArea);
         };
 
-        // Expose copy function to window for Popup HTML string
+        const copyShopName = (fullName) => {
+            const name = fullName.split(/[\(（]/)[0].trim();
+            copyToClipboard(name, `已複製店名：${name}`);
+        };
         window.copyShopName = copyShopName;
 
-        // ... (Distance Calculation & Label Helpers same as before) ...
+        // --- Helper: Distance Calculation ---
         const getDistance = (lat1, lon1, lat2, lon2) => {
             const R = 6371; 
             const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -233,6 +265,7 @@
             return R * c;
         };
 
+        // --- Helper: Get labels from IDs ---
         const getFoodTypeLabels = (typeIds) => {
             const ids = Array.isArray(typeIds) ? typeIds : [typeIds || 'other'];
             return ids.map(id => {
@@ -241,7 +274,7 @@
             });
         };
 
-        // ... (Digital Clock same as before) ...
+        // --- Component: Digital Clock ---
         function DigitalClock() {
             const [time, setTime] = useState(new Date());
             useEffect(() => {
@@ -421,6 +454,7 @@
             const [listTab, setListTab] = useState('my'); 
             const [mapCategory, setMapCategory] = useState('kyoto');
             const [osakaSubLocation, setOsakaSubLocation] = useState('umeda');
+            const [kyotoSubLocation, setKyotoSubLocation] = useState('kyoto_station');
             const [mapFilterType, setMapFilterType] = useState('all'); 
             const [mapFilterDistance, setMapFilterDistance] = useState('all');
             const [mapFilterSpecial, setMapFilterSpecial] = useState([]);
@@ -433,11 +467,11 @@
 
             const currentCenter = useMemo(() => {
                 if (mapCategory === 'kyoto') {
-                    return LOCATIONS.kyoto;
+                    return KYOTO_SUBLOCATIONS[kyotoSubLocation] || LOCATIONS.kyoto;
                 } else {
                     return OSAKA_SUBLOCATIONS[osakaSubLocation] || LOCATIONS.osaka;
                 }
-            }, [mapCategory, osakaSubLocation]);
+            }, [mapCategory, osakaSubLocation, kyotoSubLocation]);
 
             const handleInputTypeClick = (id) => {
                 if (id === 'other') {
@@ -517,11 +551,7 @@
 
             const handleExport = () => {
                 const dataStr = JSON.stringify(userShops);
-                navigator.clipboard.writeText(dataStr).then(() => {
-                    alert("✅ 個人資料已複製！");
-                }).catch(err => {
-                    console.error('複製失敗:', err);
-                });
+                copyToClipboard(dataStr, "✅ 個人資料已複製！");
             };
 
             const allShopsForMap = useMemo(() => {
@@ -537,6 +567,13 @@
             const checkIsWagyu = (shop) => {
                 const text = (shop.name || '') + (shop.displayName || '');
                 const keywords = ['和牛', 'Wagyu', '神戶牛', '神戸牛', '但馬牛', '近江牛', '宮崎牛', '仙台牛', '黒毛', '黑毛', '牛舌'];
+                return keywords.some(k => text.includes(k));
+            };
+
+            // 新增: Check for Beef Tongue
+            const checkIsBeefTongue = (shop) => {
+                const text = (shop.name || '') + (shop.displayName || '');
+                const keywords = ['牛舌', '牛タン', 'タン'];
                 return keywords.some(k => text.includes(k));
             };
 
@@ -560,17 +597,22 @@
                     let matchSpecial = true;
                     if (mapFilterSpecial.length > 0) {
                         const isWagyu = checkIsWagyu(shop);
+                        const isBeefTongue = checkIsBeefTongue(shop);
                         const isAllYouCanEat = checkIsAllYouCanEat(shop);
+                        
                         const selectWagyu = mapFilterSpecial.includes('wagyu');
+                        const selectBeefTongue = mapFilterSpecial.includes('beef_tongue');
                         const selectAllYouCanEat = mapFilterSpecial.includes('all_you_can_eat');
 
-                        if (selectWagyu && selectAllYouCanEat) {
-                            matchSpecial = isWagyu && isAllYouCanEat;
-                        } else if (selectWagyu) {
-                            matchSpecial = isWagyu;
-                        } else if (selectAllYouCanEat) {
-                            matchSpecial = isAllYouCanEat;
-                        }
+                        // Logic: AND condition if multiple selected (e.g. Wagyu AND All-you-can-eat)
+                        // If user selects multiple, shop must satisfy ALL
+                        // Or maybe OR? "Wagyu OR All-you-can-eat"? User prompt "和牛與吃到飽不互斥", implies independent toggles.
+                        // Usually filters are AND. Let's stick to AND logic for intuitive drilling down.
+                        // Wait, user said "同時選取...顯示同時符合這兩個條件的店鋪". Yes, AND logic.
+
+                        if (selectWagyu && !isWagyu) matchSpecial = false;
+                        if (selectBeefTongue && !isBeefTongue) matchSpecial = false;
+                        if (selectAllYouCanEat && !isAllYouCanEat) matchSpecial = false;
                     }
 
                     return matchLocation && matchType && matchDistance && matchSpecial;
@@ -604,7 +646,6 @@
 
             return (
                 <div className="flex flex-col h-screen">
-                    {/* Header... */}
                     <header className="bg-white shadow-sm p-4 pt-safe-top z-10 sticky top-0 relative">
                         {activeTab === 'map' && (
                             <button 
@@ -626,7 +667,6 @@
                             <div className="h-full overflow-y-auto p-4 max-w-md mx-auto">
                                 <div className="bg-white p-4 rounded-xl shadow-sm mb-6">
                                     <DigitalClock />
-                                    {/* Input form... */}
                                     <div className="mb-3">
                                         <label className="block text-sm font-medium text-gray-700 mb-2">選擇美食類別 (可複選)</label>
                                         <div className="flex flex-wrap gap-2">
@@ -653,7 +693,7 @@
                                             type="text"
                                             value={inputName}
                                             onChange={(e) => setInputName(e.target.value)}
-                                            placeholder="例：一蘭拉麵(必點豚骨)"
+                                            placeholder="例：麵屋壹の穴 ICHI(建中日研72第二社辦)"
                                             className="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                                             onKeyDown={(e) => e.key === 'Enter' && handleAddShop()}
                                         />
@@ -672,13 +712,12 @@
                                     {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
                                 </div>
 
-                                {/* Stats... */}
                                 <div className="grid grid-cols-2 gap-4 mb-6">
                                     <button 
                                         onClick={() => goToMap('kyoto')}
                                         className="bg-indigo-50 p-4 rounded-xl border border-indigo-100 text-center hover:bg-indigo-100 transition-colors btn-active group"
                                     >
-                                        <h3 className="text-indigo-800 font-bold text-lg">京都附近</h3>
+                                        <h3 className="text-indigo-800 font-bold text-lg">京都區域</h3>
                                         <p className="text-3xl font-black text-indigo-600 mb-2">
                                             {allShopsForMap.filter(s => s.category === 'kyoto').length}
                                         </p>
@@ -692,7 +731,7 @@
                                         onClick={() => goToMap('osaka')}
                                         className="bg-rose-50 p-4 rounded-xl border border-rose-100 text-center hover:bg-rose-100 transition-colors btn-active group"
                                     >
-                                        <h3 className="text-rose-800 font-bold text-lg">大阪附近</h3>
+                                        <h3 className="text-rose-800 font-bold text-lg">大阪區域</h3>
                                         <p className="text-3xl font-black text-rose-600 mb-2">
                                             {allShopsForMap.filter(s => s.category === 'osaka').length}
                                         </p>
@@ -703,7 +742,6 @@
                                     </button>
                                 </div>
 
-                                {/* List Tabs... */}
                                 <div className="flex items-center justify-between mb-3 border-b border-gray-200">
                                     <div className="flex gap-4">
                                         <button
@@ -736,7 +774,6 @@
                                     </button>
                                 </div>
 
-                                {/* Shop List... */}
                                 {showList && (
                                     <div className="space-y-3 pb-6">
                                         {currentShops.length === 0 ? (
@@ -752,6 +789,8 @@
                                                         <div className="flex-1 min-w-0 pr-2">
                                                             <div className="flex justify-between items-start">
                                                                 <h4 className="font-bold text-gray-800 break-words whitespace-pre-wrap text-sm leading-snug flex items-center gap-2">
+                                                                    {/* Star moved to the left of name */}
+                                                                    {listTab === 'system' && <IconStar className="text-yellow-400 w-3.5 h-3.5 flex-shrink-0"/>}
                                                                     {shop.name}
                                                                 </h4>
                                                                 {/* Copy button */}
@@ -764,8 +803,6 @@
                                                                 </button>
                                                             </div>
                                                             <div className="flex items-center gap-2 mt-1 flex-wrap">
-                                                                {/* Star moved to the left of location label */}
-                                                                {listTab === 'system' && <IconStar className="text-yellow-400 w-3.5 h-3.5 flex-shrink-0"/>}
                                                                 <span className={`text-xs px-2 py-0.5 rounded-full text-white shrink-0 ${shop.category === 'kyoto' ? 'bg-indigo-500' : 'bg-rose-500'}`}>
                                                                     {shop.category === 'kyoto' ? '京都' : '大阪'}
                                                                 </span>
@@ -861,7 +898,7 @@
                                                 : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
                                         }`}
                                     >
-                                        京都附近
+                                        京都
                                     </button>
                                     <button
                                         onClick={() => setMapCategory('osaka')}
@@ -871,9 +908,27 @@
                                                 : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
                                         }`}
                                     >
-                                        大阪附近
+                                        大阪
                                     </button>
                                 </div>
+
+                                {mapCategory === 'kyoto' && (
+                                    <div className="bg-indigo-50 border-b border-indigo-100 px-2 py-2 flex gap-2 shrink-0 z-10">
+                                        {Object.values(KYOTO_SUBLOCATIONS).map(loc => (
+                                            <button
+                                                key={loc.id}
+                                                onClick={() => setKyotoSubLocation(loc.id)}
+                                                className={`flex-1 py-1.5 rounded-full text-xs font-bold transition-colors border ${
+                                                    kyotoSubLocation === loc.id
+                                                        ? 'bg-indigo-600 text-white border-indigo-600'
+                                                        : 'bg-white text-indigo-600 border-indigo-200 hover:bg-indigo-100'
+                                                }`}
+                                            >
+                                                {loc.name}
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
 
                                 {mapCategory === 'osaka' && (
                                     <div className="bg-rose-50 border-b border-rose-100 px-2 py-2 flex gap-2 shrink-0 z-10">
