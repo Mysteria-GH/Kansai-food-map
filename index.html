@@ -35,6 +35,23 @@
             max-height: 600px;
             opacity: 1;
         }
+
+        /* 卷軸動畫樣式 - 用於距離篩選器 */
+        .filter-section {
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s ease-in-out;
+            overflow: hidden;
+        }
+        .filter-section.closed {
+            max-height: 0;
+            opacity: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        .filter-section.open {
+            max-height: 50px;
+            opacity: 1;
+        }
     </style>
     
     <!-- Leaflet CSS & JS -->
@@ -83,12 +100,14 @@
         const OSAKA_SUBLOCATIONS = {
             umeda: { id: 'umeda', name: "大阪梅田", lat: 34.7025, lng: 135.4958 },
             shinsaibashi: { id: 'shinsaibashi', name: "心齋橋", lat: 34.6723, lng: 135.5013 },
-            namba: { id: 'namba', name: "大阪難波", lat: 34.6655, lng: 135.5010 }
+            namba: { id: 'namba', name: "大阪難波", lat: 34.6655, lng: 135.5010 },
+            osaka_other: { id: 'osaka_other', name: "其它區域", lat: 34.7025, lng: 135.4958 }
         };
 
         const KYOTO_SUBLOCATIONS = {
             kyoto_station: { id: 'kyoto_station', name: "京都車站", lat: 34.9858, lng: 135.7588 },
-            uji_station: { id: 'uji_station', name: "宇治車站", lat: 34.8893, lng: 135.8018 }
+            uji_station: { id: 'uji_station', name: "宇治車站", lat: 34.8893, lng: 135.8018 },
+            kyoto_other: { id: 'kyoto_other', name: "其它區域", lat: 34.9858, lng: 135.7588 }
         };
 
         const FOOD_TYPES = [
@@ -97,9 +116,9 @@
             { id: 'yakiniku', label: '燒肉' },
             { id: 'sushi', label: '壽司' },
             { id: 'ricebowl', label: '丼飯' },
-            { id: 'curry', label: '咖哩飯' }, // 新增
-            { id: 'hamburger', label: '漢堡排' },
-            { id: 'eel', label: '鰻魚' }, // 新增
+            { id: 'curry', label: '咖哩' }, // 改名：咖哩飯 -> 咖哩
+            // 移除：漢堡排 (移至特徵篩選)
+            { id: 'eel', label: '鰻魚' },
             { id: 'cafe', label: '咖啡廳' },
             { id: 'other', label: '其它' }
         ];
@@ -112,14 +131,16 @@
         const DISTANCE_TYPES = [
             { id: 'all', label: 'All' },
             { id: 'near', label: '≤ 1 KM' },
-            { id: 'far', label: '> 1 KM' }
+            { id: 'far', label: '1 KM ~ 2 KM' }
         ];
 
         // 特徵篩選 (更新)
         const SPECIAL_TYPES = [
             { id: 'wagyu', label: '和牛' },
-            { id: 'beef_tongue', label: '牛舌' }, // 新增
-            { id: 'all_you_can_eat', label: '吃到飽' }
+            { id: 'beef_tongue', label: '牛舌' },
+            { id: 'all_you_can_eat', label: '吃到飽' },
+            { id: 'hamburger', label: '漢堡排' }, // 新增
+            { id: 'izakaya', label: '居酒屋' } // 新增
         ];
 
         // --- 系統推薦店鋪資料 ---
@@ -155,6 +176,8 @@
             { id: 29, name: "帰ってきた 宮田麺児(沾麵)", displayName: "帰ってきた 宮田麺児", lat: 34.6720, lng: 135.5035, category: "osaka", type: ["ramen"], address: "心齋橋", hours: "11:00-16:00, 17:30-22:00" },
             { id: 30, name: "まるよし(木津壽司)", displayName: "まるよし", lat: 34.6569, lng: 135.4984, category: "osaka", type: ["sushi"], address: "木津市場", hours: "05:00-13:00 (週三/週日公休)" },
             { id: 31, name: "焼肉うしごろ 梅田店(和牛燒肉+全程代烤)", displayName: "焼肉うしごろ", lat: 34.7040, lng: 135.4960, category: "osaka", type: ["yakiniku"], address: "梅田", hours: "11:30-15:00, 17:00-23:30" },
+            { id: 32, name: "大和茶大福專門店 GRAN CHA(奈良+大福)", displayName: "GRAN CHA", lat: 34.6815, lng: 135.8290, category: "osaka", type: ["cafe", "other"], address: "奈良", hours: "10:00-19:00" },
+            { id: 33, name: "中谷堂(奈良+艾草麻糬)", displayName: "中谷堂", lat: 34.6820, lng: 135.8298, category: "osaka", type: ["other"], address: "奈良", hours: "10:00-19:00" },
             { id: 34, name: "三大和牛食べ比べ 焼肉 つなぐ(難波+個室燒肉+神戶牛)", displayName: "焼肉 つなぐ", lat: 34.6660, lng: 135.5020, category: "osaka", type: ["yakiniku"], address: "難波", hours: "17:00-23:00" },
             { id: 35, name: "すき焼き しゃぶしゃぶ 肉寿司 食べ放題 和牛ざんまい 心斎橋店(宮崎牛壽喜燒+串燒+吃到飽+四種套餐)", displayName: "和牛ざんまい", lat: 34.6715, lng: 135.5015, category: "osaka", type: ["sukiyaki", "sushi"], address: "心齋橋", hours: "16:00-23:00" },
             { id: 36, name: "すき焼き・しゃぶしゃぶ きよ助(個人鍋)", displayName: "きよ助", lat: 34.6690, lng: 135.5010, category: "osaka", type: ["sukiyaki"], address: "難波", hours: "17:00-23:00" },
@@ -168,7 +191,6 @@
             { id: 44, name: "パンとエスプレッソと堺筋俱楽部(Brunch+百年銀行+麵包咖啡廳+一個月前預約)", displayName: "堺筋俱楽部", lat: 34.6750, lng: 135.5065, category: "osaka", type: ["cafe", "other"], address: "堺筋", hours: "08:00-20:00" },
             { id: 45, name: "らーめん志高(豚骨+炒飯+座位少)", displayName: "らーめん志高", lat: 34.6019, lng: 135.4920, category: "osaka", type: ["ramen"], address: "住吉", hours: "11:00-15:00, 18:00-20:30 (週三/四公休)" },
             { id: 46, name: "The 33 Tea＆Bar Terrace(梅田+絕景+歐姆飯+午間套餐)", displayName: "The 33", lat: 34.6995, lng: 135.4930, category: "osaka", type: ["cafe", "other"], address: "西梅田", hours: "11:00-23:00" },
-            // 新增店鋪
             { id: 47, name: "Gion Duck Rice(待發現)", displayName: "Gion Duck Rice", lat: 35.0037, lng: 135.7778, category: "kyoto", type: ["ricebowl"], address: "祇園", hours: "11:00-15:00, 17:30-21:30" },
             { id: 48, name: "カレーショップ ダール(歐風咖哩+小菜)", displayName: "カレーショップ ダール", lat: 34.6850, lng: 135.5165, category: "osaka", type: ["curry"], address: "谷町四丁目", hours: "11:00-20:00 (週日公休)" },
             { id: 49, name: "炭ト羽釜 どげん(親子丼+燒肉)", displayName: "炭ト羽釜 どげん", lat: 34.6455, lng: 135.5150, category: "osaka", type: ["ricebowl", "yakiniku"], address: "天王寺/阿倍野", hours: "17:00-24:00 (週末午餐 11:30-14:00)" },
@@ -465,6 +487,10 @@
             const [currentPage, setCurrentPage] = useState(1);
             const ITEMS_PER_PAGE = 5;
 
+            // Determine if an "Other Area" sublocation is selected
+            const isOtherAreaSelected = (mapCategory === 'kyoto' && kyotoSubLocation === 'kyoto_other') || 
+                                        (mapCategory === 'osaka' && osakaSubLocation === 'osaka_other');
+
             const currentCenter = useMemo(() => {
                 if (mapCategory === 'kyoto') {
                     return KYOTO_SUBLOCATIONS[kyotoSubLocation] || LOCATIONS.kyoto;
@@ -472,6 +498,13 @@
                     return OSAKA_SUBLOCATIONS[osakaSubLocation] || LOCATIONS.osaka;
                 }
             }, [mapCategory, osakaSubLocation, kyotoSubLocation]);
+
+            // Effect: Reset distance filter if "Other Area" is selected
+            useEffect(() => {
+                if (isOtherAreaSelected) {
+                    setMapFilterDistance('all');
+                }
+            }, [isOtherAreaSelected]);
 
             const handleInputTypeClick = (id) => {
                 if (id === 'other') {
@@ -526,7 +559,7 @@
                             category,
                             type: inputType, 
                             address: place.display_name,
-                            hours: "" // 使用者新增的暫無營業時間
+                            hours: "" 
                         };
 
                         setUserShops([newShop, ...userShops]);
@@ -558,6 +591,7 @@
                 return [...userShops, ...SYSTEM_SHOPS];
             }, [userShops]);
 
+            // Helper checks
             const checkIsAllYouCanEat = (shop) => {
                 const text = (shop.name || '') + (shop.displayName || '');
                 const keywords = ['吃到飽', '食べ放題'];
@@ -570,10 +604,27 @@
                 return keywords.some(k => text.includes(k));
             };
 
-            // 新增: Check for Beef Tongue
             const checkIsBeefTongue = (shop) => {
                 const text = (shop.name || '') + (shop.displayName || '');
                 const keywords = ['牛舌', '牛タン', 'タン'];
+                return keywords.some(k => text.includes(k));
+            };
+            
+            const checkIsHamburger = (shop) => {
+                // Check 'type' array first (manual tag)
+                if (shop.type && shop.type.includes('hamburger')) return true;
+                // Then check text
+                const text = (shop.name || '') + (shop.displayName || '');
+                const keywords = ['漢堡排', 'ハンバーグ', 'Hamburg'];
+                return keywords.some(k => text.includes(k));
+            };
+            
+            const checkIsIzakaya = (shop) => {
+                 // Check 'type' array first (manual tag, though we haven't tagged many yet)
+                if (shop.type && shop.type.includes('izakaya')) return true;
+                // Then check text
+                const text = (shop.name || '') + (shop.displayName || '');
+                const keywords = ['居酒屋', '串燒', '焼き鳥', 'おでん', '串', '酒場', 'Izakaya', 'Yakitori'];
                 return keywords.some(k => text.includes(k));
             };
 
@@ -584,13 +635,35 @@
                     const shopTypes = Array.isArray(shop.type) ? shop.type : [shop.type || 'other'];
                     const matchType = mapFilterType === 'all' || shopTypes.includes(mapFilterType);
                     
+                    // Filter Logic: "Other Areas" (距離主要子中心 > 2km)
+                    let matchSubLocation = true;
+                    if (mapCategory === 'kyoto' && kyotoSubLocation === 'kyoto_other') {
+                        const distKyoto = getDistance(shop.lat, shop.lng, KYOTO_SUBLOCATIONS.kyoto_station.lat, KYOTO_SUBLOCATIONS.kyoto_station.lng);
+                        const distUji = getDistance(shop.lat, shop.lng, KYOTO_SUBLOCATIONS.uji_station.lat, KYOTO_SUBLOCATIONS.uji_station.lng);
+                        if (distKyoto <= 2 || distUji <= 2) matchSubLocation = false;
+                    } else if (mapCategory === 'osaka' && osakaSubLocation === 'osaka_other') {
+                        const distUmeda = getDistance(shop.lat, shop.lng, OSAKA_SUBLOCATIONS.umeda.lat, OSAKA_SUBLOCATIONS.umeda.lng);
+                        const distShinsaibashi = getDistance(shop.lat, shop.lng, OSAKA_SUBLOCATIONS.shinsaibashi.lat, OSAKA_SUBLOCATIONS.shinsaibashi.lng);
+                        const distNamba = getDistance(shop.lat, shop.lng, OSAKA_SUBLOCATIONS.namba.lat, OSAKA_SUBLOCATIONS.namba.lng);
+                        if (distUmeda <= 2 || distShinsaibashi <= 2 || distNamba <= 2) matchSubLocation = false;
+                    } else {
+                        // Standard sub-location filter: Must be within 2km of selected hub
+                        const isSpecificHub = (mapCategory === 'kyoto' && kyotoSubLocation !== 'kyoto_other') || 
+                                              (mapCategory === 'osaka' && osakaSubLocation !== 'osaka_other');
+                        
+                        if (isSpecificHub) {
+                            const distToHub = getDistance(shop.lat, shop.lng, currentCenter.lat, currentCenter.lng);
+                            if (distToHub > 2) matchSubLocation = false;
+                        }
+                    }
+
                     let matchDistance = true;
                     if (mapFilterDistance !== 'all') {
                          const dist = getDistance(shop.lat, shop.lng, currentCenter.lat, currentCenter.lng);
                          if (mapFilterDistance === 'near') {
                              matchDistance = dist <= 1;
                          } else if (mapFilterDistance === 'far') {
-                             matchDistance = dist > 1;
+                             matchDistance = dist > 1 && dist <= 2;
                          }
                     }
 
@@ -599,25 +672,26 @@
                         const isWagyu = checkIsWagyu(shop);
                         const isBeefTongue = checkIsBeefTongue(shop);
                         const isAllYouCanEat = checkIsAllYouCanEat(shop);
+                        const isHamburger = checkIsHamburger(shop);
+                        const isIzakaya = checkIsIzakaya(shop);
                         
                         const selectWagyu = mapFilterSpecial.includes('wagyu');
                         const selectBeefTongue = mapFilterSpecial.includes('beef_tongue');
                         const selectAllYouCanEat = mapFilterSpecial.includes('all_you_can_eat');
+                        const selectHamburger = mapFilterSpecial.includes('hamburger');
+                        const selectIzakaya = mapFilterSpecial.includes('izakaya');
 
-                        // Logic: AND condition if multiple selected (e.g. Wagyu AND All-you-can-eat)
-                        // If user selects multiple, shop must satisfy ALL
-                        // Or maybe OR? "Wagyu OR All-you-can-eat"? User prompt "和牛與吃到飽不互斥", implies independent toggles.
-                        // Usually filters are AND. Let's stick to AND logic for intuitive drilling down.
-                        // Wait, user said "同時選取...顯示同時符合這兩個條件的店鋪". Yes, AND logic.
-
+                        // AND Logic: Must satisfy ALL selected special filters
                         if (selectWagyu && !isWagyu) matchSpecial = false;
                         if (selectBeefTongue && !isBeefTongue) matchSpecial = false;
                         if (selectAllYouCanEat && !isAllYouCanEat) matchSpecial = false;
+                        if (selectHamburger && !isHamburger) matchSpecial = false;
+                        if (selectIzakaya && !isIzakaya) matchSpecial = false;
                     }
 
-                    return matchLocation && matchType && matchDistance && matchSpecial;
+                    return matchLocation && matchSubLocation && matchType && matchDistance && matchSpecial;
                 });
-            }, [allShopsForMap, mapCategory, mapFilterType, mapFilterDistance, currentCenter, mapFilterSpecial]);
+            }, [allShopsForMap, mapCategory, mapFilterType, mapFilterDistance, currentCenter, mapFilterSpecial, kyotoSubLocation, osakaSubLocation]);
 
             const handleSpecialFilterClick = (id) => {
                 let newSelection;
@@ -694,7 +768,7 @@
                                             value={inputName}
                                             onChange={(e) => setInputName(e.target.value)}
                                             placeholder="例：麵屋壹の穴 ICHI(建中日研72第二社辦)"
-                                            className="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                            className="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm"
                                             onKeyDown={(e) => e.key === 'Enter' && handleAddShop()}
                                         />
                                         <button
@@ -717,7 +791,8 @@
                                         onClick={() => goToMap('kyoto')}
                                         className="bg-indigo-50 p-4 rounded-xl border border-indigo-100 text-center hover:bg-indigo-100 transition-colors btn-active group"
                                     >
-                                        <h3 className="text-indigo-800 font-bold text-lg">京都區域</h3>
+                                        <span className="text-lg font-bold text-indigo-400 uppercase tracking-wider block mb-1">Kyoto</span>
+                                        <h3 className="text-indigo-800 font-bold text-xs">京都區域</h3>
                                         <p className="text-3xl font-black text-indigo-600 mb-2">
                                             {allShopsForMap.filter(s => s.category === 'kyoto').length}
                                         </p>
@@ -731,7 +806,8 @@
                                         onClick={() => goToMap('osaka')}
                                         className="bg-rose-50 p-4 rounded-xl border border-rose-100 text-center hover:bg-rose-100 transition-colors btn-active group"
                                     >
-                                        <h3 className="text-rose-800 font-bold text-lg">大阪區域</h3>
+                                        <span className="text-lg font-bold text-rose-400 uppercase tracking-wider block mb-1">Osaka</span>
+                                        <h3 className="text-rose-800 font-bold text-xs">大阪區域</h3>
                                         <p className="text-3xl font-black text-rose-600 mb-2">
                                             {allShopsForMap.filter(s => s.category === 'osaka').length}
                                         </p>
@@ -789,7 +865,6 @@
                                                         <div className="flex-1 min-w-0 pr-2">
                                                             <div className="flex justify-between items-start">
                                                                 <h4 className="font-bold text-gray-800 break-words whitespace-pre-wrap text-sm leading-snug flex items-center gap-2">
-                                                                    {/* Star moved to the left of name */}
                                                                     {listTab === 'system' && <IconStar className="text-yellow-400 w-3.5 h-3.5 flex-shrink-0"/>}
                                                                     {shop.name}
                                                                 </h4>
@@ -803,6 +878,7 @@
                                                                 </button>
                                                             </div>
                                                             <div className="flex items-center gap-2 mt-1 flex-wrap">
+                                                                {/* Star removed from here */}
                                                                 <span className={`text-xs px-2 py-0.5 rounded-full text-white shrink-0 ${shop.category === 'kyoto' ? 'bg-indigo-500' : 'bg-rose-500'}`}>
                                                                     {shop.category === 'kyoto' ? '京都' : '大阪'}
                                                                 </span>
@@ -913,12 +989,12 @@
                                 </div>
 
                                 {mapCategory === 'kyoto' && (
-                                    <div className="bg-indigo-50 border-b border-indigo-100 px-2 py-2 flex gap-2 shrink-0 z-10">
+                                    <div className="w-full bg-indigo-50 border-b border-indigo-100 px-2 py-2 flex gap-2 shrink-0 z-10 overflow-x-auto">
                                         {Object.values(KYOTO_SUBLOCATIONS).map(loc => (
                                             <button
                                                 key={loc.id}
                                                 onClick={() => setKyotoSubLocation(loc.id)}
-                                                className={`flex-1 py-1.5 rounded-full text-xs font-bold transition-colors border ${
+                                                className={`flex-1 flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-bold transition-colors border ${
                                                     kyotoSubLocation === loc.id
                                                         ? 'bg-indigo-600 text-white border-indigo-600'
                                                         : 'bg-white text-indigo-600 border-indigo-200 hover:bg-indigo-100'
@@ -931,12 +1007,12 @@
                                 )}
 
                                 {mapCategory === 'osaka' && (
-                                    <div className="bg-rose-50 border-b border-rose-100 px-2 py-2 flex gap-2 shrink-0 z-10">
+                                    <div className="w-full bg-rose-50 border-b border-rose-100 px-2 py-2 flex gap-2 shrink-0 z-10 overflow-x-auto">
                                         {Object.values(OSAKA_SUBLOCATIONS).map(loc => (
                                             <button
                                                 key={loc.id}
                                                 onClick={() => setOsakaSubLocation(loc.id)}
-                                                className={`flex-1 py-1.5 rounded-full text-xs font-bold transition-colors border ${
+                                                className={`flex-1 flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-bold transition-colors border ${
                                                     osakaSubLocation === loc.id
                                                         ? 'bg-rose-600 text-white border-rose-600'
                                                         : 'bg-white text-rose-600 border-rose-200 hover:bg-rose-100'
@@ -962,7 +1038,7 @@
                                 </div>
 
                                 <div className={`accordion-content bg-white shadow-sm z-10 ${isDetailMenuOpen ? 'open' : ''}`}>
-                                    <div className="border-b border-gray-100 px-2 pb-2 pt-2 flex gap-2 justify-center">
+                                    <div className={`filter-section border-b border-gray-100 px-2 pb-2 pt-2 flex gap-2 justify-center ${isOtherAreaSelected ? 'closed' : 'open'}`}>
                                         {DISTANCE_TYPES.map(d => (
                                             <button
                                                 key={d.id}
