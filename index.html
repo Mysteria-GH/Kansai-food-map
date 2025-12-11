@@ -36,7 +36,6 @@
             opacity: 1;
         }
 
-        /* 卷軸動畫樣式 - 用於距離篩選器 */
         .filter-section {
             transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s ease-in-out;
             overflow: hidden;
@@ -58,8 +57,9 @@
             position: fixed;
             z-index: 9999;
             pointer-events: none;
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             transform-origin: center center;
+            border-radius: 50%;
+            background-color: transparent;
         }
     </style>
     
@@ -323,70 +323,75 @@
         }
 
         // --- Component: Transition Overlay ---
-        function TransitionOverlay({ isAnimating, color, origin, onAnimationComplete, targetCategory }) {
+        function TransitionOverlay({ isAnimating, color, origin, onCovered, onFinished, targetCategory }) {
             const [style, setStyle] = useState({});
 
             useEffect(() => {
                 if (isAnimating && origin) {
-                    // Stage 1: Initial State (small circle at button center)
+                    // 1. Initial State (small circle at button center)
                     setStyle({
                         top: origin.y,
                         left: origin.x,
-                        width: '40px',
-                        height: '40px',
+                        width: '0px',
+                        height: '0px',
                         borderRadius: '50%',
-                        transform: 'translate(-50%, -50%) rotate(45deg)',
-                        opacity: 1
+                        transform: 'translate(-50%, -50%)', // Centered on origin
+                        backgroundColor: 'transparent', // Transparent content
+                        boxShadow: `0 0 0 20px ${color}`, // Initial small colored circle using shadow
+                        zIndex: 9999,
+                        pointerEvents: 'none',
+                        transition: 'none' // No transition for initial setup
                     });
 
-                    // Stage 2: Expand (Next Frame)
+                    // 2. Expand Animation (Fill Screen)
                     requestAnimationFrame(() => {
-                        setStyle(prev => ({
-                            ...prev,
-                            transform: 'translate(-50%, -50%) rotate(45deg) scale(60)',
-                            transition: 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-                        }));
+                        requestAnimationFrame(() => {
+                            setStyle(prev => ({
+                                ...prev,
+                                // Animate box-shadow to cover the screen
+                                // 300vmax is large enough to cover typical screens from any point
+                                boxShadow: `0 0 0 300vmax ${color}`, 
+                                transition: 'box-shadow 0.5s ease-in' 
+                            }));
+                        });
                     });
 
-                    // Stage 3: Switch View & Contract to target tab
-                    const switchTimer = setTimeout(() => {
-                        // Calculate target position based on category
-                        // Kyoto: Left 0-50%, Osaka: Left 50-100%
-                        const targetX = targetCategory === 'kyoto' ? '25vw' : '75vw';
-                        const targetY = '70px'; // Approx below header title
-
-                        setStyle({
-                            top: targetY,
-                            left: targetX,
-                            width: '45vw', // Approximate tab width
-                            height: '36px',
-                            borderRadius: '20px', // Button rounded shape
-                            transform: 'translate(-50%, -50%) scale(1) rotate(0deg)', // Reset rotation
-                            transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-                            opacity: 0.8 // Fade out slightly
+                    // 3. Trigger View Switch (When fully covered)
+                    const coverTimer = setTimeout(() => {
+                        onCovered(); // Switch to map view here
+                        
+                        // 4. Contract Animation (Disappear from center out)
+                        // Expand the div itself (the "hole") while keeping the shadow large
+                        requestAnimationFrame(() => {
+                            setStyle(prev => ({
+                                ...prev,
+                                width: '300vmax', // Grow the hole
+                                height: '300vmax',
+                                transition: 'width 0.4s ease-out, height 0.4s ease-out' // Reveal speed
+                            }));
                         });
-                    }, 400); // Wait for expand
 
-                    // Stage 4: Finish
+                    }, 500); // Wait 500ms for expand
+
+                    // 5. Cleanup
                     const finishTimer = setTimeout(() => {
-                         setStyle(prev => ({ ...prev, opacity: 0 }));
-                         onAnimationComplete(); 
-                    }, 900); // 400 expand + 500 contract
+                        onFinished();
+                    }, 900); // 500 expand + 400 contract
 
                     return () => {
-                        clearTimeout(switchTimer);
+                        clearTimeout(coverTimer);
                         clearTimeout(finishTimer);
                     };
                 } else {
                      setStyle({});
                 }
-            }, [isAnimating, origin, onAnimationComplete, targetCategory]);
+            }, [isAnimating, origin, onCovered, onFinished, targetCategory, color]);
 
             if (!isAnimating) return null;
 
             return (
                 <div 
-                    className={`transition-layer ${color}`} 
+                    className="transition-layer"
                     style={style}
                 />
             );
@@ -587,7 +592,7 @@
             }, [isOtherAreaSelected]);
 
             const handleInputTypeClick = (id) => {
-                if (id === 'other') {
+                 if (id === 'other') {
                     setInputType(['other']);
                 } else {
                     let newTypes;
@@ -608,28 +613,20 @@
             };
 
             const handleAddShop = async () => {
-                if (!inputName.trim()) return;
+                 if (!inputName.trim()) return;
                 setLoading(true);
                 setError(null);
-
                 const searchName = inputName.split(/[\(（]/)[0].trim();
-
                 try {
-                    const response = await fetch(
-                        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchName + ' 日本')}&limit=1`
-                    );
+                    const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchName + ' 日本')}&limit=1`);
                     const data = await response.json();
-
                     if (data && data.length > 0) {
                         const place = data[0];
                         const lat = parseFloat(place.lat);
                         const lng = parseFloat(place.lon);
-
                         const distToKyoto = getDistance(lat, lng, LOCATIONS.kyoto.lat, LOCATIONS.kyoto.lng);
                         const distToOsaka = getDistance(lat, lng, LOCATIONS.osaka.lat, LOCATIONS.osaka.lng);
-                        
                         const category = distToKyoto < distToOsaka ? 'kyoto' : 'osaka';
-
                         const newShop = {
                             id: Date.now(),
                             name: inputName, 
@@ -641,10 +638,8 @@
                             address: place.display_name,
                             hours: "" 
                         };
-
                         setUserShops([newShop, ...userShops]);
                         setInputName('');
-                        
                         setListTab('my');
                         setShowList(true);
                         setCurrentPage(1);
@@ -784,19 +779,23 @@
                     x: rect.left + rect.width / 2,
                     y: rect.top + rect.height / 2
                 };
-                const colorClass = category === 'kyoto' ? 'bg-indigo-100' : 'bg-rose-100';
+                
+                const color = category === 'kyoto' ? '#e0e7ff' : '#ffe4e6';
 
                 setAnimState({
                     isAnimating: true,
-                    color: colorClass,
+                    color: color,
                     origin: center,
                     targetCategory: category
                 });
             };
 
-            const onAnimationComplete = () => {
+            const handleCovered = () => {
                 setMapCategory(animState.targetCategory);
                 setActiveTab('map');
+            };
+
+            const handleFinished = () => {
                 setAnimState(prev => ({ ...prev, isAnimating: false }));
             };
 
@@ -821,7 +820,8 @@
                         isAnimating={animState.isAnimating}
                         color={animState.color}
                         origin={animState.origin}
-                        onAnimationComplete={onAnimationComplete}
+                        onCovered={handleCovered}
+                        onFinished={handleFinished}
                         targetCategory={animState.targetCategory}
                     />
 
@@ -845,6 +845,7 @@
                     <main className="flex-1 overflow-hidden relative">
                         {activeTab === 'add' && (
                             <div className="h-full overflow-y-auto p-4 max-w-md mx-auto">
+                                {/* Input Card... */}
                                 <div className="bg-white p-4 rounded-xl shadow-sm mb-6">
                                     <DigitalClock />
                                     <div className="mb-3">
@@ -892,6 +893,7 @@
                                     {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
                                 </div>
 
+                                {/* Animated Buttons Grid (Updated Layout) */}
                                 <div className="grid grid-cols-2 gap-4 mb-6">
                                     <button 
                                         onClick={(e) => handleCityClick('kyoto', e)}
@@ -902,7 +904,7 @@
                                             <p className="text-3xl font-black text-indigo-600 mb-1">
                                                 {allShopsForMap.filter(s => s.category === 'kyoto').length}
                                             </p>
-                                            <h3 className="text-indigo-800 font-bold text-xs">京都</h3>
+                                            <h3 className="text-indigo-800 font-bold text-xs mt-2">京都</h3>
                                         </div>
                                     </button>
                                     
@@ -915,11 +917,12 @@
                                             <p className="text-3xl font-black text-rose-600 mb-1">
                                                 {allShopsForMap.filter(s => s.category === 'osaka').length}
                                             </p>
-                                            <h3 className="text-rose-800 font-bold text-xs">大阪</h3>
+                                            <h3 className="text-rose-800 font-bold text-xs mt-2">大阪</h3>
                                         </div>
                                     </button>
                                 </div>
 
+                                {/* List Tabs - Moved down */}
                                 <div className="flex items-center justify-between mb-3 border-b border-gray-200 mt-10">
                                     <div className="flex gap-4">
                                         <button
@@ -952,6 +955,7 @@
                                     </button>
                                 </div>
 
+                                {/* Shop List Content ... */}
                                 {showList && (
                                     <div className="space-y-3 pb-6">
                                         {currentShops.length === 0 ? (
