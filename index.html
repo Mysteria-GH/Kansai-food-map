@@ -36,6 +36,7 @@
             opacity: 1;
         }
 
+        /* 卷軸動畫樣式 - 用於距離篩選器 */
         .filter-section {
             transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s ease-in-out;
             overflow: hidden;
@@ -153,8 +154,7 @@
 
         // --- 系統推薦店鋪資料 ---
         const SYSTEM_SHOPS = [
-            // ... (資料保持不變) ...
-             { id: 1, name: "花丸軒 法善寺店(道頓堀+24小時+濃郁豚骨醬油+魯豬五花叉燒+蒜片+炒飯+煎餃)", displayName: "花丸軒 法善寺店", lat: 34.6675, lng: 135.5028, category: "osaka", type: ["ramen"], address: "道頓堀/法善寺", hours: "24小時營業" },
+            { id: 1, name: "花丸軒 法善寺店(道頓堀+24小時+濃郁豚骨醬油+魯豬五花叉燒+蒜片+炒飯+煎餃)", displayName: "花丸軒 法善寺店", lat: 34.6675, lng: 135.5028, category: "osaka", type: ["ramen"], address: "道頓堀/法善寺", hours: "24小時營業" },
             { id: 2, name: "しゃぶしゃぶ・すき焼き専門店 しゃぶ長(心齋橋+中午套餐+和牛壽喜燒)", displayName: "しゃぶ長", lat: 34.6728, lng: 135.5013, category: "osaka", type: ["sukiyaki"], address: "心齋橋", hours: "11:30-13:30, 17:30-23:00 (週日公休)" },
             { id: 3, name: "お食事処 美登里(大阪豬排丼+量大)", displayName: "お食事処 美登里", lat: 34.6695, lng: 135.5496, category: "osaka", type: ["ricebowl"], address: "大阪東成區", hours: "11:00-19:00 (週二公休)" },
             { id: 4, name: "Melt Chocolate(心齋橋+現切熱巧克力)", displayName: "Melt Chocolate", lat: 34.6775, lng: 135.4993, category: "osaka", type: ["cafe", "other"], address: "心齋橋/南船場", hours: "11:00-20:00" },
@@ -185,6 +185,8 @@
             { id: 29, name: "帰ってきた 宮田麺児(沾麵)", displayName: "帰ってきた 宮田麺児", lat: 34.6720, lng: 135.5035, category: "osaka", type: ["ramen"], address: "心齋橋", hours: "11:00-16:00, 17:30-22:00" },
             { id: 30, name: "まるよし(木津壽司)", displayName: "まるよし", lat: 34.6569, lng: 135.4984, category: "osaka", type: ["sushi"], address: "木津市場", hours: "05:00-13:00 (週三/週日公休)" },
             { id: 31, name: "焼肉うしごろ 梅田店(和牛燒肉+全程代烤)", displayName: "焼肉うしごろ", lat: 34.7040, lng: 135.4960, category: "osaka", type: ["yakiniku"], address: "梅田", hours: "11:30-15:00, 17:00-23:30" },
+            { id: 32, name: "大和茶大福專門店 GRAN CHA(奈良+大福)", displayName: "GRAN CHA", lat: 34.6815, lng: 135.8290, category: "osaka", type: ["cafe", "other"], address: "奈良", hours: "10:00-19:00" },
+            { id: 33, name: "中谷堂(奈良+艾草麻糬)", displayName: "中谷堂", lat: 34.6820, lng: 135.8298, category: "osaka", type: ["other"], address: "奈良", hours: "10:00-19:00" },
             { id: 34, name: "三大和牛食べ比べ 焼肉 つなぐ(難波+個室燒肉+神戶牛)", displayName: "焼肉 つなぐ", lat: 34.6660, lng: 135.5020, category: "osaka", type: ["yakiniku"], address: "難波", hours: "17:00-23:00" },
             { id: 35, name: "すき焼き しゃぶしゃぶ 肉寿司 食べ放題 和牛ざんまい 心斎橋店(宮崎牛壽喜燒+串燒+吃到飽+四種套餐)", displayName: "和牛ざんまい", lat: 34.6715, lng: 135.5015, category: "osaka", type: ["sukiyaki", "sushi"], address: "心齋橋", hours: "16:00-23:00" },
             { id: 36, name: "すき焼き・しゃぶしゃぶ きよ助(個人鍋)", displayName: "きよ助", lat: 34.6690, lng: 135.5010, category: "osaka", type: ["sukiyaki"], address: "難波", hours: "17:00-23:00" },
@@ -205,7 +207,7 @@
             { id: 51, name: "大阪焼肉 焼肉Lab 難波店(吃到飽)", displayName: "焼肉Lab 難波店", lat: 34.6658, lng: 135.5015, category: "osaka", type: ["yakiniku"], address: "難波", hours: "17:00-23:00 (週末 12:00-23:00)" }
         ];
 
-        // ... (Helpers remain same) ...
+        // --- Helper: Shop Status (Open, Closing Soon, Closed, Unknown) ---
         const getShopStatus = (hoursStr) => {
             if (!hoursStr) return 'unknown';
             if (hoursStr.includes("24小時")) return 'open';
@@ -252,6 +254,7 @@
             return 'closed';
         };
 
+        // --- Helper: Copy Text (Legacy Fallback) ---
         const copyToClipboard = (text, successMessage) => {
             const textArea = document.createElement("textarea");
             textArea.value = text;
@@ -280,6 +283,7 @@
         };
         window.copyShopName = copyShopName;
 
+        // --- Helper: Distance Calculation ---
         const getDistance = (lat1, lon1, lat2, lon2) => {
             const R = 6371; 
             const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -290,6 +294,7 @@
             return R * c;
         };
 
+        // --- Helper: Get labels from IDs ---
         const getFoodTypeLabels = (typeIds) => {
             const ids = Array.isArray(typeIds) ? typeIds : [typeIds || 'other'];
             return ids.map(id => {
@@ -298,6 +303,7 @@
             });
         };
 
+        // --- Component: Digital Clock ---
         function DigitalClock() {
             const [time, setTime] = useState(new Date());
             useEffect(() => {
@@ -317,19 +323,19 @@
         }
 
         // --- Component: Transition Overlay ---
-        function TransitionOverlay({ isAnimating, color, origin, onAnimationComplete }) {
+        function TransitionOverlay({ isAnimating, color, origin, onAnimationComplete, targetCategory }) {
             const [style, setStyle] = useState({});
 
             useEffect(() => {
                 if (isAnimating && origin) {
-                    // Stage 1: Initial State (small circle at button)
+                    // Stage 1: Initial State (small circle at button center)
                     setStyle({
                         top: origin.y,
                         left: origin.x,
                         width: '40px',
                         height: '40px',
                         borderRadius: '50%',
-                        transform: 'translate(-50%, -50%) rotate(45deg)', // Keep original rotation initially
+                        transform: 'translate(-50%, -50%) rotate(45deg)',
                         opacity: 1
                     });
 
@@ -337,22 +343,44 @@
                     requestAnimationFrame(() => {
                         setStyle(prev => ({
                             ...prev,
-                            transform: 'translate(-50%, -50%) rotate(45deg) scale(60)', // Massive scale
-                            transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+                            transform: 'translate(-50%, -50%) rotate(45deg) scale(60)',
+                            transition: 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
                         }));
                     });
 
-                    // Stage 3: Complete & Reset (After animation)
-                    const timer = setTimeout(() => {
-                        onAnimationComplete();
-                        // Optional: Shrink animation could be handled here or by unmounting
-                    }, 600); 
+                    // Stage 3: Switch View & Contract to target tab
+                    const switchTimer = setTimeout(() => {
+                        // Calculate target position based on category
+                        // Kyoto: Left 0-50%, Osaka: Left 50-100%
+                        const targetX = targetCategory === 'kyoto' ? '25vw' : '75vw';
+                        const targetY = '70px'; // Approx below header title
 
-                    return () => clearTimeout(timer);
+                        setStyle({
+                            top: targetY,
+                            left: targetX,
+                            width: '45vw', // Approximate tab width
+                            height: '36px',
+                            borderRadius: '20px', // Button rounded shape
+                            transform: 'translate(-50%, -50%) scale(1) rotate(0deg)', // Reset rotation
+                            transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                            opacity: 0.8 // Fade out slightly
+                        });
+                    }, 400); // Wait for expand
+
+                    // Stage 4: Finish
+                    const finishTimer = setTimeout(() => {
+                         setStyle(prev => ({ ...prev, opacity: 0 }));
+                         onAnimationComplete(); 
+                    }, 900); // 400 expand + 500 contract
+
+                    return () => {
+                        clearTimeout(switchTimer);
+                        clearTimeout(finishTimer);
+                    };
                 } else {
-                     setStyle({}); // Reset
+                     setStyle({});
                 }
-            }, [isAnimating, origin, onAnimationComplete]);
+            }, [isAnimating, origin, onAnimationComplete, targetCategory]);
 
             if (!isAnimating) return null;
 
@@ -364,14 +392,13 @@
             );
         }
 
-        // --- Component: MapView (Unchanged) ---
+        // --- Component: MapView ---
         function MapView({ center, shops }) {
-            // ... (MapView content same as previous) ...
             const mapContainerRef = useRef(null);
             const mapInstanceRef = useRef(null);
             const markersRef = useRef([]);
 
-            // Icons definitions...
+            // Icons
             const createIcon = (colorUrl) => new L.Icon({
                 iconUrl: colorUrl,
                 shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -380,6 +407,7 @@
                 popupAnchor: [1, -34],
                 shadowSize: [41, 41]
             });
+
             const blackIcon = createIcon('https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-black.png');
             const redIcon = createIcon('https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png');
             const blueIcon = createIcon('https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png');
@@ -401,6 +429,7 @@
                     attribution: '&copy; OpenStreetMap contributors'
                 }).addTo(map);
 
+                // 中心點：黑色
                 L.marker([center.lat, center.lng], { icon: blackIcon })
                     .bindPopup(`<b>${center.name}</b> (中心)`)
                     .addTo(map);
@@ -418,6 +447,7 @@
                 const map = mapInstanceRef.current;
 
                 map.eachLayer((layer) => {
+                    // Update center marker (black)
                     if (layer instanceof L.Marker && layer.getIcon().options.iconUrl.includes('black')) {
                          layer.setLatLng([center.lat, center.lng])
                               .setPopupContent(`<b>${center.name}</b> (中心)`)
@@ -432,10 +462,15 @@
 
                 shops.forEach(shop => {
                     points.push([shop.lat, shop.lng]);
+
                     const labels = getFoodTypeLabels(shop.type);
-                    const tagsHtml = labels.map(label => `<span style="font-size: 11px; background-color: #f3f4f6; padding: 2px 6px; border-radius: 4px; border: 1px solid #e5e7eb; color: #4b5563; display: inline-block; margin-right: 4px; margin-bottom: 2px;">${label}</span>`).join('');
+                    const tagsHtml = labels.map(label => 
+                        `<span style="font-size: 11px; background-color: #f3f4f6; padding: 2px 6px; border-radius: 4px; border: 1px solid #e5e7eb; color: #4b5563; display: inline-block; margin-right: 4px; margin-bottom: 2px;">${label}</span>`
+                    ).join('');
+
+                    // Determine icon color
                     const status = getShopStatus(shop.hours);
-                    let markerIcon = blueIcon;
+                    let markerIcon = blueIcon; // Default closed
                     let statusHtml = '';
 
                     if (status === 'unknown') {
@@ -466,7 +501,11 @@
                             <p class="text-xs mb-1">${statusHtml}</p>
                             ${shop.hours ? `<p class="text-xs text-gray-500 mb-2">🕘 ${shop.hours}</p>` : ''}
                             <p class="text-xs text-gray-600 mb-2">${shop.address || '無地址資訊'}</p>
-                            <a href="https://maps.google.com/?q=${shop.lat},${shop.lng}" target="_blank" style="color: #2563eb; text-decoration: none; font-size: 12px; display: flex; align-items: center; gap: 4px;">➤ 開啟 Google Maps 導航</a>
+                            <a href="https://maps.google.com/?q=${shop.lat},${shop.lng}" 
+                               target="_blank" 
+                               style="color: #2563eb; text-decoration: none; font-size: 12px; display: flex; align-items: center; gap: 4px;">
+                               ➤ 開啟 Google Maps 導航
+                            </a>
                         </div>
                     `;
 
@@ -487,6 +526,7 @@
                 } else {
                     map.flyTo([center.lat, center.lng], 13, { duration: 1.0 });
                 }
+
             }, [center, shops]);
 
             return <div ref={mapContainerRef} className="h-full w-full"></div>;
@@ -494,7 +534,6 @@
 
         // --- Main App Component ---
         function App() {
-            // ... (Data & State definitions) ...
             const [userShops, setUserShops] = useState(() => {
                 const saved = localStorage.getItem('kansai_shops');
                 if (saved) {
@@ -528,7 +567,7 @@
             // Animation States
             const [animState, setAnimState] = useState({ isAnimating: false, color: '', origin: null, targetCategory: '' });
 
-            // ... (Helpers and logic same as before) ...
+            // Determine if an "Other Area" sublocation is selected
             const isOtherAreaSelected = (mapCategory === 'kyoto' && kyotoSubLocation === 'kyoto_other') || 
                                         (mapCategory === 'osaka' && osakaSubLocation === 'osaka_other');
 
@@ -540,12 +579,15 @@
                 }
             }, [mapCategory, osakaSubLocation, kyotoSubLocation]);
 
+            // Effect: Reset distance filter if "Other Area" is selected
             useEffect(() => {
-                if (isOtherAreaSelected) setMapFilterDistance('all');
+                if (isOtherAreaSelected) {
+                    setMapFilterDistance('all');
+                }
             }, [isOtherAreaSelected]);
 
             const handleInputTypeClick = (id) => {
-                 if (id === 'other') {
+                if (id === 'other') {
                     setInputType(['other']);
                 } else {
                     let newTypes;
@@ -566,20 +608,28 @@
             };
 
             const handleAddShop = async () => {
-                 if (!inputName.trim()) return;
+                if (!inputName.trim()) return;
                 setLoading(true);
                 setError(null);
+
                 const searchName = inputName.split(/[\(（]/)[0].trim();
+
                 try {
-                    const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchName + ' 日本')}&limit=1`);
+                    const response = await fetch(
+                        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchName + ' 日本')}&limit=1`
+                    );
                     const data = await response.json();
+
                     if (data && data.length > 0) {
                         const place = data[0];
                         const lat = parseFloat(place.lat);
                         const lng = parseFloat(place.lon);
+
                         const distToKyoto = getDistance(lat, lng, LOCATIONS.kyoto.lat, LOCATIONS.kyoto.lng);
                         const distToOsaka = getDistance(lat, lng, LOCATIONS.osaka.lat, LOCATIONS.osaka.lng);
+                        
                         const category = distToKyoto < distToOsaka ? 'kyoto' : 'osaka';
+
                         const newShop = {
                             id: Date.now(),
                             name: inputName, 
@@ -591,8 +641,10 @@
                             address: place.display_name,
                             hours: "" 
                         };
+
                         setUserShops([newShop, ...userShops]);
                         setInputName('');
+                        
                         setListTab('my');
                         setShowList(true);
                         setCurrentPage(1);
@@ -606,36 +658,44 @@
                 }
             };
 
-            const handleDelete = (id) => setUserShops(userShops.filter(shop => shop.id !== id));
+            const handleDelete = (id) => {
+                setUserShops(userShops.filter(shop => shop.id !== id));
+            };
+
             const handleExport = () => {
                 const dataStr = JSON.stringify(userShops);
                 copyToClipboard(dataStr, "✅ 個人資料已複製！");
             };
 
-            const allShopsForMap = useMemo(() => [...userShops, ...SYSTEM_SHOPS], [userShops]);
-            
-            // ... (Filter logic checks) ...
-             const checkIsAllYouCanEat = (shop) => {
+            const allShopsForMap = useMemo(() => {
+                return [...userShops, ...SYSTEM_SHOPS];
+            }, [userShops]);
+
+            const checkIsAllYouCanEat = (shop) => {
                 const text = (shop.name || '') + (shop.displayName || '');
                 const keywords = ['吃到飽', '食べ放題'];
                 return keywords.some(k => text.includes(k));
             };
+
             const checkIsWagyu = (shop) => {
                 const text = (shop.name || '') + (shop.displayName || '');
                 const keywords = ['和牛', 'Wagyu', '神戶牛', '神戸牛', '但馬牛', '近江牛', '宮崎牛', '仙台牛', '黒毛', '黑毛', '牛舌'];
                 return keywords.some(k => text.includes(k));
             };
+
             const checkIsBeefTongue = (shop) => {
                 const text = (shop.name || '') + (shop.displayName || '');
                 const keywords = ['牛舌', '牛タン', 'タン'];
                 return keywords.some(k => text.includes(k));
             };
+            
             const checkIsHamburger = (shop) => {
                 if (shop.type && shop.type.includes('hamburger')) return true;
                 const text = (shop.name || '') + (shop.displayName || '');
                 const keywords = ['漢堡排', 'ハンバーグ', 'Hamburg'];
                 return keywords.some(k => text.includes(k));
             };
+            
             const checkIsIzakaya = (shop) => {
                 if (shop.type && shop.type.includes('izakaya')) return true;
                 const text = (shop.name || '') + (shop.displayName || '');
@@ -644,11 +704,13 @@
             };
 
             const filteredShops = useMemo(() => {
-                 return allShopsForMap.filter(shop => {
+                return allShopsForMap.filter(shop => {
                     const matchLocation = shop.category === mapCategory;
+                    
                     const shopTypes = Array.isArray(shop.type) ? shop.type : [shop.type || 'other'];
                     const matchType = mapFilterType === 'all' || shopTypes.includes(mapFilterType);
                     
+                    // Filter Logic: "Other Areas" (距離主要子中心 > 2km)
                     let matchSubLocation = true;
                     if (mapCategory === 'kyoto' && kyotoSubLocation === 'kyoto_other') {
                         const distKyoto = getDistance(shop.lat, shop.lng, KYOTO_SUBLOCATIONS.kyoto_station.lat, KYOTO_SUBLOCATIONS.kyoto_station.lng);
@@ -658,10 +720,13 @@
                         const distUmeda = getDistance(shop.lat, shop.lng, OSAKA_SUBLOCATIONS.umeda.lat, OSAKA_SUBLOCATIONS.umeda.lng);
                         const distShinsaibashi = getDistance(shop.lat, shop.lng, OSAKA_SUBLOCATIONS.shinsaibashi.lat, OSAKA_SUBLOCATIONS.shinsaibashi.lng);
                         const distTennoji = getDistance(shop.lat, shop.lng, OSAKA_SUBLOCATIONS.tennoji.lat, OSAKA_SUBLOCATIONS.tennoji.lng);
+                        
                         if (distUmeda <= 2 || distShinsaibashi <= 2 || distTennoji <= 2) matchSubLocation = false;
                     } else {
+                        // Standard sub-location filter: Must be within 2km of selected hub
                         const isSpecificHub = (mapCategory === 'kyoto' && kyotoSubLocation !== 'kyoto_other') || 
                                               (mapCategory === 'osaka' && osakaSubLocation !== 'osaka_other');
+                        
                         if (isSpecificHub) {
                             const distToHub = getDistance(shop.lat, shop.lng, currentCenter.lat, currentCenter.lng);
                             if (distToHub > 2) matchSubLocation = false;
@@ -713,14 +778,13 @@
                 setMapFilterSpecial(newSelection);
             };
 
-            // ** Trigger Animation & Navigation **
             const handleCityClick = (category, event) => {
                 const rect = event.currentTarget.getBoundingClientRect();
                 const center = {
                     x: rect.left + rect.width / 2,
                     y: rect.top + rect.height / 2
                 };
-                const colorClass = category === 'kyoto' ? 'bg-indigo-500' : 'bg-rose-500';
+                const colorClass = category === 'kyoto' ? 'bg-indigo-100' : 'bg-rose-100';
 
                 setAnimState({
                     isAnimating: true,
@@ -733,19 +797,22 @@
             const onAnimationComplete = () => {
                 setMapCategory(animState.targetCategory);
                 setActiveTab('map');
-                setAnimState({ ...animState, isAnimating: false });
+                setAnimState(prev => ({ ...prev, isAnimating: false }));
             };
 
-            const goToMap = (category) => { // Keep for bottom nav if needed, but main entry is now animated
+            const goToMap = (category) => {
                 setMapCategory(category);
                 setActiveTab('map');
             };
 
-            // List Logic
             const shopsToList = listTab === 'my' ? userShops : SYSTEM_SHOPS;
             const displayList = listTab === 'my' ? [...shopsToList] : [...shopsToList]; 
             const totalPages = Math.ceil(displayList.length / ITEMS_PER_PAGE) || 1;
-            useEffect(() => { setCurrentPage(1); }, [listTab]);
+            
+            useEffect(() => {
+                setCurrentPage(1);
+            }, [listTab]);
+
             const currentShops = displayList.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
             return (
@@ -755,6 +822,7 @@
                         color={animState.color}
                         origin={animState.origin}
                         onAnimationComplete={onAnimationComplete}
+                        targetCategory={animState.targetCategory}
                     />
 
                     {/* Header... */}
@@ -777,7 +845,6 @@
                     <main className="flex-1 overflow-hidden relative">
                         {activeTab === 'add' && (
                             <div className="h-full overflow-y-auto p-4 max-w-md mx-auto">
-                                {/* Input Card... */}
                                 <div className="bg-white p-4 rounded-xl shadow-sm mb-6">
                                     <DigitalClock />
                                     <div className="mb-3">
@@ -825,7 +892,6 @@
                                     {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
                                 </div>
 
-                                {/* Animated Buttons Grid */}
                                 <div className="grid grid-cols-2 gap-4 mb-6">
                                     <button 
                                         onClick={(e) => handleCityClick('kyoto', e)}
@@ -854,7 +920,6 @@
                                     </button>
                                 </div>
 
-                                {/* List Tabs - Moved down */}
                                 <div className="flex items-center justify-between mb-3 border-b border-gray-200 mt-10">
                                     <div className="flex gap-4">
                                         <button
@@ -887,7 +952,6 @@
                                     </button>
                                 </div>
 
-                                {/* Shop List Content ... */}
                                 {showList && (
                                     <div className="space-y-3 pb-6">
                                         {currentShops.length === 0 ? (
@@ -937,6 +1001,7 @@
                                                                 </p>
                                                             )}
                                                         </div>
+                                                        
                                                         {listTab === 'my' && (
                                                             <button 
                                                                 onClick={() => handleDelete(shop.id)}
@@ -1005,7 +1070,7 @@
                                         onClick={() => setMapCategory('kyoto')}
                                         className={`flex-1 py-3 rounded-lg font-bold transition-all ${
                                             mapCategory === 'kyoto' 
-                                                ? 'bg-indigo-600 text-white shadow-md transform scale-[1.02]' 
+                                                ? 'bg-indigo-100 text-indigo-600 shadow-md transform scale-[1.02]' 
                                                 : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
                                         }`}
                                     >
@@ -1015,7 +1080,7 @@
                                         onClick={() => setMapCategory('osaka')}
                                         className={`flex-1 py-3 rounded-lg font-bold transition-all ${
                                             mapCategory === 'osaka' 
-                                                ? 'bg-rose-600 text-white shadow-md transform scale-[1.02]' 
+                                                ? 'bg-rose-100 text-rose-600 shadow-md transform scale-[1.02]' 
                                                 : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
                                         }`}
                                     >
