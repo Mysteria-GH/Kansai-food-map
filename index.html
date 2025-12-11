@@ -185,8 +185,6 @@
             { id: 29, name: "帰ってきた 宮田麺児(沾麵)", displayName: "帰ってきた 宮田麺児", lat: 34.6720, lng: 135.5035, category: "osaka", type: ["ramen"], address: "心齋橋", hours: "11:00-16:00, 17:30-22:00" },
             { id: 30, name: "まるよし(木津壽司)", displayName: "まるよし", lat: 34.6569, lng: 135.4984, category: "osaka", type: ["sushi"], address: "木津市場", hours: "05:00-13:00 (週三/週日公休)" },
             { id: 31, name: "焼肉うしごろ 梅田店(和牛燒肉+全程代烤)", displayName: "焼肉うしごろ", lat: 34.7040, lng: 135.4960, category: "osaka", type: ["yakiniku"], address: "梅田", hours: "11:30-15:00, 17:00-23:30" },
-            { id: 32, name: "大和茶大福專門店 GRAN CHA(奈良+大福)", displayName: "GRAN CHA", lat: 34.6815, lng: 135.8290, category: "osaka", type: ["cafe", "other"], address: "奈良", hours: "10:00-19:00" },
-            { id: 33, name: "中谷堂(奈良+艾草麻糬)", displayName: "中谷堂", lat: 34.6820, lng: 135.8298, category: "osaka", type: ["other"], address: "奈良", hours: "10:00-19:00" },
             { id: 34, name: "三大和牛食べ比べ 焼肉 つなぐ(難波+個室燒肉+神戶牛)", displayName: "焼肉 つなぐ", lat: 34.6660, lng: 135.5020, category: "osaka", type: ["yakiniku"], address: "難波", hours: "17:00-23:00" },
             { id: 35, name: "すき焼き しゃぶしゃぶ 肉寿司 食べ放題 和牛ざんまい 心斎橋店(宮崎牛壽喜燒+串燒+吃到飽+四種套餐)", displayName: "和牛ざんまい", lat: 34.6715, lng: 135.5015, category: "osaka", type: ["sukiyaki", "sushi"], address: "心齋橋", hours: "16:00-23:00" },
             { id: 36, name: "すき焼き・しゃぶしゃぶ きよ助(個人鍋)", displayName: "きよ助", lat: 34.6690, lng: 135.5010, category: "osaka", type: ["sukiyaki"], address: "難波", hours: "17:00-23:00" },
@@ -367,7 +365,7 @@
                                 ...prev,
                                 width: '300vmax', // Grow the hole
                                 height: '300vmax',
-                                transition: 'width 0.4s ease-out, height 0.4s ease-out' // Reveal speed
+                                transition: 'width 1.2s ease-out, height 1.2s ease-out' // Slow reveal
                             }));
                         });
 
@@ -376,7 +374,7 @@
                     // 5. Cleanup
                     const finishTimer = setTimeout(() => {
                         onFinished();
-                    }, 900); // 500 expand + 400 contract
+                    }, 1700); // 500 expand + 1200 contract
 
                     return () => {
                         clearTimeout(coverTimer);
@@ -569,8 +567,8 @@
             const [currentPage, setCurrentPage] = useState(1);
             const ITEMS_PER_PAGE = 5;
 
-            // Animation States
-            const [animState, setAnimState] = useState({ isAnimating: false, color: '', origin: null, targetCategory: '' });
+            // Animation States (Adding ID to force re-render)
+            const [animState, setAnimState] = useState({ isAnimating: false, color: '', origin: null, targetCategory: '', id: 0 });
 
             // Determine if an "Other Area" sublocation is selected
             const isOtherAreaSelected = (mapCategory === 'kyoto' && kyotoSubLocation === 'kyoto_other') || 
@@ -786,7 +784,8 @@
                     isAnimating: true,
                     color: color,
                     origin: center,
-                    targetCategory: category
+                    targetCategory: category,
+                    id: Date.now() // Unique ID to force re-mount
                 });
             };
 
@@ -816,14 +815,18 @@
 
             return (
                 <div className="flex flex-col h-screen">
-                    <TransitionOverlay 
-                        isAnimating={animState.isAnimating}
-                        color={animState.color}
-                        origin={animState.origin}
-                        onCovered={handleCovered}
-                        onFinished={handleFinished}
-                        targetCategory={animState.targetCategory}
-                    />
+                    {/* Render Overlay only when animating, with unique key to force reset */}
+                    {animState.isAnimating && (
+                        <TransitionOverlay 
+                            key={animState.id}
+                            isAnimating={animState.isAnimating}
+                            color={animState.color}
+                            origin={animState.origin}
+                            onCovered={handleCovered}
+                            onFinished={handleFinished}
+                            targetCategory={animState.targetCategory}
+                        />
+                    )}
 
                     {/* Header... */}
                     <header className="bg-white shadow-sm p-4 pt-safe-top z-10 sticky top-0 relative">
