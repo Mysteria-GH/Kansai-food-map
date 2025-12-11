@@ -321,7 +321,7 @@
         }
 
         // --- Component: Transition Overlay ---
-        function TransitionOverlay({ isAnimating, color, origin, onCovered, onFinished, targetCategory }) {
+        function TransitionOverlay({ isAnimating, color, origin, onCovered, onFinished }) {
             const [style, setStyle] = useState({});
 
             useEffect(() => {
@@ -333,12 +333,12 @@
                         width: '0px',
                         height: '0px',
                         borderRadius: '50%',
-                        transform: 'translate(-50%, -50%)', // Centered on origin
-                        backgroundColor: 'transparent', // Transparent content
-                        boxShadow: `0 0 0 20px ${color}`, // Initial small colored circle using shadow
+                        transform: 'translate(-50%, -50%)',
+                        backgroundColor: 'transparent',
+                        boxShadow: `0 0 0 20px ${color}`,
                         zIndex: 9999,
                         pointerEvents: 'none',
-                        transition: 'none' // No transition for initial setup
+                        transition: 'none'
                     });
 
                     // 2. Expand Animation (Fill Screen)
@@ -346,35 +346,31 @@
                         requestAnimationFrame(() => {
                             setStyle(prev => ({
                                 ...prev,
-                                // Animate box-shadow to cover the screen
-                                // 300vmax is large enough to cover typical screens from any point
-                                boxShadow: `0 0 0 300vmax ${color}`, 
-                                transition: 'box-shadow 0.5s ease-in' 
+                                boxShadow: `0 0 0 300vmax ${color}`,
+                                transition: 'box-shadow 0.5s ease-in'
                             }));
                         });
                     });
 
-                    // 3. Trigger View Switch (When fully covered)
+                    // 3. Trigger View Switch
                     const coverTimer = setTimeout(() => {
-                        onCovered(); // Switch to map view here
-                        
-                        // 4. Contract Animation (Disappear from center out)
-                        // Expand the div itself (the "hole") while keeping the shadow large
-                        requestAnimationFrame(() => {
+                        onCovered(); // Switch to map view
+
+                        // 4. Disappear (Fade out)
+                        setTimeout(() => {
                             setStyle(prev => ({
                                 ...prev,
-                                width: '300vmax', // Grow the hole
-                                height: '300vmax',
-                                transition: 'width 1.2s ease-out, height 1.2s ease-out' // Slow reveal
+                                opacity: 0,
+                                transition: 'opacity 0.5s ease-out'
                             }));
-                        });
+                        }, 100);
 
-                    }, 500); // Wait 500ms for expand
+                    }, 500); // Wait for expand
 
-                    // 5. Cleanup
+                    // 5. Finish
                     const finishTimer = setTimeout(() => {
                         onFinished();
-                    }, 1700); // 500 expand + 1200 contract
+                    }, 1100);
 
                     return () => {
                         clearTimeout(coverTimer);
@@ -383,7 +379,7 @@
                 } else {
                      setStyle({});
                 }
-            }, [isAnimating, origin, onCovered, onFinished, targetCategory, color]);
+            }, [isAnimating, origin, onCovered, onFinished, color]);
 
             if (!isAnimating) return null;
 
@@ -537,6 +533,7 @@
 
         // --- Main App Component ---
         function App() {
+            // ... (Data & State definitions) ...
             const [userShops, setUserShops] = useState(() => {
                 const saved = localStorage.getItem('kansai_shops');
                 if (saved) {
@@ -683,14 +680,18 @@
             };
             
             const checkIsHamburger = (shop) => {
+                // Check 'type' array first (manual tag)
                 if (shop.type && shop.type.includes('hamburger')) return true;
+                // Then check text
                 const text = (shop.name || '') + (shop.displayName || '');
                 const keywords = ['漢堡排', 'ハンバーグ', 'Hamburg'];
                 return keywords.some(k => text.includes(k));
             };
             
             const checkIsIzakaya = (shop) => {
+                 // Check 'type' array first (manual tag, though we haven't tagged many yet)
                 if (shop.type && shop.type.includes('izakaya')) return true;
+                // Then check text
                 const text = (shop.name || '') + (shop.displayName || '');
                 const keywords = ['居酒屋', '串燒', '焼き鳥', 'おでん', '串', '酒場', 'Izakaya', 'Yakitori'];
                 return keywords.some(k => text.includes(k));
