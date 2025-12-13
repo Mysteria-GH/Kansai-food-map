@@ -115,6 +115,7 @@
 
         const KYOTO_SUBLOCATIONS = {
             kyoto_station: { id: 'kyoto_station', name: "京都車站", lat: 34.9858, lng: 135.7588 },
+            arashiyama: { id: 'arashiyama', name: "嵯峨嵐山車站", lat: 35.0191, lng: 135.6778 },
             uji_station: { id: 'uji_station', name: "宇治車站", lat: 34.8893, lng: 135.8018 },
             kyoto_other: { id: 'kyoto_other', name: "其它區域", lat: 34.9858, lng: 135.7588 }
         };
@@ -149,60 +150,94 @@
             { id: 'beef_tongue', label: '牛舌' },
             { id: 'all_you_can_eat', label: '吃到飽' },
             { id: 'hamburger', label: '漢堡排' }, 
-            { id: 'izakaya', label: '居酒屋' }
+            { id: 'izakaya', label: '居酒屋' },
+            { id: 'lunch', label: '午間套餐' },
+            { id: 'kissaten', label: '喫茶' }
         ];
 
         // --- 系統推薦店鋪資料 ---
         const SYSTEM_SHOPS = [
-            { id: 1, name: "花丸軒 法善寺店(道頓堀+24小時+濃郁豚骨醬油+魯豬五花叉燒+蒜片+炒飯+煎餃)", displayName: "花丸軒 法善寺店", lat: 34.6675, lng: 135.5028, category: "osaka", type: ["ramen"], address: "道頓堀/法善寺", hours: "24小時營業" },
-            { id: 2, name: "しゃぶしゃぶ・すき焼き専門店 しゃぶ長(心齋橋+中午套餐+和牛壽喜燒)", displayName: "しゃぶ長", lat: 34.6728, lng: 135.5013, category: "osaka", type: ["sukiyaki"], address: "心齋橋", hours: "11:30-13:30, 17:30-23:00 (週日公休)" },
-            { id: 3, name: "お食事処 美登里(大阪豬排丼+量大)", displayName: "お食事処 美登里", lat: 34.6695, lng: 135.5496, category: "osaka", type: ["ricebowl"], address: "大阪東成區", hours: "11:00-19:00 (週二公休)" },
-            { id: 4, name: "Melt Chocolate(心齋橋+現切熱巧克力)", displayName: "Melt Chocolate", lat: 34.6775, lng: 135.4993, category: "osaka", type: ["cafe", "other"], address: "心齋橋/南船場", hours: "11:00-20:00" },
-            { id: 5, name: "大阪燒 千房(道頓堀)", displayName: "千房 道頓堀", lat: 34.6685, lng: 135.5035, category: "osaka", type: ["other"], address: "道頓堀", hours: "11:00-23:00" },
-            { id: 6, name: "肉の隠れ家 おあがり 嵐山本店(和牛火山+桂川風景)", displayName: "肉の隠れ家 おあがり", lat: 35.0116, lng: 135.6766, category: "kyoto", type: ["ricebowl", "other"], address: "嵐山", hours: "11:00-15:00" },
-            { id: 7, name: "すきやき・しゃぶしゃぶ大牧場 千日前店(難波站+神戶和牛壽喜燒吃到飽)", displayName: "大牧場 千日前店", lat: 34.6667, lng: 135.5042, category: "osaka", type: ["sukiyaki"], address: "千日前/難波", hours: "11:00-15:00, 17:00-23:00" },
-            { id: 8, name: "焼肉こじま離れ 大阪江坂(漢堡排)", displayName: "焼肉こじま離れ", lat: 34.7595, lng: 135.4965, category: "osaka", type: ["yakiniku", "hamburger"], address: "江坂", hours: "11:30-14:30, 17:00-23:00" },
-            { id: 9, name: "厚切り仙台牛タンと黒毛和牛食べ放題 焼肉倶楽部 梅田店", displayName: "焼肉倶楽部 梅田店", lat: 34.7035, lng: 135.5000, category: "osaka", type: ["yakiniku"], address: "梅田", hours: "16:00-23:00" },
-            { id: 10, name: "しゃぶ禅 梅田店(黑毛和牛壽喜燒吃到飽)", displayName: "しゃぶ禅 梅田店", lat: 34.7005, lng: 135.4965, category: "osaka", type: ["sukiyaki"], address: "梅田", hours: "11:30-14:30, 17:00-22:30" },
-            { id: 11, name: "焼肉ジャパン LINKS UMEDA店(梅田+神戶牛)", displayName: "焼肉ジャパン", lat: 34.7050, lng: 135.4970, category: "osaka", type: ["yakiniku"], address: "LINKS UMEDA", hours: "11:00-23:00" },
-            { id: 12, name: "すき焼 しゃぶしゃぶつかだ KITTE大阪(梅田kitte百貨+關西和牛壽喜燒)", displayName: "すき焼 しゃぶしゃぶつかだ", lat: 34.7015, lng: 135.4945, category: "osaka", type: ["sukiyaki"], address: "KITTE大阪", hours: "11:00-15:00, 17:00-23:00" },
-            { id: 13, name: "和牛一頭買い 焼肉ホルモン黒野 ウラなんば本店(難波+黑毛和牛)", displayName: "焼肉ホルモン黒野", lat: 34.6645, lng: 135.5030, category: "osaka", type: ["yakiniku"], address: "裏難波", hours: "17:00-24:00" },
-            { id: 14, name: "手づくりハンバーグの店 とくら 京都三条店(Juicy Hamburger Steak+ルクア大阪也有)", displayName: "とくら 京都三条店", lat: 35.0089, lng: 135.7681, category: "kyoto", type: ["hamburger"], address: "京都三条", hours: "11:00-15:00, 17:00-22:00 (週三公休)" },
-            { id: 15, name: "板前焼肉 一光 住之江本店(黑毛和牛)", displayName: "板前焼肉 一光", lat: 34.6094, lng: 135.4735, category: "osaka", type: ["yakiniku"], address: "住之江", hours: "17:00-23:00 (週二公休)" },
-            { id: 16, name: "TAKUMEAT STORE(新大阪站+燒肉)", displayName: "TAKUMEAT STORE", lat: 34.7335, lng: 135.5003, category: "osaka", type: ["yakiniku"], address: "新大阪", hours: "11:00-22:00" },
-            { id: 17, name: "地焼うなぎ 法善寺山かづ(難波站+關西地燒鰻魚飯)", displayName: "法善寺山かづ", lat: 34.6672, lng: 135.5020, category: "osaka", type: ["eel", "ricebowl"], address: "法善寺", hours: "11:00-15:00, 17:00-21:00" },
-            { id: 18, name: "黄金出汁しゃぶと江戸前寿司 肉のあさつ 梅田お初天神店(梅田+黑毛和牛壽喜燒定食+免費白飯?+特定時間)", displayName: "肉のあさつ", lat: 34.7000, lng: 135.5015, category: "osaka", type: ["sukiyaki", "sushi"], address: "梅田お初天神", hours: "12:00-23:00" },
-            { id: 19, name: "スキヤキフジオ なんばCITY店(難波+個人壽喜燒)", displayName: "スキヤキフジオ", lat: 34.6642, lng: 135.5025, category: "osaka", type: ["sukiyaki"], address: "難波CITY", hours: "11:00-22:00" },
-            { id: 20, name: "焼肉ごりちゃんお初天神店(東梅田+黑毛和牛)", displayName: "焼肉ごりちゃん", lat: 34.7010, lng: 135.5010, category: "osaka", type: ["yakiniku"], address: "東梅田", hours: "17:00-07:00 (隔日)" },
-            { id: 21, name: "CAFE ANNON なんば本店(難波+鬆餅?)", displayName: "CAFE ANNON", lat: 34.6660, lng: 135.5035, category: "osaka", type: ["cafe", "other"], address: "難波", hours: "11:00-23:00" },
-            { id: 22, name: "和牛専門 牛めし 前田優(難波+A5和牛+牛丼)", displayName: "和牛専門 牛めし 前田優", lat: 34.6670, lng: 135.5060, category: "osaka", type: ["ricebowl"], address: "千日前/日本橋", hours: "11:30-16:00, 17:00-22:30" },
-            { id: 23, name: "釜飯と海鮮 暁(心齋橋+創作海鮮+海鮮釜飯)", displayName: "釜飯と海鮮 暁", lat: 34.6735, lng: 135.5020, category: "osaka", type: ["ricebowl", "other"], address: "心齋橋", hours: "11:30-15:00, 17:00-23:00" },
-            { id: 24, name: "かつ丼 千代松豪仁(四ツ橋駅)", displayName: "かつ丼 千代松豪仁", lat: 34.6729, lng: 135.4966, category: "osaka", type: ["ricebowl"], address: "四ツ橋", hours: "11:00-15:00, 17:30-21:30" },
-            { id: 25, name: "厚切り仙台牛タンと黒毛和牛食べ放題 焼肉倶楽部 天王寺店", displayName: "焼肉倶楽部 天王寺店", lat: 34.6478, lng: 135.5148, category: "osaka", type: ["yakiniku"], address: "天王寺", hours: "16:00-23:00" },
-            { id: 26, name: "＃KOKUBAN (コクバン)(歐姆飯+漢堡排)", displayName: "KOKUBAN", lat: 34.6650, lng: 135.5000, category: "osaka", type: ["hamburger", "other"], address: "難波/心齋橋", hours: "11:30-15:00, 17:30-22:00" },
-            { id: 27, name: "焼き鳥 おでん 坊っちゃん茶屋町店(梅田+平價串燒+昭和風?)", displayName: "坊っちゃん茶屋町店", lat: 34.7070, lng: 135.4990, category: "osaka", type: ["other"], address: "梅田茶屋町", hours: "17:00-23:00" },
-            { id: 28, name: "焼肉 㐂舌 法善寺(午間定食+牛蓋飯+茶泡飯+包間)", displayName: "焼肉 㐂舌", lat: 34.6675, lng: 135.5030, category: "osaka", type: ["yakiniku", "ricebowl"], address: "法善寺", hours: "11:00-15:00, 17:00-23:00" },
-            { id: 29, name: "帰ってきた 宮田麺児(沾麵)", displayName: "帰ってきた 宮田麺児", lat: 34.6720, lng: 135.5035, category: "osaka", type: ["ramen"], address: "心齋橋", hours: "11:00-16:00, 17:30-22:00" },
-            { id: 30, name: "まるよし(木津壽司)", displayName: "まるよし", lat: 34.6569, lng: 135.4984, category: "osaka", type: ["sushi"], address: "木津市場", hours: "05:00-13:00 (週三/週日公休)" },
-            { id: 31, name: "焼肉うしごろ 梅田店(和牛燒肉+全程代烤)", displayName: "焼肉うしごろ", lat: 34.7040, lng: 135.4960, category: "osaka", type: ["yakiniku"], address: "梅田", hours: "11:30-15:00, 17:00-23:30" },
-            { id: 34, name: "三大和牛食べ比べ 焼肉 つなぐ(難波+個室燒肉+神戶牛)", displayName: "焼肉 つなぐ", lat: 34.6660, lng: 135.5020, category: "osaka", type: ["yakiniku"], address: "難波", hours: "17:00-23:00" },
-            { id: 35, name: "すき焼き しゃぶしゃぶ 肉寿司 食べ放題 和牛ざんまい 心斎橋店(宮崎牛壽喜燒+串燒+吃到飽+四種套餐)", displayName: "和牛ざんまい", lat: 34.6715, lng: 135.5015, category: "osaka", type: ["sukiyaki", "sushi"], address: "心齋橋", hours: "16:00-23:00" },
-            { id: 36, name: "すき焼き・しゃぶしゃぶ きよ助(個人鍋)", displayName: "きよ助", lat: 34.6690, lng: 135.5010, category: "osaka", type: ["sukiyaki"], address: "難波", hours: "17:00-23:00" },
-            { id: 37, name: "大阪福島 WAgyu鬼く 焼肉(新福島站+黑毛和牛+冷麵)", displayName: "WAgyu鬼く", lat: 34.6967, lng: 135.4800, category: "osaka", type: ["yakiniku"], address: "福島", hours: "17:00-24:00" },
-            { id: 38, name: "人類みな麵類(應該是這家?+西中島+18~22+炒飯+醬油拉麵+鮭魚卵)", displayName: "人類みな麵類", lat: 34.7262, lng: 135.5005, category: "osaka", type: ["ramen"], address: "西中島南方", hours: "10:00-03:00 (隔日)" },
-            { id: 39, name: "牛舌的柠檬(超厚碳烤牛舌+牛舌後段[軟嫩]+味噌醬+檸檬飲+咖哩牛舌+免費續飯)", displayName: "牛たんの檸檬 大阪", lat: 34.6665, lng: 135.5040, category: "osaka", type: ["yakiniku"], address: "難波/日本橋", hours: "11:30-15:00, 17:00-22:00" },
-            { id: 40, name: "やさい串巻き なるとや(應該是這家?+野菜捲+居酒屋)", displayName: "なるとや", lat: 34.6680, lng: 135.5025, category: "osaka", type: ["other"], address: "難波", hours: "17:00-24:00" },
-            { id: 41, name: "MooM Cafe(舒芙蕾煎餅)", displayName: "MooM Cafe", lat: 34.8517, lng: 135.6178, category: "osaka", type: ["cafe", "other"], address: "高槻", hours: "11:00-18:00 (週一公休)" },
-            { id: 42, name: "黒毛和牛タンとハラミ 焼肉龍 難波千日前店(黑毛和牛燒肉+螃蟹海鮮+吃到飽)", displayName: "焼肉龍", lat: 34.6655, lng: 135.5038, category: "osaka", type: ["yakiniku"], address: "千日前", hours: "16:00-24:00" },
-            { id: 43, name: "めん処 つるはん KITTE大阪店(西梅田站+黑毛和牛+壽喜燒烏龍麵)", displayName: "めん処 つるはん", lat: 34.7015, lng: 135.4945, category: "osaka", type: ["sukiyaki", "other"], address: "KITTE大阪", hours: "11:00-23:00" },
-            { id: 44, name: "パンとエスプレッソと堺筋俱楽部(Brunch+百年銀行+麵包咖啡廳+一個月前預約)", displayName: "堺筋俱楽部", lat: 34.6750, lng: 135.5065, category: "osaka", type: ["cafe", "other"], address: "堺筋", hours: "08:00-20:00" },
-            { id: 45, name: "らーめん志高(豚骨+炒飯+座位少)", displayName: "らーめん志高", lat: 34.6019, lng: 135.4920, category: "osaka", type: ["ramen"], address: "住吉", hours: "11:00-15:00, 18:00-20:30 (週三/四公休)" },
-            { id: 46, name: "The 33 Tea＆Bar Terrace(梅田+絕景+歐姆飯+午間套餐)", displayName: "The 33", lat: 34.6995, lng: 135.4930, category: "osaka", type: ["cafe", "other"], address: "西梅田", hours: "11:00-23:00" },
-            { id: 47, name: "Gion Duck Rice(待發現)", displayName: "Gion Duck Rice", lat: 35.0037, lng: 135.7778, category: "kyoto", type: ["ricebowl"], address: "祇園", hours: "11:00-15:00, 17:30-21:30" },
-            { id: 48, name: "カレーショップ ダール(歐風咖哩+小菜)", displayName: "カレーショップ ダール", lat: 34.6850, lng: 135.5165, category: "osaka", type: ["curry"], address: "谷町四丁目", hours: "11:00-20:00 (週日公休)" },
-            { id: 49, name: "炭ト羽釜 どげん(親子丼+燒肉)", displayName: "炭ト羽釜 どげん", lat: 34.6455, lng: 135.5150, category: "osaka", type: ["ricebowl", "yakiniku"], address: "天王寺/阿倍野", hours: "17:00-24:00 (週末午餐 11:30-14:00)" },
-            { id: 50, name: "鰻屋 瀬がわ(烏丸+町家+鰻魚飯)", displayName: "鰻屋 瀬がわ", lat: 35.0045, lng: 135.7595, category: "kyoto", type: ["eel"], address: "烏丸", hours: "11:00-14:00, 17:00-21:30" },
-            { id: 51, name: "大阪焼肉 焼肉Lab 難波店(吃到飽)", displayName: "焼肉Lab 難波店", lat: 34.6658, lng: 135.5015, category: "osaka", type: ["yakiniku"], address: "難波", hours: "17:00-23:00 (週末 12:00-23:00)" }
+            { id: 1, name: "花丸軒 法善寺店(道頓堀+24小時+濃郁豚骨醬油+魯豬五花叉燒+蒜片+炒飯+煎餃)", displayName: "花丸軒 法善寺店", lat: 34.6675, lng: 135.5028, category: "osaka", type: ["ramen"], address: "道頓堀/法善寺", hours: "24小時營業", rating: 4.2, reviewCount: 2922 },
+            { id: 2, name: "しゃぶしゃぶ・すき焼き専門店 しゃぶ長(心齋橋+中午套餐+和牛壽喜燒)", displayName: "しゃぶ長", lat: 34.6728, lng: 135.5013, category: "osaka", type: ["sukiyaki"], address: "心齋橋", hours: "11:30-13:30, 17:30-23:00 (週日公休)", rating: 4.3, reviewCount: 152 },
+            { id: 3, name: "お食事処 美登里(大阪豬排丼+量大)", displayName: "お食事処 美登里", lat: 34.6695, lng: 135.5496, category: "osaka", type: ["ricebowl"], address: "大阪東成區", hours: "11:00-19:00 (週二公休)", rating: 4.5, reviewCount: 192 },
+            { id: 4, name: "Melt Chocolate(心齋橋+現切熱巧克力)", displayName: "Melt Chocolate", lat: 34.6775, lng: 135.4993, category: "osaka", type: ["cafe", "other"], address: "心齋橋/南船場", hours: "11:00-20:00", rating: 4.6, reviewCount: 85 },
+            { id: 5, name: "大阪燒 千房(道頓堀)", displayName: "千房 道頓堀", lat: 34.6685, lng: 135.5035, category: "osaka", type: ["other"], address: "道頓堀", hours: "11:00-23:00", rating: 4.0, reviewCount: 2100 },
+            { id: 6, name: "肉の隠れ家 おあがり 嵐山本店(和牛火山+桂川風景)", displayName: "肉の隠れ家 おあがり", lat: 35.0116, lng: 135.6766, category: "kyoto", type: ["ricebowl", "other"], address: "嵐山", hours: "11:00-15:00", rating: 4.4, reviewCount: 620 },
+            { id: 7, name: "すきやき・しゃぶしゃぶ大牧場 千日前店(難波站+神戶和牛壽喜燒吃到飽)", displayName: "大牧場 千日前店", lat: 34.6667, lng: 135.5042, category: "osaka", type: ["sukiyaki"], address: "千日前/難波", hours: "11:00-15:00, 17:00-23:00", rating: 4.1, reviewCount: 880 },
+            { id: 8, name: "焼肉こじま離れ 大阪江坂(漢堡排)", displayName: "焼肉こじま離れ", lat: 34.7595, lng: 135.4965, category: "osaka", type: ["yakiniku", "hamburger"], address: "江坂", hours: "11:30-14:30, 17:00-23:00", rating: 4.3, reviewCount: 340 },
+            { id: 9, name: "厚切り仙台牛タンと黒毛和牛食べ放題 焼肉倶楽部 梅田店", displayName: "焼肉倶楽部 梅田店", lat: 34.7035, lng: 135.5000, category: "osaka", type: ["yakiniku"], address: "梅田", hours: "16:00-23:00", rating: 3.9, reviewCount: 120 },
+            { id: 10, name: "しゃぶ禅 梅田店(黑毛和牛壽喜燒吃到飽)", displayName: "しゃぶ禅 梅田店", lat: 34.7005, lng: 135.4965, category: "osaka", type: ["sukiyaki"], address: "梅田", hours: "11:30-14:30, 17:00-22:30", rating: 4.1, reviewCount: 550 },
+            { id: 11, name: "焼肉ジャパン LINKS UMEDA店(梅田+神戶牛)", displayName: "焼肉ジャパン", lat: 34.7050, lng: 135.4970, category: "osaka", type: ["yakiniku"], address: "LINKS UMEDA", hours: "11:00-23:00", rating: 4.2, reviewCount: 230 },
+            { id: 12, name: "すき焼 しゃぶしゃぶつかだ KITTE大阪(梅田kitte百貨+關西和牛壽喜燒)", displayName: "すき焼 しゃぶしゃぶつかだ", lat: 34.7015, lng: 135.4945, category: "osaka", type: ["sukiyaki"], address: "KITTE大阪", hours: "11:00-15:00, 17:00-23:00", rating: 4.5, reviewCount: 238 },
+            { id: 13, name: "和牛一頭買い 焼肉ホルモン黒野 ウラなんば本店(難波+黑毛和牛)", displayName: "焼肉ホルモン黒野", lat: 34.6645, lng: 135.5030, category: "osaka", type: ["yakiniku"], address: "裏難波", hours: "17:00-24:00", rating: 4.3, reviewCount: 180 },
+            { id: 14, name: "手づくりハンバーグの店 とくら 京都三条店(Juicy Hamburger Steak+ルクア大阪也有)", displayName: "とくら 京都三条店", lat: 35.0089, lng: 135.7681, category: "kyoto", type: ["hamburger"], address: "京都三条", hours: "11:00-15:00, 17:00-22:00 (週三公休)", rating: 4.2, reviewCount: 1500 },
+            { id: 15, name: "板前焼肉 一光 住之江本店(黑毛和牛)", displayName: "板前焼肉 一光", lat: 34.6094, lng: 135.4735, category: "osaka", type: ["yakiniku"], address: "住之江", hours: "17:00-23:00 (週二公休)", rating: 4.4, reviewCount: 90 },
+            { id: 16, name: "TAKUMEAT STORE(新大阪站+燒肉)", displayName: "TAKUMEAT STORE", lat: 34.7335, lng: 135.5003, category: "osaka", type: ["yakiniku"], address: "新大阪", hours: "11:00-22:00", rating: 4.6, reviewCount: 50 },
+            { id: 17, name: "地焼うなぎ 法善寺山かづ(難波站+關西地燒鰻魚飯)", displayName: "法善寺山かづ", lat: 34.6672, lng: 135.5020, category: "osaka", type: ["eel", "ricebowl"], address: "法善寺", hours: "11:00-15:00, 17:00-21:00", rating: 4.6, reviewCount: 239 },
+            { id: 18, name: "黄金出汁しゃぶと江戸前寿司 肉のあさつ 梅田お初天神店(梅田+黑毛和牛壽喜燒定食+免費白飯?+特定時間)", displayName: "肉のあさつ", lat: 34.7000, lng: 135.5015, category: "osaka", type: ["sukiyaki", "sushi"], address: "梅田お初天神", hours: "12:00-23:00", rating: 4.0, reviewCount: 310 },
+            { id: 19, name: "スキヤキフジオ なんばCITY店(難波+個人壽喜燒)", displayName: "スキヤキフジオ", lat: 34.6642, lng: 135.5025, category: "osaka", type: ["sukiyaki"], address: "難波CITY", hours: "11:00-22:00", rating: 3.8, reviewCount: 150 },
+            { id: 20, name: "焼肉ごりちゃんお初天神店(東梅田+黑毛和牛)", displayName: "焼肉ごりちゃん", lat: 34.7010, lng: 135.5010, category: "osaka", type: ["yakiniku"], address: "東梅田", hours: "17:00-07:00 (隔日)", rating: 4.7, reviewCount: 850 },
+            { id: 21, name: "CAFE ANNON なんば本店(難波+鬆餅?)", displayName: "CAFE ANNON", lat: 34.6660, lng: 135.5035, category: "osaka", type: ["cafe", "other"], address: "難波", hours: "11:00-23:00", rating: 4.2, reviewCount: 450 },
+            { id: 22, name: "和牛専門 牛めし 前田優(難波+A5和牛+牛丼)", displayName: "和牛専門 牛めし 前田優", lat: 34.6670, lng: 135.5060, category: "osaka", type: ["ricebowl"], address: "千日前/日本橋", hours: "11:30-16:00, 17:00-22:30", rating: 4.3, reviewCount: 120 },
+            { id: 23, name: "釜飯と海鮮 暁(心齋橋+創作海鮮+海鮮釜飯)", displayName: "釜飯と海鮮 暁", lat: 34.6735, lng: 135.5020, category: "osaka", type: ["ricebowl", "other"], address: "心齋橋", hours: "11:30-15:00, 17:00-23:00", rating: 4.1, reviewCount: 200 },
+            { id: 24, name: "かつ丼 千代松豪仁(四ツ橋駅)", displayName: "かつ丼 千代松豪仁", lat: 34.6729, lng: 135.4966, category: "osaka", type: ["ricebowl"], address: "四ツ橋", hours: "11:00-15:00, 17:30-21:30", rating: 3.8, reviewCount: 4454 },
+            { id: 25, name: "厚切り仙台牛タンと黒毛和牛食べ放題 焼肉倶楽部 天王寺店", displayName: "焼肉倶楽部 天王寺店", lat: 34.6478, lng: 135.5148, category: "osaka", type: ["yakiniku"], address: "天王寺", hours: "16:00-23:00", rating: 4.0, reviewCount: 80 },
+            { id: 26, name: "＃KOKUBAN (コクバン)(歐姆飯+漢堡排)", displayName: "KOKUBAN", lat: 34.6650, lng: 135.5000, category: "osaka", type: ["hamburger", "other"], address: "難波/心齋橋", hours: "11:30-15:00, 17:30-22:00", rating: 3.9, reviewCount: 60 },
+            { id: 27, name: "焼き鳥 おでん 坊っちゃん茶屋町店(梅田+平價串燒+昭和風?)", displayName: "坊っちゃん茶屋町店", lat: 34.7070, lng: 135.4990, category: "osaka", type: ["other"], address: "梅田茶屋町", hours: "17:00-23:00", rating: 3.7, reviewCount: 150 },
+            { id: 28, name: "焼肉 㐂舌 法善寺(午間定食+牛蓋飯+茶泡飯+包間)", displayName: "焼肉 㐂舌", lat: 34.6675, lng: 135.5030, category: "osaka", type: ["yakiniku", "ricebowl"], address: "法善寺", hours: "11:00-15:00, 17:00-23:00", rating: 4.3, reviewCount: 110 },
+            { id: 29, name: "帰ってきた 宮田麺児(沾麵)", displayName: "帰ってきた 宮田麺児", lat: 34.6720, lng: 135.5035, category: "osaka", type: ["ramen"], address: "心齋橋", hours: "11:00-16:00, 17:30-22:00", rating: 3.9, reviewCount: 800 },
+            { id: 30, name: "まるよし(木津壽司)", displayName: "まるよし", lat: 34.6569, lng: 135.4984, category: "osaka", type: ["sushi"], address: "木津市場", hours: "05:00-13:00 (週三/週日公休)", rating: 4.4, reviewCount: 391 },
+            { id: 31, name: "焼肉うしごろ 梅田店(和牛燒肉+全程代烤)", displayName: "焼肉うしごろ", lat: 34.7040, lng: 135.4960, category: "osaka", type: ["yakiniku"], address: "梅田", hours: "11:30-15:00, 17:00-23:30", rating: 4.5, reviewCount: 80 },
+            { id: 32, name: "大和茶大福專門店 GRAN CHA(奈良+大福)", displayName: "GRAN CHA", lat: 34.6815, lng: 135.8290, category: "osaka", type: ["cafe", "other"], address: "奈良", hours: "10:00-19:00", rating: 4.2, reviewCount: 150 },
+            { id: 33, name: "中谷堂(奈良+艾草麻糬)", displayName: "中谷堂", lat: 34.6820, lng: 135.8298, category: "osaka", type: ["other"], address: "奈良", hours: "10:00-19:00", rating: 4.4, reviewCount: 3000 },
+            { id: 34, name: "三大和牛食べ比べ 焼肉 つなぐ(難波+個室燒肉+神戶牛)", displayName: "焼肉 つなぐ", lat: 34.6660, lng: 135.5020, category: "osaka", type: ["yakiniku"], address: "難波", hours: "17:00-23:00", rating: 4.6, reviewCount: 150 },
+            { id: 35, name: "すき焼き しゃぶしゃぶ 肉寿司 食べ放題 和牛ざんまい 心斎橋店(宮崎牛壽喜燒+串燒+吃到飽+四種套餐)", displayName: "和牛ざんまい", lat: 34.6715, lng: 135.5015, category: "osaka", type: ["sukiyaki", "sushi"], address: "心齋橋", hours: "16:00-23:00", rating: 4.0, reviewCount: 110 },
+            { id: 36, name: "すき焼き・しゃぶしゃぶ きよ助(個人鍋)", displayName: "きよ助", lat: 34.6690, lng: 135.5010, category: "osaka", type: ["sukiyaki"], address: "難波", hours: "17:00-23:00", rating: 4.1, reviewCount: 80 },
+            { id: 37, name: "大阪福島 WAgyu鬼く 焼肉(新福島站+黑毛和牛+冷麵)", displayName: "WAgyu鬼く", lat: 34.6967, lng: 135.4800, category: "osaka", type: ["yakiniku"], address: "福島", hours: "17:00-24:00", rating: 4.4, reviewCount: 90 },
+            { id: 38, name: "人類みな麵類(應該是這家?+西中島+18~22+炒飯+醬油拉麵+鮭魚卵)", displayName: "人類みな麵類", lat: 34.7262, lng: 135.5005, category: "osaka", type: ["ramen"], address: "西中島南方", hours: "10:00-03:00 (隔日)", rating: 4.3, reviewCount: 3500 },
+            { id: 39, name: "牛舌的柠檬(超厚碳烤牛舌+牛舌後段[軟嫩]+味噌醬+檸檬飲+咖哩牛舌+免費續飯)", displayName: "牛たんの檸檬 大阪", lat: 34.6665, lng: 135.5040, category: "osaka", type: ["yakiniku"], address: "難波/日本橋", hours: "11:30-15:00, 17:00-22:00", rating: 4.8, reviewCount: 975 },
+            { id: 40, name: "やさい串巻き なるとや(應該是這家?+野菜捲+居酒屋)", displayName: "なるとや", lat: 34.6680, lng: 135.5025, category: "osaka", type: ["other"], address: "難波", hours: "17:00-24:00", rating: 4.0, reviewCount: 220 },
+            { id: 41, name: "MooM Cafe(舒芙蕾煎餅)", displayName: "MooM Cafe", lat: 34.8517, lng: 135.6178, category: "osaka", type: ["cafe", "other"], address: "高槻", hours: "11:00-18:00 (週一公休)", rating: 4.3, reviewCount: 240 },
+            { id: 42, name: "黒毛和牛タンとハラミ 焼肉龍 難波千日前店(黑毛和牛燒肉+螃蟹海鮮+吃到飽)", displayName: "焼肉龍", lat: 34.6655, lng: 135.5038, category: "osaka", type: ["yakiniku"], address: "千日前", hours: "16:00-24:00", rating: 4.2, reviewCount: 150 },
+            { id: 43, name: "めん処 つるはん KITTE大阪店(西梅田站+黑毛和牛+壽喜燒烏龍麵)", displayName: "めん処 つるはん", lat: 34.7015, lng: 135.4945, category: "osaka", type: ["sukiyaki", "other"], address: "KITTE大阪", hours: "11:00-23:00", rating: 5.0, reviewCount: 20 },
+            { id: 44, name: "パンとエスプレッソと堺筋俱楽部(Brunch+百年銀行+麵包咖啡廳+一個月前預約)", displayName: "堺筋俱楽部", lat: 34.6750, lng: 135.5065, category: "osaka", type: ["cafe", "other"], address: "堺筋", hours: "08:00-20:00", rating: 4.1, reviewCount: 850 },
+            { id: 45, name: "らーめん志高(豚骨+炒飯+座位少)", displayName: "らーめん志高", lat: 34.6019, lng: 135.4920, category: "osaka", type: ["ramen"], address: "住吉", hours: "11:00-15:00, 18:00-20:30 (週三/四公休)", rating: 4.4, reviewCount: 50 },
+            { id: 46, name: "The 33 Tea＆Bar Terrace(梅田+絕景+歐姆飯+午間套餐)", displayName: "The 33", lat: 34.6995, lng: 135.4930, category: "osaka", type: ["cafe", "other"], address: "西梅田", hours: "11:00-23:00", rating: 4.1, reviewCount: 189 },
+            { id: 47, name: "鶏Soba 座銀 本店(地點為大版本店+連結為東京本店)", displayName: "鶏Soba 座銀 本店", lat: 34.6885, lng: 135.4940, category: "osaka", type: ["ramen"], address: "肥後橋", hours: "11:00-22:30", rating: 4.4, reviewCount: 3000 },
+            { id: 48, name: "Gion Duck Rice(待發現)", displayName: "Gion Duck Rice", lat: 35.0037, lng: 135.7778, category: "kyoto", type: ["ricebowl"], address: "祇園", hours: "11:00-15:00, 17:30-21:30", rating: 4.4, reviewCount: 596 },
+            { id: 49, name: "カレーショップ ダール(歐風咖哩+小菜)", displayName: "カレーショップ ダール", lat: 34.6850, lng: 135.5165, category: "osaka", type: ["curry"], address: "谷町四丁目", hours: "11:00-20:00 (週日公休)", rating: 4.2, reviewCount: 120 },
+            { id: 50, name: "炭ト羽釜 どげん(親子丼+燒肉)", displayName: "炭ト羽釜 どげん", lat: 34.6455, lng: 135.5150, category: "osaka", type: ["ricebowl", "yakiniku"], address: "天王寺/阿倍野", hours: "17:00-24:00 (週末午餐 11:30-14:00)", rating: 4.5, reviewCount: 40 },
+            { id: 51, name: "鰻屋 瀬がわ(烏丸+町家+鰻魚飯)", displayName: "鰻屋 瀬がわ", lat: 35.0045, lng: 135.7595, category: "kyoto", type: ["eel"], address: "烏丸", hours: "11:00-14:00, 17:00-21:30", rating: 4.3, reviewCount: 110 },
+            { id: 52, name: "大阪焼肉 焼肉Lab 難波店(吃到飽)", displayName: "焼肉Lab 難波店", lat: 34.6658, lng: 135.5015, category: "osaka", type: ["yakiniku"], address: "難波", hours: "17:00-23:00 (週末 12:00-23:00)", rating: 4.7, reviewCount: 200 },
+            { id: 55, name: "お晩酌 芽(梅田+和牛+居酒屋)", displayName: "お晩酌 芽", lat: 34.7005, lng: 135.5030, category: "osaka", type: ["izakaya"], address: "梅田", hours: "17:00-05:00", rating: 4.5, reviewCount: 15 },
+            { id: 56, name: "屋台餃子(居酒屋+不用大蒜)", displayName: "屋台餃子 あらき", lat: 34.7024, lng: 135.4959, category: "osaka", type: ["izakaya", "other"], address: "梅田Whity", hours: "11:00-23:00", rating: 4.0, reviewCount: 220 },
+            { id: 57, name: "〒530-0018 Osaka, Kita Ward, Komatsubarachō, 1 モコビル(牡蠣だ)", displayName: "かき鐵", lat: 34.7020, lng: 135.5010, category: "osaka", type: ["izakaya", "other"], address: "梅田", hours: "17:00-23:00", rating: 4.2, reviewCount: 80 },
+            { id: 58, name: "モリタ屋 四条猪熊本店(大阪也有+150年關西和牛壽喜燒+全程專人服務+5種價位套餐)", displayName: "モリタ屋 四条猪熊本店", lat: 35.0039, lng: 135.7485, category: "kyoto", type: ["sukiyaki"], address: "四条大宮", hours: "11:30-14:30, 17:00-22:00", rating: 4.4, reviewCount: 950 },
+            { id: 59, name: "焼肉藤もと 心斎橋店(福島名店燒肉+蛋)", displayName: "焼肉藤もと 心斎橋店", lat: 34.6705, lng: 135.5050, category: "osaka", type: ["yakiniku"], address: "心齋橋", hours: "17:00-23:00", rating: 4.8, reviewCount: 60 },
+            { id: 60, name: "丸正餃子店 阪奈店(本店在附近+中華料理)", displayName: "丸正餃子店 阪奈店", lat: 34.7030, lng: 135.6170, category: "osaka", type: ["other"], address: "大東市", hours: "16:00-22:00", rating: 4.1, reviewCount: 450 },
+            { id: 61, name: "力丸 炉ばた焼 馬籠(爐端燒)", displayName: "力丸 炉ばた焼 馬籠", lat: 34.7065, lng: 135.4985, category: "osaka", type: ["izakaya"], address: "梅田", hours: "16:00-23:00", rating: 4.0, reviewCount: 320 },
+            { id: 62, name: "まきの 天神橋四丁目店(天婦羅+丼)", displayName: "まきの 天神橋四丁目店", lat: 34.7055, lng: 135.5115, category: "osaka", type: ["ricebowl", "other"], address: "天滿", hours: "11:00-22:00", rating: 4.3, reviewCount: 1100 },
+            { id: 63, name: "雌牛専門店 板前焼肉一牛 心斎橋店(各地和牛)", displayName: "板前焼肉一牛 心斎橋店", lat: 34.6730, lng: 135.5010, category: "osaka", type: ["yakiniku"], address: "心齋橋", hours: "17:00-23:00", rating: 4.6, reviewCount: 220 },
+            { id: 64, name: "インセプション 大阪(冰磚咖啡+京都也有)", displayName: "Inception Osaka", lat: 34.7035, lng: 135.5030, category: "osaka", type: ["cafe"], address: "梅田", hours: "14:00-23:00", rating: 4.5, reviewCount: 150 },
+            { id: 65, name: "Kusaka Curry(七個位置)", displayName: "Kusaka Curry", lat: 34.6780, lng: 135.5005, category: "osaka", type: ["curry"], address: "南船場", hours: "11:30-15:00", rating: 4.4, reviewCount: 280 },
+            { id: 66, name: "寿しのむさし 京都駅八条口店(壽司)", displayName: "寿しのむさし 京都駅八条口店", lat: 34.9845, lng: 135.7590, category: "kyoto", type: ["sushi"], address: "京都車站", hours: "10:30-21:45", rating: 4.1, reviewCount: 1800 },
+            { id: 67, name: "Japanese Noodle 一寸法師(拉麵)", displayName: "Japanese Noodle 一寸法師", lat: 34.9965, lng: 135.7790, category: "kyoto", type: ["ramen"], address: "清水五条", hours: "11:00-16:00", rating: 4.3, reviewCount: 450 },
+            { id: 68, name: "鳥岩楼(親子丼)", displayName: "西陣 鳥岩楼", lat: 35.0295, lng: 135.7485, category: "kyoto", type: ["ricebowl"], address: "西陣", hours: "12:00-14:00, 17:00-20:00", rating: 4.2, reviewCount: 1200 },
+            { id: 69, name: "仙豆（センズ）(日本橋+炸豬排?)", displayName: "仙豆", lat: 34.6675, lng: 135.5075, category: "osaka", type: ["ricebowl"], address: "日本橋", hours: "11:00-15:00, 17:00-23:00", rating: 4.6, reviewCount: 85 },
+            { id: 70, name: "茶寮 寶泉(和菓子餐廳+喫茶)", displayName: "茶寮 寶泉", lat: 35.0450, lng: 135.7725, category: "kyoto", type: ["kissaten", "cafe"], address: "下鴨", hours: "10:00-17:00", rating: 4.5, reviewCount: 800 },
+            { id: 71, name: "鮎茶屋平野屋(喫茶)", displayName: "平野屋", lat: 35.0270, lng: 135.6605, category: "kyoto", type: ["kissaten", "other"], address: "愛宕山", hours: "11:30-21:00", rating: 4.5, reviewCount: 300 },
+            { id: 72, name: "Bread, Espresso & 嵐山庭園(咖啡廳+喫茶)", displayName: "Bread, Espresso & 嵐山庭園", lat: 35.0135, lng: 135.6740, category: "kyoto", type: ["cafe", "kissaten"], address: "嵐山", hours: "08:00-18:00", rating: 4.2, reviewCount: 1500 },
+            { id: 73, name: "甘味どころ ぎをん 小森(和菓子餐廳+喫茶)", displayName: "ぎをん 小森", lat: 35.0060, lng: 135.7735, category: "kyoto", type: ["kissaten", "cafe"], address: "祇園", hours: "11:00-20:00 (週三公休)", rating: 4.3, reviewCount: 1200 },
+            { id: 74, name: "麓寿庵(咖啡廳+喫茶)", displayName: "麓寿庵", lat: 35.0070, lng: 135.7605, category: "kyoto", type: ["cafe", "kissaten"], address: "六角", hours: "11:00-18:00", rating: 4.6, reviewCount: 350 },
+            { id: 75, name: "歐風料理 重亭(漢堡排)", displayName: "重亭", lat: 34.6655, lng: 135.5015, category: "osaka", type: ["hamburger"], address: "難波", hours: "11:30-15:00, 17:00-20:00", rating: 4.1, reviewCount: 1500 },
+            { id: 76, name: "柳小路(難波+京都有更多家+居酒屋+漢堡排)", displayName: "柳小路", lat: 34.6650, lng: 135.5010, category: "osaka", type: ["izakaya", "hamburger"], address: "難波", hours: "17:00-23:00", rating: 4.2, reviewCount: 400 },
+            { id: 77, name: "蕎麥麵 嵐山よしむら(180度觀景+紅葉季+可能要排隊)", displayName: "嵐山よしむら", lat: 35.0145, lng: 135.6775, category: "kyoto", type: ["other"], address: "嵐山", hours: "11:00-17:00", rating: 4.3, reviewCount: 1800 },
+            { id: 78, name: "肉の天満屋 神楽亭(黑毛和牛套餐)", displayName: "肉の天満屋 神楽亭", lat: 34.7065, lng: 135.5125, category: "osaka", type: ["yakiniku"], address: "天滿", hours: "17:00-23:00", rating: 4.6, reviewCount: 120 },
+            { id: 79, name: "めん次郎(梅田+烏龍麵+套餐免費白飯+位置少)", displayName: "めん次郎", lat: 34.7015, lng: 135.4965, category: "osaka", type: ["other"], address: "梅田", hours: "11:00-21:00", rating: 4.0, reviewCount: 350 },
+            { id: 80, name: "炭火焼き鳥 鴨尽 お初天神店(燒肉+近江鴨+大和肉雞+2025鳥料理百名店)", displayName: "炭火焼き鳥 鴨尽", lat: 34.7005, lng: 135.5015, category: "osaka", type: ["izakaya"], address: "梅田", hours: "17:00-23:00", rating: 4.5, reviewCount: 80 },
+            { id: 81, name: "酒場 ラジカル(居酒屋+芳醇豚+焦燒雞蛋+ig介紹大推)", displayName: "酒場 ラジカル", lat: 34.7055, lng: 135.5105, category: "osaka", type: ["izakaya"], address: "天滿", hours: "15:00-23:00", rating: 4.4, reviewCount: 150 },
+            { id: 82, name: "中國菜 心香(西天滿+米其林+鐵鍋麻婆豆腐+午間套餐)", displayName: "中國菜 心香", lat: 34.6975, lng: 135.5065, category: "osaka", type: ["other", "lunch"], address: "西天滿", hours: "11:30-14:00, 18:00-22:00", rating: 4.3, reviewCount: 220 },
+            { id: 83, name: "羽柴家 beef(都島+燒肉+可能比大阪市中心便宜)", displayName: "羽柴家 beef", lat: 34.7215, lng: 135.5255, category: "osaka", type: ["yakiniku"], address: "都島", hours: "17:00-23:00", rating: 4.5, reviewCount: 60 }
         ];
 
         // --- Helper: Shop Status (Open, Closing Soon, Closed, Unknown) ---
@@ -326,33 +361,35 @@
 
             useEffect(() => {
                 if (isAnimating && origin) {
-                    // 1. Initial State
+                    // 1. Initial State (small circle at button center)
                     setStyle({
                         top: origin.y,
                         left: origin.x,
                         width: '0px',
                         height: '0px',
                         borderRadius: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        backgroundColor: 'transparent',
-                        boxShadow: `0 0 0 20px ${color}`,
+                        transform: 'translate(-50%, -50%)', 
+                        backgroundColor: 'transparent', 
+                        boxShadow: `0 0 0 20px ${color}`, 
                         zIndex: 9999,
                         pointerEvents: 'none',
-                        transition: 'none'
+                        transition: 'none' 
                     });
 
-                    // 2. Expand Animation
+                    // 2. Expand Animation (Fill Screen)
                     requestAnimationFrame(() => {
                         requestAnimationFrame(() => {
                             setStyle(prev => ({
                                 ...prev,
+                                // Animate box-shadow to cover the screen
+                                // 300vmax is large enough to cover typical screens from any point
                                 boxShadow: `0 0 0 300vmax ${color}`, 
                                 transition: 'box-shadow 0.5s ease-in' 
                             }));
                         });
                     });
 
-                    // 3. Trigger View Switch
+                    // 3. Trigger View Switch (When fully covered)
                     const coverTimer = setTimeout(() => {
                         onCovered(); 
 
@@ -499,7 +536,7 @@
                             </div>
                             <p class="text-xs mb-1">${statusHtml}</p>
                             ${shop.hours ? `<p class="text-xs text-gray-500 mb-2">🕘 ${shop.hours}</p>` : ''}
-                            <p class="text-xs text-gray-600 mb-2">${shop.address || '無地址資訊'}</p>
+                            <p class="text-xs text-gray-600 mb-2">⭐ ${shop.rating ? shop.rating.toFixed(1) : 'N/A'} (${shop.reviewCount || 0}則評論)</p>
                             <a href="https://maps.google.com/?q=${shop.lat},${shop.lng}" 
                                target="_blank" 
                                style="color: #2563eb; text-decoration: none; font-size: 12px; display: flex; align-items: center; gap: 4px;">
@@ -556,6 +593,8 @@
             const [mapFilterType, setMapFilterType] = useState('all'); 
             const [mapFilterDistance, setMapFilterDistance] = useState('all');
             const [mapFilterSpecial, setMapFilterSpecial] = useState([]);
+            // 修改：評分篩選狀態改為字串 'all' | 'over4' | 'top'
+            const [mapFilterRating, setMapFilterRating] = useState('all');
             const [isDetailMenuOpen, setIsDetailMenuOpen] = useState(true);
             const [loading, setLoading] = useState(false);
             const [error, setError] = useState(null);
@@ -691,6 +730,18 @@
                 const keywords = ['居酒屋', '串燒', '焼き鳥', 'おでん', '串', '酒場', 'Izakaya', 'Yakitori'];
                 return keywords.some(k => text.includes(k));
             };
+            
+            const checkIsLunch = (shop) => {
+                const text = (shop.name || '') + (shop.displayName || '');
+                const keywords = ['午間', 'lunch', 'ランチ', '午餐'];
+                return keywords.some(k => text.toLowerCase().includes(k));
+            }
+            
+            const checkIsKissaten = (shop) => {
+                const text = (shop.name || '') + (shop.displayName || '');
+                const keywords = ['喫茶', 'afternoon tea', '甜點', 'dessert', 'tea'];
+                return keywords.some(k => text.toLowerCase().includes(k));
+            };
 
             const filteredShops = useMemo(() => {
                 return allShopsForMap.filter(shop => {
@@ -739,23 +790,36 @@
                         const isAllYouCanEat = checkIsAllYouCanEat(shop);
                         const isHamburger = checkIsHamburger(shop);
                         const isIzakaya = checkIsIzakaya(shop);
+                        const isLunch = checkIsLunch(shop);
+                        const isKissaten = checkIsKissaten(shop);
                         
                         const selectWagyu = mapFilterSpecial.includes('wagyu');
                         const selectBeefTongue = mapFilterSpecial.includes('beef_tongue');
                         const selectAllYouCanEat = mapFilterSpecial.includes('all_you_can_eat');
                         const selectHamburger = mapFilterSpecial.includes('hamburger');
                         const selectIzakaya = mapFilterSpecial.includes('izakaya');
+                        const selectLunch = mapFilterSpecial.includes('lunch');
+                        const selectKissaten = mapFilterSpecial.includes('kissaten');
 
                         if (selectWagyu && !isWagyu) matchSpecial = false;
                         if (selectBeefTongue && !isBeefTongue) matchSpecial = false;
                         if (selectAllYouCanEat && !isAllYouCanEat) matchSpecial = false;
                         if (selectHamburger && !isHamburger) matchSpecial = false;
                         if (selectIzakaya && !isIzakaya) matchSpecial = false;
+                        if (selectLunch && !isLunch) matchSpecial = false;
+                        if (selectKissaten && !isKissaten) matchSpecial = false;
+                    }
+                    
+                    // Rating Filter (Logic Updated)
+                    if (mapFilterRating === 'over4') {
+                        if ((shop.rating || 0) < 4) return false;
+                    } else if (mapFilterRating === 'top') {
+                        if ((shop.rating || 0) < 4.5) return false;
                     }
 
                     return matchLocation && matchSubLocation && matchType && matchDistance && matchSpecial;
                 });
-            }, [allShopsForMap, mapCategory, mapFilterType, mapFilterDistance, currentCenter, mapFilterSpecial, kyotoSubLocation, osakaSubLocation]);
+            }, [allShopsForMap, mapCategory, mapFilterType, mapFilterDistance, currentCenter, mapFilterSpecial, kyotoSubLocation, osakaSubLocation, mapFilterRating]);
 
             const handleSpecialFilterClick = (id) => {
                 let newSelection;
@@ -1141,20 +1205,51 @@
                                 </div>
 
                                 <div className={`accordion-content bg-white shadow-sm z-10 ${isDetailMenuOpen ? 'open' : ''}`}>
-                                    <div className={`filter-section border-b border-gray-100 px-2 pb-2 pt-2 flex gap-2 justify-center ${isOtherAreaSelected ? 'closed' : 'open'}`}>
-                                        {DISTANCE_TYPES.map(d => (
-                                            <button
-                                                key={d.id}
-                                                onClick={() => setMapFilterDistance(d.id)}
-                                                className={`px-3 py-1 rounded-md text-xs font-bold transition-colors border ${
-                                                    mapFilterDistance === d.id
-                                                        ? 'bg-green-200 text-green-900 border-green-300'
-                                                        : 'bg-white text-gray-500 border-gray-200 hover:bg-gray-50'
-                                                }`}
-                                            >
-                                                {d.label}
-                                            </button>
-                                        ))}
+                                    <div className={`filter-section border-b border-gray-100 flex ${isOtherAreaSelected ? 'closed' : 'open'}`}>
+                                        <div className="w-1/2 border-r border-gray-100 p-2 flex flex-col items-center">
+                                             <div className={`transition-all duration-300 overflow-hidden ${isOtherAreaSelected ? 'max-h-0 opacity-0' : 'max-h-20 opacity-100'}`}>
+                                                 <div className="flex flex-wrap justify-center gap-1">
+                                                    {DISTANCE_TYPES.map(d => (
+                                                        <button
+                                                            key={d.id}
+                                                            onClick={() => setMapFilterDistance(d.id)}
+                                                            className={`px-2 py-1 rounded-md text-[10px] font-bold transition-colors border ${
+                                                                mapFilterDistance === d.id
+                                                                    ? 'bg-green-200 text-green-900 border-green-600' // Dark green border
+                                                                    : 'bg-white text-gray-500 border-gray-200 hover:bg-gray-50'
+                                                            }`}
+                                                        >
+                                                            {d.label}
+                                                        </button>
+                                                    ))}
+                                                 </div>
+                                             </div>
+                                             {isOtherAreaSelected && <span className="text-[10px] text-gray-300">不限距離</span>}
+                                        </div>
+                                        <div className="w-1/2 p-2 flex flex-col items-center justify-center">
+                                             <div className="flex gap-1">
+                                                <button
+                                                    onClick={() => setMapFilterRating(mapFilterRating === 'over4' ? 'all' : 'over4')}
+                                                    className={`px-2 py-1 rounded-md text-[10px] font-bold transition-colors border ${
+                                                        mapFilterRating === 'over4'
+                                                            ? 'bg-yellow-100 text-yellow-700 border-yellow-600' // Dark yellow border
+                                                            : 'bg-white text-gray-500 border-gray-200 hover:bg-gray-50'
+                                                    }`}
+                                                >
+                                                    ≥ 4.0 ★
+                                                </button>
+                                                <button
+                                                    onClick={() => setMapFilterRating(mapFilterRating === 'top' ? 'all' : 'top')}
+                                                    className={`px-2 py-1 rounded-md text-[10px] font-bold transition-colors border ${
+                                                        mapFilterRating === 'top'
+                                                            ? 'bg-yellow-200 text-yellow-800 border-yellow-600' // Dark yellow border
+                                                            : 'bg-white text-gray-500 border-gray-200 hover:bg-gray-50'
+                                                    }`}
+                                                >
+                                                    評分最高
+                                                </button>
+                                             </div>
+                                        </div>
                                     </div>
 
                                     <div className="border-b border-gray-100 px-2 py-2 flex gap-2 overflow-x-auto scrollbar-hide items-center">
