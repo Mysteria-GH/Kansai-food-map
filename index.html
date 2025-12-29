@@ -45,7 +45,7 @@
             border-bottom: none;
         }
         .filter-section.open {
-            max-height: 60px; /* 稍微增加高度以容納按鈕 */
+            max-height: 80px;
             opacity: 1;
         }
 
@@ -103,6 +103,7 @@
         const IconFilter = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>;
         const IconClock = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>;
         const IconCopy = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>;
+        const IconHome = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>;
 
         // --- Constants ---
         const LOCATIONS = {
@@ -143,13 +144,13 @@
         ];
 
         const DISTANCE_TYPES = [
-            { id: 'all', label: 'All' },
+            { id: 'all', label: '無限制' }, 
             { id: 'near', label: '≤ 1 KM' },
             { id: 'far', label: '1 KM ~ 2 KM' }
         ];
 
         const KYOTO_DISTANCE_TYPES = [
-            { id: 'all', label: 'All' },
+            { id: 'all', label: '無限制' }, 
             { id: 'near', label: '≤ 1 KM' },
             { id: 'far', label: '1 KM ~ 2 KM' },
             { id: 'very_far', label: '2 KM ~ 5 KM' }
@@ -826,6 +827,25 @@
             const isSourceActive = mapFilterSource !== 'all';
             const isRatingActive = mapFilterRating !== 'all';
 
+            // --- Helper: Get Button Status Labels ---
+            const getDistanceLabel = () => {
+                if (mapFilterDistance === 'all') return '無限制';
+                const found = currentDistanceTypes.find(d => d.id === mapFilterDistance);
+                return found ? found.label : '無限制';
+            };
+
+            const getSourceLabel = () => {
+                if (mapFilterSource === 'my') return '我的店鋪';
+                if (mapFilterSource === 'system') return '系統推薦';
+                return '無限制';
+            };
+
+            const getRatingLabel = () => {
+                if (mapFilterRating === 'over4') return '≥ 4.0 ★';
+                if (mapFilterRating === 'top') return 'Top';
+                return '無限制';
+            };
+
             return (
                 <div className="flex flex-col h-screen">
                     {/* Render Overlay only when animating, with unique key to force reset */}
@@ -1159,9 +1179,13 @@
 
                                 <div className={`accordion-content bg-white shadow-sm z-10 ${isDetailMenuOpen ? 'open' : ''}`}>
                                     {/* UPDATED FILTER SECTION 
-                                      - Flex layout for same row
-                                      - Horizontal scrolling
-                                      - Dynamic content based on activeFilterMenu
+                                      - Buttons are now colored full-width blocks
+                                      - Sub-options centered
+                                      - Rating button has star icon
+                                      - "All" renamed to "無限制"
+                                      - Return buttons added
+                                      - Current selection style changed
+                                      - Source button has Home icon
                                     */}
                                     <div className={`filter-section border-b border-gray-100 flex items-center gap-2 p-2 overflow-x-auto whitespace-nowrap scrollbar-hide ${isOtherAreaSelected ? 'closed' : 'open'}`}>
                                         
@@ -1170,12 +1194,18 @@
                                              <span className="text-xs text-gray-400 px-2">不限距離</span>
                                         ) : (
                                             activeFilterMenu === 'distance' ? (
-                                                <div className="flex gap-1 animate-fadeIn">
+                                                <div className="flex gap-1 animate-fadeIn flex-1 overflow-x-auto justify-center">
+                                                     <button 
+                                                        onClick={() => setActiveFilterMenu(null)}
+                                                        className="px-2 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 bg-gray-100 text-gray-600 hover:bg-gray-200 border-gray-200"
+                                                     >
+                                                        <IconArrowLeft />
+                                                     </button>
                                                      {currentDistanceTypes.map(d => (
                                                         <button
                                                             key={d.id}
-                                                            onClick={() => { setMapFilterDistance(d.id); setActiveFilterMenu(null); }}
-                                                            className={`px-3 py-1.5 rounded-full text-xs font-bold transition-colors border shrink-0 ${
+                                                            onClick={() => setMapFilterDistance(d.id)}
+                                                            className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
                                                                 mapFilterDistance === d.id
                                                                     ? 'bg-green-100 text-green-800 border-green-500' 
                                                                     : 'bg-white text-gray-500 border-gray-200'
@@ -1188,23 +1218,41 @@
                                             ) : (
                                                 <button 
                                                     onClick={() => setActiveFilterMenu('distance')}
-                                                    className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-colors shrink-0 flex items-center gap-1 ${
-                                                        isDistanceActive ? 'bg-green-50 text-green-700 border-green-200' : 'bg-white text-gray-600 border-gray-200'
-                                                    }`}
+                                                    className="flex-1 py-2 rounded-lg shadow-md transition-all flex flex-col items-center justify-center gap-0.5 bg-green-600 text-white active:scale-95 hover:bg-green-700"
                                                 >
-                                                    <IconMapPin className="w-3 h-3"/>
-                                                    距離
-                                                    {isDistanceActive && <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>}
+                                                    <div className="flex items-center gap-1 font-bold text-sm">
+                                                        <IconMapPin className="w-4 h-4"/>
+                                                        <span>距離</span>
+                                                    </div>
+                                                    <span className="text-[10px] bg-white text-green-600 px-2 py-0.5 rounded-full font-bold shadow-sm mt-0.5">
+                                                        {getDistanceLabel()}
+                                                    </span>
                                                 </button>
                                             )
                                         )}
 
                                         {/* Source Section */}
                                         {activeFilterMenu === 'source' ? (
-                                            <div className="flex gap-1 animate-fadeIn">
+                                            <div className="flex gap-1 animate-fadeIn flex-1 overflow-x-auto justify-center">
+                                                 <button 
+                                                    onClick={() => setActiveFilterMenu(null)}
+                                                    className="px-2 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 bg-gray-100 text-gray-600 hover:bg-gray-200 border-gray-200"
+                                                 >
+                                                    <IconArrowLeft />
+                                                 </button>
                                                  <button
-                                                    onClick={() => { setMapFilterSource(mapFilterSource === 'my' ? 'all' : 'my'); setActiveFilterMenu(null); }}
-                                                    className={`px-3 py-1.5 rounded-full text-xs font-bold transition-colors border shrink-0 ${
+                                                    onClick={() => setMapFilterSource('all')}
+                                                    className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
+                                                        mapFilterSource === 'all'
+                                                            ? 'bg-purple-100 text-purple-800 border-purple-500'
+                                                            : 'bg-white text-gray-500 border-gray-200'
+                                                    }`}
+                                                >
+                                                    無限制
+                                                </button>
+                                                 <button
+                                                    onClick={() => setMapFilterSource('my')}
+                                                    className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
                                                         mapFilterSource === 'my'
                                                             ? 'bg-purple-100 text-purple-800 border-purple-500'
                                                             : 'bg-white text-gray-500 border-gray-200'
@@ -1213,8 +1261,8 @@
                                                     我的店鋪
                                                 </button>
                                                 <button
-                                                    onClick={() => { setMapFilterSource(mapFilterSource === 'system' ? 'all' : 'system'); setActiveFilterMenu(null); }}
-                                                    className={`px-3 py-1.5 rounded-full text-xs font-bold transition-colors border shrink-0 ${
+                                                    onClick={() => setMapFilterSource('system')}
+                                                    className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
                                                         mapFilterSource === 'system'
                                                             ? 'bg-purple-100 text-purple-800 border-purple-500'
                                                             : 'bg-white text-gray-500 border-gray-200'
@@ -1226,21 +1274,40 @@
                                         ) : (
                                             <button 
                                                 onClick={() => setActiveFilterMenu('source')}
-                                                className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-colors shrink-0 flex items-center gap-1 ${
-                                                    isSourceActive ? 'bg-purple-50 text-purple-700 border-purple-200' : 'bg-white text-gray-600 border-gray-200'
-                                                }`}
+                                                className="flex-1 py-2 rounded-lg shadow-md transition-all flex flex-col items-center justify-center gap-0.5 bg-purple-600 text-white active:scale-95 hover:bg-purple-700"
                                             >
-                                                來源
-                                                {isSourceActive && <span className="w-1.5 h-1.5 rounded-full bg-purple-500"></span>}
+                                                <div className="flex items-center gap-1 font-bold text-sm">
+                                                    <IconHome className="w-4 h-4"/>
+                                                    <span>來源</span>
+                                                </div>
+                                                <span className="text-[10px] bg-white text-purple-600 px-2 py-0.5 rounded-full font-bold shadow-sm mt-0.5">
+                                                    {getSourceLabel()}
+                                                </span>
                                             </button>
                                         )}
 
                                         {/* Rating Section */}
                                         {activeFilterMenu === 'rating' ? (
-                                            <div className="flex gap-1 animate-fadeIn">
+                                            <div className="flex gap-1 animate-fadeIn flex-1 overflow-x-auto justify-center">
+                                                 <button 
+                                                    onClick={() => setActiveFilterMenu(null)}
+                                                    className="px-2 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 bg-gray-100 text-gray-600 hover:bg-gray-200 border-gray-200"
+                                                 >
+                                                    <IconArrowLeft />
+                                                 </button>
                                                  <button
-                                                    onClick={() => { setMapFilterRating(mapFilterRating === 'over4' ? 'all' : 'over4'); setActiveFilterMenu(null); }}
-                                                    className={`px-3 py-1.5 rounded-full text-xs font-bold transition-colors border shrink-0 ${
+                                                    onClick={() => setMapFilterRating('all')}
+                                                    className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
+                                                        mapFilterRating === 'all'
+                                                            ? 'bg-yellow-100 text-yellow-800 border-yellow-500'
+                                                            : 'bg-white text-gray-500 border-gray-200'
+                                                    }`}
+                                                >
+                                                    無限制
+                                                </button>
+                                                 <button
+                                                    onClick={() => setMapFilterRating('over4')}
+                                                    className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
                                                         mapFilterRating === 'over4'
                                                             ? 'bg-yellow-100 text-yellow-800 border-yellow-500'
                                                             : 'bg-white text-gray-500 border-gray-200'
@@ -1249,8 +1316,8 @@
                                                     ≥ 4.0 ★
                                                 </button>
                                                 <button
-                                                    onClick={() => { setMapFilterRating(mapFilterRating === 'top' ? 'all' : 'top'); setActiveFilterMenu(null); }}
-                                                    className={`px-3 py-1.5 rounded-full text-xs font-bold transition-colors border shrink-0 ${
+                                                    onClick={() => setMapFilterRating('top')}
+                                                    className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
                                                         mapFilterRating === 'top'
                                                             ? 'bg-yellow-100 text-yellow-800 border-yellow-500'
                                                             : 'bg-white text-gray-500 border-gray-200'
@@ -1262,12 +1329,15 @@
                                         ) : (
                                             <button 
                                                 onClick={() => setActiveFilterMenu('rating')}
-                                                className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-colors shrink-0 flex items-center gap-1 ${
-                                                    isRatingActive ? 'bg-yellow-50 text-yellow-700 border-yellow-200' : 'bg-white text-gray-600 border-gray-200'
-                                                }`}
+                                                className="flex-1 py-2 rounded-lg shadow-md transition-all flex flex-col items-center justify-center gap-0.5 bg-yellow-500 text-white active:scale-95 hover:bg-yellow-600"
                                             >
-                                                評分
-                                                {isRatingActive && <span className="w-1.5 h-1.5 rounded-full bg-yellow-500"></span>}
+                                                <div className="flex items-center gap-1 font-bold text-sm">
+                                                    <IconStar className="w-4 h-4"/>
+                                                    <span>評分</span>
+                                                </div>
+                                                <span className="text-[10px] bg-white text-yellow-600 px-2 py-0.5 rounded-full font-bold shadow-sm mt-0.5">
+                                                    {getRatingLabel()}
+                                                </span>
                                             </button>
                                         )}
 
