@@ -132,7 +132,6 @@
             { id: 'sushi', label: '壽司' },
             { id: 'ricebowl', label: '丼飯' },
             { id: 'curry', label: '咖哩' }, 
-            { id: 'hamburger', label: '漢堡排' },
             { id: 'eel', label: '鰻魚' },
             { id: 'cafe', label: '咖啡廳' },
             { id: 'other', label: '其它' }
@@ -448,6 +447,12 @@
                         statusHtml = '<span style="color: #dc2626; font-weight: bold;">● 休息中/已打烊</span>';
                     }
 
+                    // Source Label Logic
+                    const isMyShop = shop.id > 10000;
+                    const sourceLabel = isMyShop ? "我的店鋪" : "系統推薦";
+                    const sourceBg = isMyShop ? "#f3e8ff" : "#fef3c7"; // purple-100 : yellow-100
+                    const sourceText = isMyShop ? "#6b21a8" : "#92400e"; // purple-800 : yellow-800
+
                     const popupContent = `
                         <div class="p-1">
                             <div style="display: flex; justify-content: space-between; align-items: start;">
@@ -455,6 +460,9 @@
                                 <button onclick="window.copyShopName('${shop.name.replace(/'/g, "\\'")}')" style="background:none; border:none; cursor:pointer; color: #6b7280; padding: 2px;">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                                 </button>
+                            </div>
+                            <div class="mb-1">
+                                <span style="font-size: 10px; background-color: ${sourceBg}; color: ${sourceText}; padding: 2px 6px; border-radius: 4px; display: inline-block; font-weight: bold;">${sourceLabel}</span>
                             </div>
                             <div class="mb-2" style="display: flex; flex-wrap: wrap;">
                                 ${tagsHtml}
@@ -1178,20 +1186,23 @@
                                 </div>
 
                                 <div className={`accordion-content bg-white shadow-sm z-10 ${isDetailMenuOpen ? 'open' : ''}`}>
-                                    {/* UPDATED FILTER SECTION 
-                                      - Buttons are now colored full-width blocks
-                                      - Sub-options centered
-                                      - Rating button has star icon
-                                      - "All" renamed to "無限制"
-                                      - Return buttons added
-                                      - Current selection style changed
-                                      - Source button has Home icon
-                                    */}
-                                    <div className={`filter-section border-b border-gray-100 flex items-center gap-2 p-2 overflow-x-auto whitespace-nowrap scrollbar-hide ${isOtherAreaSelected ? 'closed' : 'open'}`}>
+                                    {/* UPDATED FILTER SECTION */}
+                                    <div className={`filter-section border-b border-gray-100 flex items-center gap-2 p-2 overflow-x-auto whitespace-nowrap scrollbar-hide open`}>
                                         
                                         {/* Distance Section */}
                                         {isOtherAreaSelected ? (
-                                             <span className="text-xs text-gray-400 px-2">不限距離</span>
+                                            <button 
+                                                disabled
+                                                className="flex-1 py-2 rounded-lg shadow-sm transition-all flex flex-col items-center justify-center gap-0.5 bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200"
+                                            >
+                                                <div className="flex items-center gap-1 font-bold text-sm">
+                                                    <IconMapPin className="w-4 h-4"/>
+                                                    <span>距離</span>
+                                                </div>
+                                                <span className="text-[10px] bg-gray-200 text-gray-500 px-2 py-0.5 rounded-full font-bold shadow-sm mt-0.5">
+                                                    無限制
+                                                </span>
+                                            </button>
                                         ) : (
                                             activeFilterMenu === 'distance' ? (
                                                 <div className="flex gap-1 animate-fadeIn flex-1 overflow-x-auto justify-center">
@@ -1359,12 +1370,12 @@
                                         ))}
                                     </div>
 
-                                    <div className="border-b border-gray-100 px-2 pb-2 pt-2 flex gap-2 justify-center">
+                                    <div className="border-b border-gray-100 px-2 pb-2 pt-2 flex gap-2 overflow-x-auto scrollbar-hide items-center">
                                         {SPECIAL_TYPES.map(s => (
                                             <button
                                                 key={s.id}
                                                 onClick={() => handleSpecialFilterClick(s.id)}
-                                                className={`px-3 py-1 rounded-md text-xs font-bold transition-colors border ${
+                                                className={`px-3 py-1 rounded-md text-xs font-bold transition-colors border shrink-0 whitespace-nowrap ${
                                                     mapFilterSpecial.includes(s.id)
                                                         ? 'bg-orange-200 text-orange-900 border-orange-400'
                                                         : 'bg-white text-gray-500 border-gray-200 hover:bg-gray-50'
