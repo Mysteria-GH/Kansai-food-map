@@ -45,7 +45,7 @@
             border-bottom: none;
         }
         .filter-section.open {
-            max-height: 50px;
+            max-height: 60px; /* 稍微增加高度以容納按鈕 */
             opacity: 1;
         }
 
@@ -57,6 +57,15 @@
             transform-origin: center center;
             border-radius: 50%;
             background-color: transparent;
+        }
+        
+        /* 淡入動畫 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(-5px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.2s ease-out forwards;
         }
     </style>
     
@@ -531,6 +540,9 @@
             const [mapFilterRating, setMapFilterRating] = useState('all');
             const [mapFilterSource, setMapFilterSource] = useState('all');
             
+            // New State for active filter menu (null | 'distance' | 'source' | 'rating')
+            const [activeFilterMenu, setActiveFilterMenu] = useState(null);
+            
             const [isDetailMenuOpen, setIsDetailMenuOpen] = useState(true);
             const [loading, setLoading] = useState(false);
             const [error, setError] = useState(null);
@@ -687,28 +699,24 @@
                     const shopTypes = Array.isArray(shop.type) ? shop.type : [shop.type || 'other'];
                     const matchType = mapFilterType === 'all' || shopTypes.includes(mapFilterType);
                     
-                    // Filter Logic: "Other Areas" (距離主要子中心 > 2km for Osaka, 5km for Kyoto)
+                    // Filter Logic
                     let matchSubLocation = true;
                     if (mapCategory === 'kyoto' && kyotoSubLocation === 'kyoto_other') {
                         const distKyoto = getDistance(shop.lat, shop.lng, KYOTO_SUBLOCATIONS.kyoto_station.lat, KYOTO_SUBLOCATIONS.kyoto_station.lng);
                         const distUji = getDistance(shop.lat, shop.lng, KYOTO_SUBLOCATIONS.uji_station.lat, KYOTO_SUBLOCATIONS.uji_station.lng);
                         const distArashiyama = getDistance(shop.lat, shop.lng, KYOTO_SUBLOCATIONS.arashiyama.lat, KYOTO_SUBLOCATIONS.arashiyama.lng);
-                        // Exclude shops within 5km of any hub
                         if (distKyoto <= 5 || distUji <= 5 || distArashiyama <= 5) matchSubLocation = false;
                     } else if (mapCategory === 'osaka' && osakaSubLocation === 'osaka_other') {
                         const distUmeda = getDistance(shop.lat, shop.lng, OSAKA_SUBLOCATIONS.umeda.lat, OSAKA_SUBLOCATIONS.umeda.lng);
                         const distShinsaibashi = getDistance(shop.lat, shop.lng, OSAKA_SUBLOCATIONS.shinsaibashi.lat, OSAKA_SUBLOCATIONS.shinsaibashi.lng);
                         const distTennoji = getDistance(shop.lat, shop.lng, OSAKA_SUBLOCATIONS.tennoji.lat, OSAKA_SUBLOCATIONS.tennoji.lng);
-                        
                         if (distUmeda <= 2 || distShinsaibashi <= 2 || distTennoji <= 2) matchSubLocation = false;
                     } else {
-                        // Standard sub-location filter: Must be within 2km of selected hub
                         const isSpecificHub = (mapCategory === 'kyoto' && kyotoSubLocation !== 'kyoto_other') || 
                                               (mapCategory === 'osaka' && osakaSubLocation !== 'osaka_other');
                         
                         if (isSpecificHub) {
                             const distToHub = getDistance(shop.lat, shop.lng, currentCenter.lat, currentCenter.lng);
-                            // Kyoto hubs: 5km radius, Osaka hubs: 2km radius
                             const radius = mapCategory === 'kyoto' ? 5 : 2;
                             if (distToHub > radius) matchSubLocation = false;
                         }
@@ -726,13 +734,10 @@
                          }
                     }
 
-                    // Source Filter Logic
                     let matchSource = true;
                     if (mapFilterSource === 'my') {
-                        // User shops have id > 10000
                         if (shop.id < 10000) matchSource = false;
                     } else if (mapFilterSource === 'system') {
-                        // System shops have id < 10000
                         if (shop.id >= 10000) matchSource = false;
                     }
 
@@ -746,29 +751,17 @@
                         const isLunch = checkIsLunch(shop);
                         const isKissaten = checkIsKissaten(shop);
                         
-                        const selectWagyu = mapFilterSpecial.includes('wagyu');
-                        const selectBeefTongue = mapFilterSpecial.includes('beef_tongue');
-                        const selectAllYouCanEat = mapFilterSpecial.includes('all_you_can_eat');
-                        const selectHamburger = mapFilterSpecial.includes('hamburger');
-                        const selectIzakaya = mapFilterSpecial.includes('izakaya');
-                        const selectLunch = mapFilterSpecial.includes('lunch');
-                        const selectKissaten = mapFilterSpecial.includes('kissaten');
-
-                        if (selectWagyu && !isWagyu) matchSpecial = false;
-                        if (selectBeefTongue && !isBeefTongue) matchSpecial = false;
-                        if (selectAllYouCanEat && !isAllYouCanEat) matchSpecial = false;
-                        if (selectHamburger && !isHamburger) matchSpecial = false;
-                        if (selectIzakaya && !isIzakaya) matchSpecial = false;
-                        if (selectLunch && !isLunch) matchSpecial = false;
-                        if (selectKissaten && !isKissaten) matchSpecial = false;
+                        if (mapFilterSpecial.includes('wagyu') && !isWagyu) matchSpecial = false;
+                        if (mapFilterSpecial.includes('beef_tongue') && !isBeefTongue) matchSpecial = false;
+                        if (mapFilterSpecial.includes('all_you_can_eat') && !isAllYouCanEat) matchSpecial = false;
+                        if (mapFilterSpecial.includes('hamburger') && !isHamburger) matchSpecial = false;
+                        if (mapFilterSpecial.includes('izakaya') && !isIzakaya) matchSpecial = false;
+                        if (mapFilterSpecial.includes('lunch') && !isLunch) matchSpecial = false;
+                        if (mapFilterSpecial.includes('kissaten') && !isKissaten) matchSpecial = false;
                     }
                     
-                    // Rating Filter
-                    if (mapFilterRating === 'over4') {
-                        if ((shop.rating || 0) < 4) return false;
-                    } else if (mapFilterRating === 'top') {
-                        if ((shop.rating || 0) < 4.5) return false;
-                    }
+                    if (mapFilterRating === 'over4' && (shop.rating || 0) < 4) return false;
+                    if (mapFilterRating === 'top' && (shop.rating || 0) < 4.5) return false;
 
                     return matchLocation && matchSubLocation && matchType && matchDistance && matchSpecial && matchSource;
                 });
@@ -816,7 +809,6 @@
                 setActiveTab('map');
             };
 
-            // Modified: Use fetched system shops for listing
             const shopsToList = listTab === 'my' ? userShops : systemShops;
             const displayList = listTab === 'my' ? [...shopsToList] : [...shopsToList]; 
             const totalPages = Math.ceil(displayList.length / ITEMS_PER_PAGE) || 1;
@@ -827,8 +819,12 @@
 
             const currentShops = displayList.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
-            // Determine distance options based on category
             const currentDistanceTypes = mapCategory === 'kyoto' ? KYOTO_DISTANCE_TYPES : DISTANCE_TYPES;
+            
+            // Helper to check active states
+            const isDistanceActive = mapFilterDistance !== 'all';
+            const isSourceActive = mapFilterSource !== 'all';
+            const isRatingActive = mapFilterRating !== 'all';
 
             return (
                 <div className="flex flex-col h-screen">
@@ -1162,81 +1158,119 @@
                                 </div>
 
                                 <div className={`accordion-content bg-white shadow-sm z-10 ${isDetailMenuOpen ? 'open' : ''}`}>
-                                    <div className={`filter-section border-b border-gray-100 flex ${isOtherAreaSelected ? 'closed' : 'open'}`}>
+                                    {/* UPDATED FILTER SECTION 
+                                      - Flex layout for same row
+                                      - Horizontal scrolling
+                                      - Dynamic content based on activeFilterMenu
+                                    */}
+                                    <div className={`filter-section border-b border-gray-100 flex items-center gap-2 p-2 overflow-x-auto whitespace-nowrap scrollbar-hide ${isOtherAreaSelected ? 'closed' : 'open'}`}>
                                         
-                                        {/* Distance Filter (Left) */}
-                                        <div className="w-1/3 border-r border-gray-100 p-2 flex flex-col items-center">
-                                             <div className={`transition-all duration-300 overflow-hidden ${isOtherAreaSelected ? 'max-h-0 opacity-0' : 'max-h-20 opacity-100'}`}>
-                                                 <div className="flex flex-wrap justify-center gap-1">
-                                                    {currentDistanceTypes.map(d => (
+                                        {/* Distance Section */}
+                                        {isOtherAreaSelected ? (
+                                             <span className="text-xs text-gray-400 px-2">不限距離</span>
+                                        ) : (
+                                            activeFilterMenu === 'distance' ? (
+                                                <div className="flex gap-1 animate-fadeIn">
+                                                     {currentDistanceTypes.map(d => (
                                                         <button
                                                             key={d.id}
-                                                            onClick={() => setMapFilterDistance(d.id)}
-                                                            className={`px-2 py-1 rounded-md text-[10px] font-bold transition-colors border ${
+                                                            onClick={() => { setMapFilterDistance(d.id); setActiveFilterMenu(null); }}
+                                                            className={`px-3 py-1.5 rounded-full text-xs font-bold transition-colors border shrink-0 ${
                                                                 mapFilterDistance === d.id
-                                                                    ? 'bg-green-200 text-green-900 border-green-600' 
-                                                                    : 'bg-white text-gray-500 border-gray-200 hover:bg-gray-50'
+                                                                    ? 'bg-green-100 text-green-800 border-green-500' 
+                                                                    : 'bg-white text-gray-500 border-gray-200'
                                                             }`}
                                                         >
                                                             {d.label}
                                                         </button>
                                                     ))}
-                                                 </div>
-                                             </div>
-                                             {isOtherAreaSelected && <span className="text-[10px] text-gray-300">不限距離</span>}
-                                        </div>
+                                                </div>
+                                            ) : (
+                                                <button 
+                                                    onClick={() => setActiveFilterMenu('distance')}
+                                                    className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-colors shrink-0 flex items-center gap-1 ${
+                                                        isDistanceActive ? 'bg-green-50 text-green-700 border-green-200' : 'bg-white text-gray-600 border-gray-200'
+                                                    }`}
+                                                >
+                                                    <IconMapPin className="w-3 h-3"/>
+                                                    距離
+                                                    {isDistanceActive && <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>}
+                                                </button>
+                                            )
+                                        )}
 
-                                        {/* Source Filter (Middle - NEW) */}
-                                        <div className="w-1/3 border-r border-gray-100 p-2 flex flex-col items-center justify-center">
-                                             <div className="flex gap-1 mb-1">
-                                                <button
-                                                    onClick={() => setMapFilterSource(mapFilterSource === 'my' ? 'all' : 'my')}
-                                                    className={`px-2 py-1 rounded-md text-[10px] font-bold transition-colors border ${
+                                        {/* Source Section */}
+                                        {activeFilterMenu === 'source' ? (
+                                            <div className="flex gap-1 animate-fadeIn">
+                                                 <button
+                                                    onClick={() => { setMapFilterSource(mapFilterSource === 'my' ? 'all' : 'my'); setActiveFilterMenu(null); }}
+                                                    className={`px-3 py-1.5 rounded-full text-xs font-bold transition-colors border shrink-0 ${
                                                         mapFilterSource === 'my'
-                                                            ? 'bg-purple-100 text-purple-800 border-purple-600'
-                                                            : 'bg-white text-gray-500 border-gray-200 hover:bg-gray-50'
+                                                            ? 'bg-purple-100 text-purple-800 border-purple-500'
+                                                            : 'bg-white text-gray-500 border-gray-200'
                                                     }`}
                                                 >
                                                     我的店鋪
                                                 </button>
                                                 <button
-                                                    onClick={() => setMapFilterSource(mapFilterSource === 'system' ? 'all' : 'system')}
-                                                    className={`px-2 py-1 rounded-md text-[10px] font-bold transition-colors border ${
+                                                    onClick={() => { setMapFilterSource(mapFilterSource === 'system' ? 'all' : 'system'); setActiveFilterMenu(null); }}
+                                                    className={`px-3 py-1.5 rounded-full text-xs font-bold transition-colors border shrink-0 ${
                                                         mapFilterSource === 'system'
-                                                            ? 'bg-purple-100 text-purple-800 border-purple-600'
-                                                            : 'bg-white text-gray-500 border-gray-200 hover:bg-gray-50'
+                                                            ? 'bg-purple-100 text-purple-800 border-purple-500'
+                                                            : 'bg-white text-gray-500 border-gray-200'
                                                     }`}
                                                 >
                                                     系統推薦
                                                 </button>
-                                             </div>
-                                        </div>
+                                            </div>
+                                        ) : (
+                                            <button 
+                                                onClick={() => setActiveFilterMenu('source')}
+                                                className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-colors shrink-0 flex items-center gap-1 ${
+                                                    isSourceActive ? 'bg-purple-50 text-purple-700 border-purple-200' : 'bg-white text-gray-600 border-gray-200'
+                                                }`}
+                                            >
+                                                來源
+                                                {isSourceActive && <span className="w-1.5 h-1.5 rounded-full bg-purple-500"></span>}
+                                            </button>
+                                        )}
 
-                                        {/* Rating Filter (Right) */}
-                                        <div className="w-1/3 p-2 flex flex-col items-center justify-center">
-                                             <div className="flex gap-1 flex-wrap justify-center">
-                                                <button
-                                                    onClick={() => setMapFilterRating(mapFilterRating === 'over4' ? 'all' : 'over4')}
-                                                    className={`px-2 py-1 rounded-md text-[10px] font-bold transition-colors border ${
+                                        {/* Rating Section */}
+                                        {activeFilterMenu === 'rating' ? (
+                                            <div className="flex gap-1 animate-fadeIn">
+                                                 <button
+                                                    onClick={() => { setMapFilterRating(mapFilterRating === 'over4' ? 'all' : 'over4'); setActiveFilterMenu(null); }}
+                                                    className={`px-3 py-1.5 rounded-full text-xs font-bold transition-colors border shrink-0 ${
                                                         mapFilterRating === 'over4'
-                                                            ? 'bg-yellow-100 text-yellow-700 border-yellow-600'
-                                                            : 'bg-white text-gray-500 border-gray-200 hover:bg-gray-50'
+                                                            ? 'bg-yellow-100 text-yellow-800 border-yellow-500'
+                                                            : 'bg-white text-gray-500 border-gray-200'
                                                     }`}
                                                 >
                                                     ≥ 4.0 ★
                                                 </button>
                                                 <button
-                                                    onClick={() => setMapFilterRating(mapFilterRating === 'top' ? 'all' : 'top')}
-                                                    className={`px-2 py-1 rounded-md text-[10px] font-bold transition-colors border ${
+                                                    onClick={() => { setMapFilterRating(mapFilterRating === 'top' ? 'all' : 'top'); setActiveFilterMenu(null); }}
+                                                    className={`px-3 py-1.5 rounded-full text-xs font-bold transition-colors border shrink-0 ${
                                                         mapFilterRating === 'top'
-                                                            ? 'bg-yellow-200 text-yellow-800 border-yellow-600'
-                                                            : 'bg-white text-gray-500 border-gray-200 hover:bg-gray-50'
+                                                            ? 'bg-yellow-100 text-yellow-800 border-yellow-500'
+                                                            : 'bg-white text-gray-500 border-gray-200'
                                                     }`}
                                                 >
                                                     Top
                                                 </button>
-                                             </div>
-                                        </div>
+                                            </div>
+                                        ) : (
+                                            <button 
+                                                onClick={() => setActiveFilterMenu('rating')}
+                                                className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-colors shrink-0 flex items-center gap-1 ${
+                                                    isRatingActive ? 'bg-yellow-50 text-yellow-700 border-yellow-200' : 'bg-white text-gray-600 border-gray-200'
+                                                }`}
+                                            >
+                                                評分
+                                                {isRatingActive && <span className="w-1.5 h-1.5 rounded-full bg-yellow-500"></span>}
+                                            </button>
+                                        )}
+
                                     </div>
 
                                     <div className="border-b border-gray-100 px-2 py-2 flex gap-2 overflow-x-auto scrollbar-hide items-center">
