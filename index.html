@@ -114,6 +114,7 @@
         const IconClock = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>;
         const IconCopy = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>;
         const IconHome = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>;
+        const IconUtensils = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path><path d="M7 2v20"></path><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"></path></svg>;
 
         // --- Constants ---
         const LOCATIONS = {
@@ -559,7 +560,7 @@
             const [mapFilterRating, setMapFilterRating] = useState('all');
             const [mapFilterSource, setMapFilterSource] = useState('all');
             
-            // New State for active filter menu (null | 'distance' | 'source' | 'rating')
+            // New State for active filter menu (null | 'distance' | 'source' | 'rating' | 'category')
             const [activeFilterMenu, setActiveFilterMenu] = useState(null);
             
             const [isDetailMenuOpen, setIsDetailMenuOpen] = useState(true);
@@ -866,6 +867,12 @@
                 if (mapFilterRating === 'over4') return '≥ 4.0 ★';
                 if (mapFilterRating === 'top') return 'Top';
                 return '無限制';
+            };
+
+            // Helper to get Category Label
+            const getCategoryLabel = () => {
+                const found = FILTER_TYPES.find(t => t.id === mapFilterType);
+                return found ? found.label : '所有種類';
             };
 
             return (
@@ -1209,220 +1216,244 @@
                                       - Current selection style changed
                                       - Source button has Home icon
                                     */}
-                                    <div className={`filter-section border-b border-gray-100 flex items-center gap-2 p-2 whitespace-nowrap scrollbar-hide open ${activeFilterMenu === null ? 'justify-between overflow-hidden' : 'overflow-x-auto'}`}>
-                                        
-                                        {/* Distance Section */}
-                                        {(activeFilterMenu === null || activeFilterMenu === 'distance') && (
-                                            isOtherAreaSelected ? (
+                                    {activeFilterMenu !== 'category' && (
+                                        <div className={`filter-section border-b border-gray-100 flex items-center gap-2 p-2 whitespace-nowrap scrollbar-hide open ${activeFilterMenu === null ? 'justify-between overflow-hidden' : 'overflow-x-auto'}`}>
+                                            
+                                            {/* Distance Section */}
+                                            {(activeFilterMenu === null || activeFilterMenu === 'distance') && (
+                                                isOtherAreaSelected ? (
+                                                    <button 
+                                                        key={activeFilterMenu ? 'dist-active' : 'dist-idle'}
+                                                        style={{ animationDelay: activeFilterMenu === null ? '0ms' : '0ms' }}
+                                                        disabled
+                                                        className={`${activeFilterMenu === null ? 'animate-drop w-full flex-1' : 'min-w-[130px]'} px-2 py-2 rounded-lg shadow-sm transition-all flex flex-col items-center justify-center gap-0.5 bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200 shrink-0`}
+                                                    >
+                                                        <div className="flex items-center gap-1 font-bold text-sm">
+                                                            <IconMapPin className="w-4 h-4"/>
+                                                            <span>距離</span>
+                                                        </div>
+                                                        <span className="text-[10px] bg-gray-200 text-gray-500 px-2 py-0.5 rounded-full font-bold shadow-sm mt-0.5">
+                                                            無限制
+                                                        </span>
+                                                    </button>
+                                                ) : (
+                                                    <button 
+                                                        key={activeFilterMenu ? 'dist-active' : 'dist-idle'}
+                                                        style={{ animationDelay: activeFilterMenu === null ? '0ms' : '0ms' }}
+                                                        onClick={() => !activeFilterMenu && setActiveFilterMenu('distance')}
+                                                        disabled={activeFilterMenu === 'distance'}
+                                                        className={`${activeFilterMenu === null ? 'animate-drop w-full flex-1' : ''} ${activeFilterMenu === 'distance' ? 'w-10 px-0 cursor-default shadow-none justify-center' : 'min-w-[130px] px-2 shadow-md active:scale-95 hover:bg-green-700 cursor-pointer'} py-2 rounded-lg transition-all flex flex-col items-center justify-center gap-0.5 bg-green-600 text-white shrink-0`}
+                                                    >
+                                                        {activeFilterMenu === 'distance' ? (
+                                                            <IconMapPin className="w-6 h-6" />
+                                                        ) : (
+                                                            <React.Fragment>
+                                                                <div className="flex items-center gap-1 font-bold text-sm">
+                                                                    <IconMapPin className="w-4 h-4"/>
+                                                                    <span>距離</span>
+                                                                </div>
+                                                                <span className="text-[10px] bg-white text-green-600 px-2 py-0.5 rounded-full font-bold shadow-sm mt-0.5">
+                                                                    {getDistanceLabel()}
+                                                                </span>
+                                                            </React.Fragment>
+                                                        )}
+                                                    </button>
+                                                )
+                                            )}
+
+                                            {/* Source Section */}
+                                            {(activeFilterMenu === null || activeFilterMenu === 'source') && (
                                                 <button 
-                                                    key={activeFilterMenu ? 'dist-active' : 'dist-idle'}
-                                                    style={{ animationDelay: activeFilterMenu === null ? '0ms' : '0ms' }}
-                                                    disabled
-                                                    className={`${activeFilterMenu === null ? 'animate-drop w-full flex-1' : 'min-w-[130px]'} px-2 py-2 rounded-lg shadow-sm transition-all flex flex-col items-center justify-center gap-0.5 bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200 shrink-0`}
+                                                    key={activeFilterMenu ? 'source-active' : 'source-idle'}
+                                                    style={{ animationDelay: activeFilterMenu === null ? '100ms' : '0ms' }}
+                                                    onClick={() => !activeFilterMenu && setActiveFilterMenu('source')}
+                                                    disabled={activeFilterMenu === 'source'}
+                                                    className={`${activeFilterMenu === null ? 'animate-drop w-full flex-1' : ''} ${activeFilterMenu === 'source' ? 'w-10 px-0 cursor-default shadow-none justify-center' : 'min-w-[130px] px-2 shadow-md active:scale-95 hover:bg-purple-700 cursor-pointer'} py-2 rounded-lg transition-all flex flex-col items-center justify-center gap-0.5 bg-purple-600 text-white shrink-0`}
                                                 >
-                                                    <div className="flex items-center gap-1 font-bold text-sm">
-                                                        <IconMapPin className="w-4 h-4"/>
-                                                        <span>距離</span>
-                                                    </div>
-                                                    <span className="text-[10px] bg-gray-200 text-gray-500 px-2 py-0.5 rounded-full font-bold shadow-sm mt-0.5">
-                                                        無限制
-                                                    </span>
-                                                </button>
-                                            ) : (
-                                                <button 
-                                                    key={activeFilterMenu ? 'dist-active' : 'dist-idle'}
-                                                    style={{ animationDelay: activeFilterMenu === null ? '0ms' : '0ms' }}
-                                                    onClick={() => !activeFilterMenu && setActiveFilterMenu('distance')}
-                                                    disabled={activeFilterMenu === 'distance'}
-                                                    className={`${activeFilterMenu === null ? 'animate-drop w-full flex-1' : ''} ${activeFilterMenu === 'distance' ? 'w-10 px-0 cursor-default shadow-none justify-center' : 'min-w-[130px] px-2 shadow-md active:scale-95 hover:bg-green-700 cursor-pointer'} py-2 rounded-lg transition-all flex flex-col items-center justify-center gap-0.5 bg-green-600 text-white shrink-0`}
-                                                >
-                                                    {activeFilterMenu === 'distance' ? (
-                                                        <IconMapPin className="w-6 h-6" />
+                                                    {activeFilterMenu === 'source' ? (
+                                                        <IconHome className="w-6 h-6" />
                                                     ) : (
                                                         <React.Fragment>
                                                             <div className="flex items-center gap-1 font-bold text-sm">
-                                                                <IconMapPin className="w-4 h-4"/>
-                                                                <span>距離</span>
+                                                                <IconHome className="w-4 h-4"/>
+                                                                <span>來源</span>
                                                             </div>
-                                                            <span className="text-[10px] bg-white text-green-600 px-2 py-0.5 rounded-full font-bold shadow-sm mt-0.5">
-                                                                {getDistanceLabel()}
+                                                            <span className="text-[10px] bg-white text-purple-600 px-2 py-0.5 rounded-full font-bold shadow-sm mt-0.5">
+                                                                {getSourceLabel()}
                                                             </span>
                                                         </React.Fragment>
                                                     )}
                                                 </button>
-                                            )
-                                        )}
+                                            )}
 
-                                        {/* Source Section */}
-                                        {(activeFilterMenu === null || activeFilterMenu === 'source') && (
-                                            <button 
-                                                key={activeFilterMenu ? 'source-active' : 'source-idle'}
-                                                style={{ animationDelay: activeFilterMenu === null ? '100ms' : '0ms' }}
-                                                onClick={() => !activeFilterMenu && setActiveFilterMenu('source')}
-                                                disabled={activeFilterMenu === 'source'}
-                                                className={`${activeFilterMenu === null ? 'animate-drop w-full flex-1' : ''} ${activeFilterMenu === 'source' ? 'w-10 px-0 cursor-default shadow-none justify-center' : 'min-w-[130px] px-2 shadow-md active:scale-95 hover:bg-purple-700 cursor-pointer'} py-2 rounded-lg transition-all flex flex-col items-center justify-center gap-0.5 bg-purple-600 text-white shrink-0`}
-                                            >
-                                                {activeFilterMenu === 'source' ? (
-                                                    <IconHome className="w-6 h-6" />
-                                                ) : (
-                                                    <React.Fragment>
-                                                        <div className="flex items-center gap-1 font-bold text-sm">
-                                                            <IconHome className="w-4 h-4"/>
-                                                            <span>來源</span>
-                                                        </div>
-                                                        <span className="text-[10px] bg-white text-purple-600 px-2 py-0.5 rounded-full font-bold shadow-sm mt-0.5">
-                                                            {getSourceLabel()}
-                                                        </span>
-                                                    </React.Fragment>
-                                                )}
-                                            </button>
-                                        )}
+                                            {/* Rating Section */}
+                                            {(activeFilterMenu === null || activeFilterMenu === 'rating') && (
+                                                <button 
+                                                    key={activeFilterMenu ? 'rating-active' : 'rating-idle'}
+                                                    style={{ animationDelay: activeFilterMenu === null ? '200ms' : '0ms' }}
+                                                    onClick={() => !activeFilterMenu && setActiveFilterMenu('rating')}
+                                                    disabled={activeFilterMenu === 'rating'}
+                                                    className={`${activeFilterMenu === null ? 'animate-drop w-full flex-1' : ''} ${activeFilterMenu === 'rating' ? 'w-10 px-0 cursor-default shadow-none justify-center' : 'min-w-[130px] px-2 shadow-md active:scale-95 hover:bg-yellow-600 cursor-pointer'} py-2 rounded-lg transition-all flex flex-col items-center justify-center gap-0.5 bg-yellow-500 text-white shrink-0`}
+                                                >
+                                                    {activeFilterMenu === 'rating' ? (
+                                                        <IconStar className="w-6 h-6" />
+                                                    ) : (
+                                                        <React.Fragment>
+                                                            <div className="flex items-center gap-1 font-bold text-sm">
+                                                                <IconStar className="w-4 h-4"/>
+                                                                <span>評分</span>
+                                                            </div>
+                                                            <span className="text-[10px] bg-white text-yellow-600 px-2 py-0.5 rounded-full font-bold shadow-sm mt-0.5">
+                                                                {getRatingLabel()}
+                                                            </span>
+                                                        </React.Fragment>
+                                                    )}
+                                                </button>
+                                            )}
 
-                                        {/* Rating Section */}
-                                        {(activeFilterMenu === null || activeFilterMenu === 'rating') && (
-                                            <button 
-                                                key={activeFilterMenu ? 'rating-active' : 'rating-idle'}
-                                                style={{ animationDelay: activeFilterMenu === null ? '200ms' : '0ms' }}
-                                                onClick={() => !activeFilterMenu && setActiveFilterMenu('rating')}
-                                                disabled={activeFilterMenu === 'rating'}
-                                                className={`${activeFilterMenu === null ? 'animate-drop w-full flex-1' : ''} ${activeFilterMenu === 'rating' ? 'w-10 px-0 cursor-default shadow-none justify-center' : 'min-w-[130px] px-2 shadow-md active:scale-95 hover:bg-yellow-600 cursor-pointer'} py-2 rounded-lg transition-all flex flex-col items-center justify-center gap-0.5 bg-yellow-500 text-white shrink-0`}
-                                            >
-                                                {activeFilterMenu === 'rating' ? (
-                                                    <IconStar className="w-6 h-6" />
-                                                ) : (
-                                                    <React.Fragment>
-                                                        <div className="flex items-center gap-1 font-bold text-sm">
-                                                            <IconStar className="w-4 h-4"/>
-                                                            <span>評分</span>
-                                                        </div>
-                                                        <span className="text-[10px] bg-white text-yellow-600 px-2 py-0.5 rounded-full font-bold shadow-sm mt-0.5">
-                                                            {getRatingLabel()}
-                                                        </span>
-                                                    </React.Fragment>
-                                                )}
-                                            </button>
-                                        )}
-
-                                        {/* Sub Options Container */}
-                                        {activeFilterMenu !== null && (
-                                            <div className="flex gap-2 animate-fadeIn flex-1 items-center overflow-hidden">
-                                                
-                                                {/* Options Area (Scrollable & Centered) */}
-                                                <div className="flex-1 flex gap-1 overflow-x-auto scrollbar-hide items-center justify-center px-1">
+                                            {/* Sub Options Container */}
+                                            {activeFilterMenu !== null && (
+                                                <div className="flex gap-2 animate-fadeIn flex-1 items-center overflow-hidden">
                                                     
-                                                    {/* Distance Options */}
-                                                    {activeFilterMenu === 'distance' && currentDistanceTypes.map(d => (
+                                                    {/* Options Area (Scrollable & Centered) */}
+                                                    <div className="flex-1 flex gap-1 overflow-x-auto scrollbar-hide items-center justify-center px-1">
+                                                        
+                                                        {/* Distance Options */}
+                                                        {activeFilterMenu === 'distance' && currentDistanceTypes.map(d => (
+                                                            <button
+                                                                key={d.id}
+                                                                onClick={() => setMapFilterDistance(d.id)}
+                                                                className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
+                                                                    mapFilterDistance === d.id
+                                                                        ? 'bg-green-100 text-green-800 border-green-500' 
+                                                                        : 'bg-white text-gray-500 border-gray-200'
+                                                                }`}
+                                                            >
+                                                                {d.label}
+                                                            </button>
+                                                        ))}
+
+                                                        {/* Source Options */}
+                                                        {activeFilterMenu === 'source' && (
+                                                            <React.Fragment>
+                                                                <button
+                                                                    onClick={() => setMapFilterSource('all')}
+                                                                    className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
+                                                                        mapFilterSource === 'all'
+                                                                            ? 'bg-purple-100 text-purple-800 border-purple-500'
+                                                                            : 'bg-white text-gray-500 border-gray-200'
+                                                                    }`}
+                                                                >
+                                                                    無限制
+                                                                </button>
+                                                                <button
+                                                                    onClick={() => setMapFilterSource('my')}
+                                                                    className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
+                                                                        mapFilterSource === 'my'
+                                                                            ? 'bg-purple-100 text-purple-800 border-purple-500'
+                                                                            : 'bg-white text-gray-500 border-gray-200'
+                                                                    }`}
+                                                                >
+                                                                    我的店鋪
+                                                                </button>
+                                                                <button
+                                                                    onClick={() => setMapFilterSource('system')}
+                                                                    className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
+                                                                        mapFilterSource === 'system'
+                                                                            ? 'bg-purple-100 text-purple-800 border-purple-500'
+                                                                            : 'bg-white text-gray-500 border-gray-200'
+                                                                    }`}
+                                                                >
+                                                                    系統推薦
+                                                                </button>
+                                                            </React.Fragment>
+                                                        )}
+
+                                                        {/* Rating Options */}
+                                                        {activeFilterMenu === 'rating' && (
+                                                            <React.Fragment>
+                                                                <button
+                                                                    onClick={() => setMapFilterRating('all')}
+                                                                    className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
+                                                                        mapFilterRating === 'all'
+                                                                            ? 'bg-yellow-100 text-yellow-800 border-yellow-500'
+                                                                            : 'bg-white text-gray-500 border-gray-200'
+                                                                    }`}
+                                                                >
+                                                                    無限制
+                                                                </button>
+                                                                <button
+                                                                    onClick={() => setMapFilterRating('over4')}
+                                                                    className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
+                                                                        mapFilterRating === 'over4'
+                                                                            ? 'bg-yellow-100 text-yellow-800 border-yellow-500'
+                                                                            : 'bg-white text-gray-500 border-gray-200'
+                                                                    }`}
+                                                                >
+                                                                    ≥ 4.0 ★
+                                                                </button>
+                                                                <button
+                                                                    onClick={() => setMapFilterRating('top')}
+                                                                    className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
+                                                                        mapFilterRating === 'top'
+                                                                            ? 'bg-yellow-100 text-yellow-800 border-yellow-500'
+                                                                            : 'bg-white text-gray-500 border-gray-200'
+                                                                    }`}
+                                                                >
+                                                                    Top
+                                                                </button>
+                                                            </React.Fragment>
+                                                        )}
+                                                    </div>
+
+                                                    {/* Back Button (Fixed on Right) */}
+                                                    <button 
+                                                        onClick={() => setActiveFilterMenu(null)}
+                                                        className="px-3 py-3 rounded-lg text-xs font-bold transition-colors border shrink-0 bg-gray-500 text-white hover:bg-gray-600 border-gray-500 shadow-sm ml-auto"
+                                                    >
+                                                        <IconArrowLeft className="transform rotate-180" />
+                                                    </button>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+
+                                    <div className={`border-b border-gray-100 px-2 py-2 flex gap-2 ${activeFilterMenu === 'category' ? 'justify-center' : 'overflow-x-auto scrollbar-hide items-center justify-center'}`}>
+                                        {activeFilterMenu !== 'category' ? (
+                                            <button
+                                                onClick={() => setActiveFilterMenu('category')}
+                                                className="w-full flex items-center justify-between px-4 py-2 rounded-lg bg-gray-800 text-white shadow-md active:scale-95 transition-all animate-drop"
+                                            >
+                                                <div className="flex items-center gap-2">
+                                                    <IconUtensils className="w-5 h-5"/>
+                                                    <span className="text-sm font-bold">想吃什麼？</span>
+                                                </div>
+                                                <span className="text-xs bg-white text-black px-2 py-1 rounded font-bold shadow-sm">
+                                                    {getCategoryLabel()}
+                                                </span>
+                                            </button>
+                                        ) : (
+                                            <div className="w-full animate-fadeIn p-2">
+                                                <div className="grid grid-cols-5 gap-2">
+                                                    {FILTER_TYPES.map(t => (
                                                         <button
-                                                            key={d.id}
-                                                            onClick={() => setMapFilterDistance(d.id)}
-                                                            className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
-                                                                mapFilterDistance === d.id
-                                                                    ? 'bg-green-100 text-green-800 border-green-500' 
-                                                                    : 'bg-white text-gray-500 border-gray-200'
+                                                            key={t.id}
+                                                            onClick={() => {
+                                                                setMapFilterType(t.id);
+                                                                setActiveFilterMenu(null);
+                                                            }}
+                                                            className={`px-1 py-2 rounded-lg text-[10px] font-bold transition-colors border text-center truncate ${
+                                                                mapFilterType === t.id
+                                                                    ? 'bg-black text-white border-black'
+                                                                    : 'bg-white text-gray-500 border-gray-200 hover:bg-gray-100'
                                                             }`}
                                                         >
-                                                            {d.label}
+                                                            {t.label}
                                                         </button>
                                                     ))}
-
-                                                    {/* Source Options */}
-                                                    {activeFilterMenu === 'source' && (
-                                                        <React.Fragment>
-                                                            <button
-                                                                onClick={() => setMapFilterSource('all')}
-                                                                className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
-                                                                    mapFilterSource === 'all'
-                                                                        ? 'bg-purple-100 text-purple-800 border-purple-500'
-                                                                        : 'bg-white text-gray-500 border-gray-200'
-                                                                }`}
-                                                            >
-                                                                無限制
-                                                            </button>
-                                                            <button
-                                                                onClick={() => setMapFilterSource('my')}
-                                                                className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
-                                                                    mapFilterSource === 'my'
-                                                                        ? 'bg-purple-100 text-purple-800 border-purple-500'
-                                                                        : 'bg-white text-gray-500 border-gray-200'
-                                                                }`}
-                                                            >
-                                                                我的店鋪
-                                                            </button>
-                                                            <button
-                                                                onClick={() => setMapFilterSource('system')}
-                                                                className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
-                                                                    mapFilterSource === 'system'
-                                                                        ? 'bg-purple-100 text-purple-800 border-purple-500'
-                                                                        : 'bg-white text-gray-500 border-gray-200'
-                                                                }`}
-                                                            >
-                                                                系統推薦
-                                                            </button>
-                                                        </React.Fragment>
-                                                    )}
-
-                                                    {/* Rating Options */}
-                                                    {activeFilterMenu === 'rating' && (
-                                                        <React.Fragment>
-                                                            <button
-                                                                onClick={() => setMapFilterRating('all')}
-                                                                className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
-                                                                    mapFilterRating === 'all'
-                                                                        ? 'bg-yellow-100 text-yellow-800 border-yellow-500'
-                                                                        : 'bg-white text-gray-500 border-gray-200'
-                                                                }`}
-                                                            >
-                                                                無限制
-                                                            </button>
-                                                            <button
-                                                                onClick={() => setMapFilterRating('over4')}
-                                                                className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
-                                                                    mapFilterRating === 'over4'
-                                                                        ? 'bg-yellow-100 text-yellow-800 border-yellow-500'
-                                                                        : 'bg-white text-gray-500 border-gray-200'
-                                                                }`}
-                                                            >
-                                                                ≥ 4.0 ★
-                                                            </button>
-                                                            <button
-                                                                onClick={() => setMapFilterRating('top')}
-                                                                className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
-                                                                    mapFilterRating === 'top'
-                                                                        ? 'bg-yellow-100 text-yellow-800 border-yellow-500'
-                                                                        : 'bg-white text-gray-500 border-gray-200'
-                                                                }`}
-                                                            >
-                                                                Top
-                                                            </button>
-                                                        </React.Fragment>
-                                                    )}
                                                 </div>
-
-                                                {/* Back Button (Fixed on Right) */}
-                                                <button 
-                                                    onClick={() => setActiveFilterMenu(null)}
-                                                    className="px-3 py-3 rounded-lg text-xs font-bold transition-colors border shrink-0 bg-gray-500 text-white hover:bg-gray-600 border-gray-500 shadow-sm ml-auto"
-                                                >
-                                                    <IconArrowLeft className="transform rotate-180" />
-                                                </button>
                                             </div>
                                         )}
-                                    </div>
-
-                                    <div className="border-b border-gray-100 px-2 py-2 flex gap-2 overflow-x-auto scrollbar-hide items-center">
-                                        {FILTER_TYPES.map(t => (
-                                            <button
-                                                key={t.id}
-                                                onClick={() => setMapFilterType(t.id)}
-                                                className={`px-4 py-1.5 rounded-full text-xs font-bold transition-colors border shrink-0 ${
-                                                    mapFilterType === t.id
-                                                        ? 'bg-black text-white border-black'
-                                                        : 'bg-white text-gray-500 border-gray-200 hover:bg-gray-100'
-                                                }`}
-                                            >
-                                                {t.label}
-                                            </button>
-                                        ))}
                                     </div>
 
                                     <div className="border-b border-gray-100 px-2 pb-2 pt-2 flex gap-2 overflow-x-auto scrollbar-hide items-center">
