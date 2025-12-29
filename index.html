@@ -130,9 +130,9 @@
         };
 
         const KYOTO_SUBLOCATIONS = {
-            kyoto_station: { id: 'kyoto_station', name: "京都車站", lat: 34.9858, lng: 135.7588 },
-            arashiyama: { id: 'arashiyama', name: "嵯峨嵐山車站", lat: 35.0191, lng: 135.6778 },
-            uji_station: { id: 'uji_station', name: "宇治車站", lat: 34.8893, lng: 135.8018 },
+            kyoto_station: { id: 'kyoto_station', name: "京都", lat: 34.9858, lng: 135.7588 },
+            arashiyama: { id: 'arashiyama', name: "嵯峨嵐山", lat: 35.0191, lng: 135.6778 },
+            uji_station: { id: 'uji_station', name: "宇治", lat: 34.8893, lng: 135.8018 },
             kyoto_other: { id: 'kyoto_other', name: "其它區域", lat: 34.9858, lng: 135.7588 }
         };
 
@@ -1226,7 +1226,7 @@
                                                         key={activeFilterMenu ? 'dist-active' : 'dist-idle'}
                                                         style={{ animationDelay: activeFilterMenu === null ? '0ms' : '0ms' }}
                                                         disabled
-                                                        className={`${activeFilterMenu === null ? 'animate-drop w-full flex-1' : 'min-w-[130px]'} px-2 py-2 rounded-lg shadow-sm transition-all flex flex-col items-center justify-center gap-0.5 bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200 shrink-0`}
+                                                        className={`${activeFilterMenu === null ? 'animate-drop flex-1' : 'min-w-[130px]'} px-2 py-2 rounded-lg shadow-sm transition-all flex flex-col items-center justify-center gap-0.5 bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200 shrink-0`}
                                                     >
                                                         <div className="flex items-center gap-1 font-bold text-sm">
                                                             <IconMapPin className="w-4 h-4"/>
@@ -1242,7 +1242,7 @@
                                                         style={{ animationDelay: activeFilterMenu === null ? '0ms' : '0ms' }}
                                                         onClick={() => !activeFilterMenu && setActiveFilterMenu('distance')}
                                                         disabled={activeFilterMenu === 'distance'}
-                                                        className={`${activeFilterMenu === null ? 'animate-drop w-full flex-1' : ''} ${activeFilterMenu === 'distance' ? 'w-10 px-0 cursor-default shadow-none justify-center' : 'min-w-[130px] px-2 shadow-md active:scale-95 hover:bg-green-700 cursor-pointer'} py-2 rounded-lg transition-all flex flex-col items-center justify-center gap-0.5 bg-green-600 text-white shrink-0`}
+                                                        className={`${activeFilterMenu === null ? 'animate-drop flex-1' : ''} ${activeFilterMenu === 'distance' ? 'w-10 px-0 cursor-default shadow-none justify-center' : 'flex-1 shadow-md active:scale-95 hover:bg-green-700 cursor-pointer'} py-2 rounded-lg transition-all flex flex-col items-center justify-center gap-0.5 bg-green-600 text-white shrink-0`}
                                                     >
                                                         {activeFilterMenu === 'distance' ? (
                                                             <IconMapPin className="w-6 h-6" />
@@ -1268,7 +1268,7 @@
                                                     style={{ animationDelay: activeFilterMenu === null ? '100ms' : '0ms' }}
                                                     onClick={() => !activeFilterMenu && setActiveFilterMenu('source')}
                                                     disabled={activeFilterMenu === 'source'}
-                                                    className={`${activeFilterMenu === null ? 'animate-drop w-full flex-1' : ''} ${activeFilterMenu === 'source' ? 'w-10 px-0 cursor-default shadow-none justify-center' : 'min-w-[130px] px-2 shadow-md active:scale-95 hover:bg-purple-700 cursor-pointer'} py-2 rounded-lg transition-all flex flex-col items-center justify-center gap-0.5 bg-purple-600 text-white shrink-0`}
+                                                    className={`${activeFilterMenu === null ? 'animate-drop flex-1' : ''} ${activeFilterMenu === 'source' ? 'w-10 px-0 cursor-default shadow-none justify-center' : 'flex-1 shadow-md active:scale-95 hover:bg-purple-700 cursor-pointer'} py-2 rounded-lg transition-all flex flex-col items-center justify-center gap-0.5 bg-purple-600 text-white shrink-0`}
                                                 >
                                                     {activeFilterMenu === 'source' ? (
                                                         <IconHome className="w-6 h-6" />
@@ -1293,7 +1293,7 @@
                                                     style={{ animationDelay: activeFilterMenu === null ? '200ms' : '0ms' }}
                                                     onClick={() => !activeFilterMenu && setActiveFilterMenu('rating')}
                                                     disabled={activeFilterMenu === 'rating'}
-                                                    className={`${activeFilterMenu === null ? 'animate-drop w-full flex-1' : ''} ${activeFilterMenu === 'rating' ? 'w-10 px-0 cursor-default shadow-none justify-center' : 'min-w-[130px] px-2 shadow-md active:scale-95 hover:bg-yellow-600 cursor-pointer'} py-2 rounded-lg transition-all flex flex-col items-center justify-center gap-0.5 bg-yellow-500 text-white shrink-0`}
+                                                    className={`${activeFilterMenu === null ? 'animate-drop flex-1' : ''} ${activeFilterMenu === 'rating' ? 'w-10 px-0 cursor-default shadow-none justify-center' : 'flex-1 shadow-md active:scale-95 hover:bg-yellow-600 cursor-pointer'} py-2 rounded-lg transition-all flex flex-col items-center justify-center gap-0.5 bg-yellow-500 text-white shrink-0`}
                                                 >
                                                     {activeFilterMenu === 'rating' ? (
                                                         <IconStar className="w-6 h-6" />
@@ -1418,10 +1418,11 @@
                                         </div>
                                     )}
 
-                                    <div className={`border-b border-gray-100 px-2 py-2 flex gap-2 ${activeFilterMenu === 'category' ? 'justify-center' : 'overflow-x-auto scrollbar-hide items-center justify-center'}`}>
+                                    <div className="border-b border-gray-100 px-2 py-2 flex gap-2 overflow-x-auto scrollbar-hide items-center justify-center">
                                         {activeFilterMenu !== 'category' ? (
                                             <button
                                                 onClick={() => setActiveFilterMenu('category')}
+                                                style={{ animationDelay: activeFilterMenu === null ? '300ms' : '0ms' }}
                                                 className="w-full flex items-center justify-between px-4 py-2 rounded-lg bg-gray-800 text-white shadow-md active:scale-95 transition-all animate-drop"
                                             >
                                                 <div className="flex items-center gap-2">
@@ -1434,7 +1435,7 @@
                                             </button>
                                         ) : (
                                             <div className="w-full animate-fadeIn p-2">
-                                                <div className="grid grid-cols-5 gap-2">
+                                                <div className="grid grid-cols-5 gap-2 overflow-hidden">
                                                     {FILTER_TYPES.map(t => (
                                                         <button
                                                             key={t.id}
