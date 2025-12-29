@@ -61,11 +61,11 @@
         
         /* 淡入動畫 */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateX(-5px); }
+            from { opacity: 0; transform: translateX(10px); }
             to { opacity: 1; transform: translateX(0); }
         }
         .animate-fadeIn {
-            animation: fadeIn 0.2s ease-out forwards;
+            animation: fadeIn 0.3s ease-out forwards;
         }
 
         /* 下落動畫 (由上至下) */
@@ -1209,7 +1209,7 @@
                                       - Current selection style changed
                                       - Source button has Home icon
                                     */}
-                                    <div className={`filter-section border-b border-gray-100 flex items-center gap-2 p-2 overflow-x-auto whitespace-nowrap scrollbar-hide open`}>
+                                    <div className={`filter-section border-b border-gray-100 flex items-center gap-2 p-2 whitespace-nowrap scrollbar-hide open ${activeFilterMenu === null ? 'justify-between overflow-hidden' : 'overflow-x-auto'}`}>
                                         
                                         {/* Distance Section */}
                                         {(activeFilterMenu === null || activeFilterMenu === 'distance') && (
@@ -1218,7 +1218,7 @@
                                                     key={activeFilterMenu ? 'dist-active' : 'dist-idle'}
                                                     style={{ animationDelay: activeFilterMenu === null ? '0ms' : '0ms' }}
                                                     disabled
-                                                    className={`${activeFilterMenu === null ? 'animate-drop' : ''} min-w-[130px] px-2 py-2 rounded-lg shadow-sm transition-all flex flex-col items-center justify-center gap-0.5 bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200 shrink-0`}
+                                                    className={`${activeFilterMenu === null ? 'animate-drop w-full flex-1' : 'min-w-[130px]'} px-2 py-2 rounded-lg shadow-sm transition-all flex flex-col items-center justify-center gap-0.5 bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200 shrink-0`}
                                                 >
                                                     <div className="flex items-center gap-1 font-bold text-sm">
                                                         <IconMapPin className="w-4 h-4"/>
@@ -1234,12 +1234,12 @@
                                                     style={{ animationDelay: activeFilterMenu === null ? '0ms' : '0ms' }}
                                                     onClick={() => !activeFilterMenu && setActiveFilterMenu('distance')}
                                                     disabled={activeFilterMenu === 'distance'}
-                                                    className={`${activeFilterMenu === null ? 'animate-drop' : ''} ${activeFilterMenu === 'distance' ? 'w-10 px-0 cursor-default shadow-none justify-center' : 'min-w-[130px] px-2 shadow-md active:scale-95 hover:bg-green-700 cursor-pointer'} py-2 rounded-lg transition-all flex flex-col items-center justify-center gap-0.5 bg-green-600 text-white shrink-0`}
+                                                    className={`${activeFilterMenu === null ? 'animate-drop w-full flex-1' : ''} ${activeFilterMenu === 'distance' ? 'w-10 px-0 cursor-default shadow-none justify-center' : 'min-w-[130px] px-2 shadow-md active:scale-95 hover:bg-green-700 cursor-pointer'} py-2 rounded-lg transition-all flex flex-col items-center justify-center gap-0.5 bg-green-600 text-white shrink-0`}
                                                 >
                                                     {activeFilterMenu === 'distance' ? (
                                                         <IconMapPin className="w-6 h-6" />
                                                     ) : (
-                                                        <>
+                                                        <React.Fragment>
                                                             <div className="flex items-center gap-1 font-bold text-sm">
                                                                 <IconMapPin className="w-4 h-4"/>
                                                                 <span>距離</span>
@@ -1247,7 +1247,7 @@
                                                             <span className="text-[10px] bg-white text-green-600 px-2 py-0.5 rounded-full font-bold shadow-sm mt-0.5">
                                                                 {getDistanceLabel()}
                                                             </span>
-                                                        </>
+                                                        </React.Fragment>
                                                     )}
                                                 </button>
                                             )
@@ -1260,12 +1260,12 @@
                                                 style={{ animationDelay: activeFilterMenu === null ? '100ms' : '0ms' }}
                                                 onClick={() => !activeFilterMenu && setActiveFilterMenu('source')}
                                                 disabled={activeFilterMenu === 'source'}
-                                                className={`${activeFilterMenu === null ? 'animate-drop' : ''} ${activeFilterMenu === 'source' ? 'w-10 px-0 cursor-default shadow-none justify-center' : 'min-w-[130px] px-2 shadow-md active:scale-95 hover:bg-purple-700 cursor-pointer'} py-2 rounded-lg transition-all flex flex-col items-center justify-center gap-0.5 bg-purple-600 text-white shrink-0`}
+                                                className={`${activeFilterMenu === null ? 'animate-drop w-full flex-1' : ''} ${activeFilterMenu === 'source' ? 'w-10 px-0 cursor-default shadow-none justify-center' : 'min-w-[130px] px-2 shadow-md active:scale-95 hover:bg-purple-700 cursor-pointer'} py-2 rounded-lg transition-all flex flex-col items-center justify-center gap-0.5 bg-purple-600 text-white shrink-0`}
                                             >
                                                 {activeFilterMenu === 'source' ? (
                                                     <IconHome className="w-6 h-6" />
                                                 ) : (
-                                                    <>
+                                                    <React.Fragment>
                                                         <div className="flex items-center gap-1 font-bold text-sm">
                                                             <IconHome className="w-4 h-4"/>
                                                             <span>來源</span>
@@ -1273,7 +1273,7 @@
                                                         <span className="text-[10px] bg-white text-purple-600 px-2 py-0.5 rounded-full font-bold shadow-sm mt-0.5">
                                                             {getSourceLabel()}
                                                         </span>
-                                                    </>
+                                                    </React.Fragment>
                                                 )}
                                             </button>
                                         )}
@@ -1285,12 +1285,12 @@
                                                 style={{ animationDelay: activeFilterMenu === null ? '200ms' : '0ms' }}
                                                 onClick={() => !activeFilterMenu && setActiveFilterMenu('rating')}
                                                 disabled={activeFilterMenu === 'rating'}
-                                                className={`${activeFilterMenu === null ? 'animate-drop' : ''} ${activeFilterMenu === 'rating' ? 'w-10 px-0 cursor-default shadow-none justify-center' : 'min-w-[130px] px-2 shadow-md active:scale-95 hover:bg-yellow-600 cursor-pointer'} py-2 rounded-lg transition-all flex flex-col items-center justify-center gap-0.5 bg-yellow-500 text-white shrink-0`}
+                                                className={`${activeFilterMenu === null ? 'animate-drop w-full flex-1' : ''} ${activeFilterMenu === 'rating' ? 'w-10 px-0 cursor-default shadow-none justify-center' : 'min-w-[130px] px-2 shadow-md active:scale-95 hover:bg-yellow-600 cursor-pointer'} py-2 rounded-lg transition-all flex flex-col items-center justify-center gap-0.5 bg-yellow-500 text-white shrink-0`}
                                             >
                                                 {activeFilterMenu === 'rating' ? (
                                                     <IconStar className="w-6 h-6" />
                                                 ) : (
-                                                    <>
+                                                    <React.Fragment>
                                                         <div className="flex items-center gap-1 font-bold text-sm">
                                                             <IconStar className="w-4 h-4"/>
                                                             <span>評分</span>
@@ -1298,7 +1298,7 @@
                                                         <span className="text-[10px] bg-white text-yellow-600 px-2 py-0.5 rounded-full font-bold shadow-sm mt-0.5">
                                                             {getRatingLabel()}
                                                         </span>
-                                                    </>
+                                                    </React.Fragment>
                                                 )}
                                             </button>
                                         )}
@@ -1307,8 +1307,8 @@
                                         {activeFilterMenu !== null && (
                                             <div className="flex gap-2 animate-fadeIn flex-1 items-center overflow-hidden">
                                                 
-                                                {/* Options Area (Scrollable) */}
-                                                <div className="flex-1 flex gap-1 overflow-x-auto scrollbar-hide items-center px-1">
+                                                {/* Options Area (Scrollable & Centered) */}
+                                                <div className="flex-1 flex gap-1 overflow-x-auto scrollbar-hide items-center justify-center px-1">
                                                     
                                                     {/* Distance Options */}
                                                     {activeFilterMenu === 'distance' && currentDistanceTypes.map(d => (
