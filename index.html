@@ -517,6 +517,9 @@
             // New: State for system shops loaded from JSON
             const [systemShops, setSystemShops] = useState([]);
 
+            // New: Map transition state
+            const [mapTransition, setMapTransition] = useState({ active: false, color: '', phase: 'idle' });
+
             // New: Fetch shops.json on mount
             useEffect(() => {
                 fetch('./shops.json')
@@ -570,7 +573,7 @@
             const [currentPage, setCurrentPage] = useState(1);
             const ITEMS_PER_PAGE = 5;
 
-            // Animation States
+            // Animation States (Landing Page)
             const [animState, setAnimState] = useState({ isAnimating: false, color: '', origin: null, targetCategory: '', id: 0 });
 
             // Determine if an "Other Area" sublocation is selected
@@ -801,6 +804,7 @@
                 setMapFilterSpecial(newSelection);
             };
 
+            // Enhanced City Click with Wipe Transition
             const handleCityClick = (category, event) => {
                 const rect = event.currentTarget.getBoundingClientRect();
                 const center = {
@@ -815,8 +819,39 @@
                     color: color,
                     origin: center,
                     targetCategory: category,
-                    id: Date.now() // Unique ID to force re-mount
+                    id: Date.now()
                 });
+            };
+
+            // Handle switching city from the map view
+            const handleSwitchCity = (category) => {
+                if (category === mapCategory) return;
+
+                // 1. Force Expand Menu if Closed
+                if (!isDetailMenuOpen) {
+                    setIsDetailMenuOpen(true);
+                }
+
+                const colorClass = category === 'kyoto' ? 'bg-indigo-600' : 'bg-rose-600';
+                
+                // 2. Start Curtain In
+                setMapTransition({ active: true, color: colorClass, phase: 'in' });
+
+                // 3. Wait for curtain to cover, then switch data
+                setTimeout(() => {
+                    setMapCategory(category);
+                    
+                    // 4. Simulate Load Time (optional, for effect)
+                    setTimeout(() => {
+                        // 5. Start Curtain Out
+                        setMapTransition(prev => ({ ...prev, phase: 'out' }));
+
+                        // 6. Cleanup
+                        setTimeout(() => {
+                            setMapTransition({ active: false, color: '', phase: 'idle' });
+                        }, 500); // Wait for out animation
+                    }, 600); // Load delay
+                }, 500); // Wait for in animation
             };
 
             const handleCovered = useCallback(() => {
@@ -892,6 +927,7 @@
 
                     {/* Header... */}
                     <header className="bg-white shadow-sm p-4 pt-safe-top z-10 sticky top-0 relative">
+                        {/* Always show back button in map view */}
                         {activeTab === 'map' && (
                             <button 
                                 onClick={() => setActiveTab('add')}
@@ -1132,11 +1168,12 @@
                         )}
 
                         {activeTab === 'map' && (
-                            <div className="h-full flex flex-col">
+                            <div className="h-full flex flex-col relative">
+                                
                                 {/* Map Controls... */}
                                 <div className="flex p-2 gap-2 bg-white shadow-sm z-20 shrink-0">
                                     <button
-                                        onClick={() => setMapCategory('kyoto')}
+                                        onClick={() => handleSwitchCity('kyoto')}
                                         className={`flex-1 py-3 rounded-lg font-bold transition-all ${
                                             mapCategory === 'kyoto' 
                                                 ? 'bg-indigo-100 text-indigo-600 shadow-md transform scale-[1.02]' 
@@ -1146,7 +1183,7 @@
                                         京都
                                     </button>
                                     <button
-                                        onClick={() => setMapCategory('osaka')}
+                                        onClick={() => handleSwitchCity('osaka')}
                                         className={`flex-1 py-3 rounded-lg font-bold transition-all ${
                                             mapCategory === 'osaka' 
                                                 ? 'bg-rose-100 text-rose-600 shadow-md transform scale-[1.02]' 
@@ -1418,7 +1455,7 @@
                                         </div>
                                     )}
 
-                                    <div className="border-b border-gray-100 px-2 py-2 flex gap-2 overflow-x-auto scrollbar-hide items-center justify-center">
+                                    <div className={`border-b border-gray-100 px-2 py-2 flex gap-2 ${activeFilterMenu === 'category' ? 'justify-center' : 'overflow-x-auto scrollbar-hide items-center justify-center'}`}>
                                         {activeFilterMenu !== 'category' ? (
                                             <button
                                                 onClick={() => setActiveFilterMenu('category')}
@@ -1474,7 +1511,13 @@
                                     </div>
                                 </div>
                                 
-                                <div className="flex-1 relative z-0">
+                                <div className="flex-1 relative z-0 overflow-hidden">
+                                    {/* Map Transition Curtain - MOVED HERE and positioned properly */}
+                                    {mapTransition.active && (
+                                        <div 
+                                            className={`absolute inset-0 z-[2000] pointer-events-none transition-transform duration-500 ease-in-out ${mapTransition.color} ${mapTransition.phase === 'in' ? 'translate-y-0' : mapTransition.phase === 'out' ? 'translate-y-full' : '-translate-y-full'}`}
+                                        />
+                                    )}
                                     <MapView 
                                         center={currentCenter} 
                                         shops={filteredShops} 
