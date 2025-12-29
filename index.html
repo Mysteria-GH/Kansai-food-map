@@ -125,6 +125,7 @@
             kyoto_other: { id: 'kyoto_other', name: "其它區域", lat: 34.9858, lng: 135.7588 }
         };
 
+        // Removed 'hamburger' from main FOOD_TYPES
         const FOOD_TYPES = [
             { id: 'ramen', label: '拉麵' },
             { id: 'sukiyaki', label: '壽喜燒' },
@@ -578,8 +579,12 @@
             useEffect(() => {
                 if (isOtherAreaSelected) {
                     setMapFilterDistance('all');
+                    // Reset menu if distance was open
+                    if (activeFilterMenu === 'distance') {
+                        setActiveFilterMenu(null);
+                    }
                 }
-            }, [isOtherAreaSelected]);
+            }, [isOtherAreaSelected, activeFilterMenu]);
 
             const handleInputTypeClick = (id) => {
                  if (id === 'other') {
@@ -1186,50 +1191,37 @@
                                 </div>
 
                                 <div className={`accordion-content bg-white shadow-sm z-10 ${isDetailMenuOpen ? 'open' : ''}`}>
-                                    {/* UPDATED FILTER SECTION */}
+                                    {/* UPDATED FILTER SECTION 
+                                      - Buttons are now colored full-width blocks
+                                      - Sub-options centered
+                                      - Rating button has star icon
+                                      - "All" renamed to "無限制"
+                                      - Return buttons added
+                                      - Current selection style changed
+                                      - Source button has Home icon
+                                    */}
                                     <div className={`filter-section border-b border-gray-100 flex items-center gap-2 p-2 overflow-x-auto whitespace-nowrap scrollbar-hide open`}>
                                         
                                         {/* Distance Section */}
-                                        {isOtherAreaSelected ? (
-                                            <button 
-                                                disabled
-                                                className="flex-1 py-2 rounded-lg shadow-sm transition-all flex flex-col items-center justify-center gap-0.5 bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200"
-                                            >
-                                                <div className="flex items-center gap-1 font-bold text-sm">
-                                                    <IconMapPin className="w-4 h-4"/>
-                                                    <span>距離</span>
-                                                </div>
-                                                <span className="text-[10px] bg-gray-200 text-gray-500 px-2 py-0.5 rounded-full font-bold shadow-sm mt-0.5">
-                                                    無限制
-                                                </span>
-                                            </button>
-                                        ) : (
-                                            activeFilterMenu === 'distance' ? (
-                                                <div className="flex gap-1 animate-fadeIn flex-1 overflow-x-auto justify-center">
-                                                     <button 
-                                                        onClick={() => setActiveFilterMenu(null)}
-                                                        className="px-2 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 bg-gray-100 text-gray-600 hover:bg-gray-200 border-gray-200"
-                                                     >
-                                                        <IconArrowLeft />
-                                                     </button>
-                                                     {currentDistanceTypes.map(d => (
-                                                        <button
-                                                            key={d.id}
-                                                            onClick={() => setMapFilterDistance(d.id)}
-                                                            className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
-                                                                mapFilterDistance === d.id
-                                                                    ? 'bg-green-100 text-green-800 border-green-500' 
-                                                                    : 'bg-white text-gray-500 border-gray-200'
-                                                            }`}
-                                                        >
-                                                            {d.label}
-                                                        </button>
-                                                    ))}
-                                                </div>
+                                        {(activeFilterMenu === null || activeFilterMenu === 'distance') && (
+                                            isOtherAreaSelected ? (
+                                                <button 
+                                                    disabled
+                                                    className="w-auto px-4 py-2 rounded-lg shadow-sm transition-all flex flex-col items-center justify-center gap-0.5 bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200 shrink-0"
+                                                >
+                                                    <div className="flex items-center gap-1 font-bold text-sm">
+                                                        <IconMapPin className="w-4 h-4"/>
+                                                        <span>距離</span>
+                                                    </div>
+                                                    <span className="text-[10px] bg-gray-200 text-gray-500 px-2 py-0.5 rounded-full font-bold shadow-sm mt-0.5">
+                                                        無限制
+                                                    </span>
+                                                </button>
                                             ) : (
                                                 <button 
-                                                    onClick={() => setActiveFilterMenu('distance')}
-                                                    className="flex-1 py-2 rounded-lg shadow-md transition-all flex flex-col items-center justify-center gap-0.5 bg-green-600 text-white active:scale-95 hover:bg-green-700"
+                                                    onClick={() => !activeFilterMenu && setActiveFilterMenu('distance')}
+                                                    disabled={activeFilterMenu === 'distance'}
+                                                    className={`${activeFilterMenu === 'distance' ? 'w-auto px-4 cursor-default shadow-none' : 'flex-1 shadow-md active:scale-95 hover:bg-green-700 cursor-pointer'} py-2 rounded-lg transition-all flex flex-col items-center justify-center gap-0.5 bg-green-600 text-white shrink-0`}
                                                 >
                                                     <div className="flex items-center gap-1 font-bold text-sm">
                                                         <IconMapPin className="w-4 h-4"/>
@@ -1243,49 +1235,11 @@
                                         )}
 
                                         {/* Source Section */}
-                                        {activeFilterMenu === 'source' ? (
-                                            <div className="flex gap-1 animate-fadeIn flex-1 overflow-x-auto justify-center">
-                                                 <button 
-                                                    onClick={() => setActiveFilterMenu(null)}
-                                                    className="px-2 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 bg-gray-100 text-gray-600 hover:bg-gray-200 border-gray-200"
-                                                 >
-                                                    <IconArrowLeft />
-                                                 </button>
-                                                 <button
-                                                    onClick={() => setMapFilterSource('all')}
-                                                    className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
-                                                        mapFilterSource === 'all'
-                                                            ? 'bg-purple-100 text-purple-800 border-purple-500'
-                                                            : 'bg-white text-gray-500 border-gray-200'
-                                                    }`}
-                                                >
-                                                    無限制
-                                                </button>
-                                                 <button
-                                                    onClick={() => setMapFilterSource('my')}
-                                                    className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
-                                                        mapFilterSource === 'my'
-                                                            ? 'bg-purple-100 text-purple-800 border-purple-500'
-                                                            : 'bg-white text-gray-500 border-gray-200'
-                                                    }`}
-                                                >
-                                                    我的店鋪
-                                                </button>
-                                                <button
-                                                    onClick={() => setMapFilterSource('system')}
-                                                    className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
-                                                        mapFilterSource === 'system'
-                                                            ? 'bg-purple-100 text-purple-800 border-purple-500'
-                                                            : 'bg-white text-gray-500 border-gray-200'
-                                                    }`}
-                                                >
-                                                    系統推薦
-                                                </button>
-                                            </div>
-                                        ) : (
+                                        {(activeFilterMenu === null || activeFilterMenu === 'source') && (
                                             <button 
-                                                onClick={() => setActiveFilterMenu('source')}
-                                                className="flex-1 py-2 rounded-lg shadow-md transition-all flex flex-col items-center justify-center gap-0.5 bg-purple-600 text-white active:scale-95 hover:bg-purple-700"
+                                                onClick={() => !activeFilterMenu && setActiveFilterMenu('source')}
+                                                disabled={activeFilterMenu === 'source'}
+                                                className={`${activeFilterMenu === 'source' ? 'w-auto px-4 cursor-default shadow-none' : 'flex-1 shadow-md active:scale-95 hover:bg-purple-700 cursor-pointer'} py-2 rounded-lg transition-all flex flex-col items-center justify-center gap-0.5 bg-purple-600 text-white shrink-0`}
                                             >
                                                 <div className="flex items-center gap-1 font-bold text-sm">
                                                     <IconHome className="w-4 h-4"/>
@@ -1298,49 +1252,11 @@
                                         )}
 
                                         {/* Rating Section */}
-                                        {activeFilterMenu === 'rating' ? (
-                                            <div className="flex gap-1 animate-fadeIn flex-1 overflow-x-auto justify-center">
-                                                 <button 
-                                                    onClick={() => setActiveFilterMenu(null)}
-                                                    className="px-2 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 bg-gray-100 text-gray-600 hover:bg-gray-200 border-gray-200"
-                                                 >
-                                                    <IconArrowLeft />
-                                                 </button>
-                                                 <button
-                                                    onClick={() => setMapFilterRating('all')}
-                                                    className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
-                                                        mapFilterRating === 'all'
-                                                            ? 'bg-yellow-100 text-yellow-800 border-yellow-500'
-                                                            : 'bg-white text-gray-500 border-gray-200'
-                                                    }`}
-                                                >
-                                                    無限制
-                                                </button>
-                                                 <button
-                                                    onClick={() => setMapFilterRating('over4')}
-                                                    className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
-                                                        mapFilterRating === 'over4'
-                                                            ? 'bg-yellow-100 text-yellow-800 border-yellow-500'
-                                                            : 'bg-white text-gray-500 border-gray-200'
-                                                    }`}
-                                                >
-                                                    ≥ 4.0 ★
-                                                </button>
-                                                <button
-                                                    onClick={() => setMapFilterRating('top')}
-                                                    className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
-                                                        mapFilterRating === 'top'
-                                                            ? 'bg-yellow-100 text-yellow-800 border-yellow-500'
-                                                            : 'bg-white text-gray-500 border-gray-200'
-                                                    }`}
-                                                >
-                                                    Top
-                                                </button>
-                                            </div>
-                                        ) : (
+                                        {(activeFilterMenu === null || activeFilterMenu === 'rating') && (
                                             <button 
-                                                onClick={() => setActiveFilterMenu('rating')}
-                                                className="flex-1 py-2 rounded-lg shadow-md transition-all flex flex-col items-center justify-center gap-0.5 bg-yellow-500 text-white active:scale-95 hover:bg-yellow-600"
+                                                onClick={() => !activeFilterMenu && setActiveFilterMenu('rating')}
+                                                disabled={activeFilterMenu === 'rating'}
+                                                className={`${activeFilterMenu === 'rating' ? 'w-auto px-4 cursor-default shadow-none' : 'flex-1 shadow-md active:scale-95 hover:bg-yellow-600 cursor-pointer'} py-2 rounded-lg transition-all flex flex-col items-center justify-center gap-0.5 bg-yellow-500 text-white shrink-0`}
                                             >
                                                 <div className="flex items-center gap-1 font-bold text-sm">
                                                     <IconStar className="w-4 h-4"/>
@@ -1352,6 +1268,104 @@
                                             </button>
                                         )}
 
+                                        {/* Sub Options Container */}
+                                        {activeFilterMenu !== null && (
+                                            <div className="flex gap-1 animate-fadeIn flex-1 overflow-x-auto items-center">
+                                                <button 
+                                                    onClick={() => setActiveFilterMenu(null)}
+                                                    className="px-3 py-3 rounded-lg text-xs font-bold transition-colors border shrink-0 bg-gray-100 text-gray-600 hover:bg-gray-200 border-gray-200 mr-1"
+                                                >
+                                                    <IconArrowLeft />
+                                                </button>
+
+                                                {/* Distance Options */}
+                                                {activeFilterMenu === 'distance' && currentDistanceTypes.map(d => (
+                                                    <button
+                                                        key={d.id}
+                                                        onClick={() => setMapFilterDistance(d.id)}
+                                                        className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
+                                                            mapFilterDistance === d.id
+                                                                ? 'bg-green-100 text-green-800 border-green-500' 
+                                                                : 'bg-white text-gray-500 border-gray-200'
+                                                        }`}
+                                                    >
+                                                        {d.label}
+                                                    </button>
+                                                ))}
+
+                                                {/* Source Options */}
+                                                {activeFilterMenu === 'source' && (
+                                                    <>
+                                                        <button
+                                                            onClick={() => setMapFilterSource('all')}
+                                                            className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
+                                                                mapFilterSource === 'all'
+                                                                    ? 'bg-purple-100 text-purple-800 border-purple-500'
+                                                                    : 'bg-white text-gray-500 border-gray-200'
+                                                            }`}
+                                                        >
+                                                            無限制
+                                                        </button>
+                                                        <button
+                                                            onClick={() => setMapFilterSource('my')}
+                                                            className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
+                                                                mapFilterSource === 'my'
+                                                                    ? 'bg-purple-100 text-purple-800 border-purple-500'
+                                                                    : 'bg-white text-gray-500 border-gray-200'
+                                                            }`}
+                                                        >
+                                                            我的店鋪
+                                                        </button>
+                                                        <button
+                                                            onClick={() => setMapFilterSource('system')}
+                                                            className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
+                                                                mapFilterSource === 'system'
+                                                                    ? 'bg-purple-100 text-purple-800 border-purple-500'
+                                                                    : 'bg-white text-gray-500 border-gray-200'
+                                                            }`}
+                                                        >
+                                                            系統推薦
+                                                        </button>
+                                                    </>
+                                                )}
+
+                                                {/* Rating Options */}
+                                                {activeFilterMenu === 'rating' && (
+                                                    <>
+                                                        <button
+                                                            onClick={() => setMapFilterRating('all')}
+                                                            className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
+                                                                mapFilterRating === 'all'
+                                                                    ? 'bg-yellow-100 text-yellow-800 border-yellow-500'
+                                                                    : 'bg-white text-gray-500 border-gray-200'
+                                                            }`}
+                                                        >
+                                                            無限制
+                                                        </button>
+                                                        <button
+                                                            onClick={() => setMapFilterRating('over4')}
+                                                            className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
+                                                                mapFilterRating === 'over4'
+                                                                    ? 'bg-yellow-100 text-yellow-800 border-yellow-500'
+                                                                    : 'bg-white text-gray-500 border-gray-200'
+                                                            }`}
+                                                        >
+                                                            ≥ 4.0 ★
+                                                        </button>
+                                                        <button
+                                                            onClick={() => setMapFilterRating('top')}
+                                                            className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors border shrink-0 ${
+                                                                mapFilterRating === 'top'
+                                                                    ? 'bg-yellow-100 text-yellow-800 border-yellow-500'
+                                                                    : 'bg-white text-gray-500 border-gray-200'
+                                                            }`}
+                                                        >
+                                                            Top
+                                                        </button>
+                                                    </>
+                                                )}
+                                            </div>
+                                        )}
                                     </div>
 
                                     <div className="border-b border-gray-100 px-2 py-2 flex gap-2 overflow-x-auto scrollbar-hide items-center">
