@@ -2,7 +2,6 @@
     { "id": 1, "name": "花丸軒 法善寺店(道頓堀+24小時+濃郁豚骨醬油+魯豬五花叉燒+蒜片+炒飯+煎餃)", "displayName": "花丸軒 法善寺店", "lat": 34.6675, "lng": 135.5028, "category": "osaka", "type": ["ramen"], "address": "道頓堀/法善寺", "hours": "24小時營業", "rating": 4.2, "reviewCount": 2922 },
     { "id": 2, "name": "しゃぶしゃぶ・すき焼き専門店 しゃぶ長(心齋橋+中午套餐+和牛壽喜燒)", "displayName": "しゃぶ長", "lat": 34.6728, "lng": 135.5013, "category": "osaka", "type": ["sukiyaki"], "address": "心齋橋", "hours": "11:30-13:30, 17:30-23:00 (週日公休)", "rating": 4.3, "reviewCount": 152 },
     { "id": 3, "name": "お食事処 美登里(大阪豬排丼+量大)", "displayName": "お食事処 美登里", "lat": 34.6695, "lng": 135.5496, "category": "osaka", "type": ["ricebowl"], "address": "大阪東成區", "hours": "11:00-19:00 (週二公休)", "rating": 4.5, "reviewCount": 192 },
-    
     { id: 4, name: "Melt Chocolate(心齋橋+現切熱巧克力)", displayName: "Melt Chocolate", lat: 34.6775, lng: 135.4993, category: "osaka", type: ["cafe", "other"], address: "心齋橋/南船場", hours: "11:00-20:00", rating: 4.6, reviewCount: 85 },
     { id: 5, name: "大阪燒 千房(道頓堀)", displayName: "千房 道頓堀", lat: 34.6685, lng: 135.5035, category: "osaka", type: ["other"], address: "道頓堀", hours: "11:00-23:00", rating: 4.0, reviewCount: 2100 },
     { id: 6, name: "肉の隠れ家 おあがり 嵐山本店(和牛火山+桂川風景)", displayName: "肉の隠れ家 おあがり", lat: 35.0116, lng: 135.6766, category: "kyoto", type: ["ricebowl", "other"], address: "嵐山", hours: "11:00-15:00", rating: 4.4, reviewCount: 620 },
@@ -106,7 +105,5 @@
             { id: 106, name: "Panel Cafe Kyoto(京都河畔+舒芙蕾)", displayName: "Panel Cafe Kyoto", lat: 35.0050, lng: 135.7720, category: "kyoto", type: ["cafe"], address: "祇園", hours: "10:00-18:00", rating: 4.4, reviewCount: 350 },
             { id: 107, name: "リバーサイド鮨和食 堀江燈花 なんば店(和牛+壽喜燒+生魚片+包間)", displayName: "堀江燈花 なんば店", lat: 34.6680, lng: 135.4960, category: "osaka", type: ["sushi", "sukiyaki", "wagyu"], address: "難波", hours: "11:00-15:00, 17:00-23:00", rating: 4.2, reviewCount: 220 },
             { id: 108, name: "日本〒545-0052 Osaka, AbenoWard, Abenosuji, 1 Chome−5−1 あべのルシアス 16(天王寺+和牛牛排放題+披薩放題+起司)", displayName: "あべのルシアス 16", lat: 34.6460, lng: 135.5120, category: "osaka", type: ["other", "all_you_can_eat", "wagyu"], address: "天王寺", hours: "11:00-23:00", rating: 4.0, reviewCount: 150 },
-
-
     { "id": 109, "name": "堂島焼肉料理店(但馬神戶牛+完全個室+代客烤肉?+冰淇淋+酒)", "displayName": "堂島焼肉料理店", "lat": 34.6960, "lng": 135.4950, "category": "osaka", "type": ["yakiniku", "wagyu"], "address": "北新地", "hours": "17:00-23:00", "rating": 4.7, "reviewCount": 60 }
 ]
