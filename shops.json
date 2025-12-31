@@ -34,7 +34,7 @@
   },
   {
     "id": 4,
-    "name": "Melt Chocolate (現切熱巧克力)",
+    "name": "Melt Chocolate (甜點/現切熱巧克力)",
     "lat": 34.7030,
     "lng": 135.4960,
     "category": "osaka",
@@ -82,7 +82,7 @@
     "lat": 34.7590,
     "lng": 135.4980,
     "category": "osaka",
-    "type": ["yakiniku", "other"],
+    "type": ["yakiniku"],
     "hours": "17:00-23:00",
     "rating": 4.2,
     "address": "大阪江坂"
@@ -280,7 +280,7 @@
     "lat": 34.6680,
     "lng": 135.5050,
     "category": "osaka",
-    "type": ["other", "cafe"],
+    "type": ["cafe"],
     "hours": "11:00-21:00",
     "rating": 4.0,
     "address": "大阪難波"
@@ -467,7 +467,7 @@
     "lat": 34.7015,
     "lng": 135.4945,
     "category": "osaka",
-    "type": ["other", "sukiyaki"],
+    "type": ["sukiyaki"],
     "hours": "11:00-22:00",
     "rating": 4.0,
     "address": "大阪梅田 KITTE"
@@ -577,7 +577,7 @@
     "lat": 34.6950,
     "lng": 135.4900,
     "category": "osaka",
-    "type": ["other", "yakiniku"],
+    "type": ["yakiniku"],
     "hours": "17:00-23:00",
     "rating": 4.1,
     "address": "大阪"
@@ -753,7 +753,7 @@
     "lat": 35.0290,
     "lng": 135.6600,
     "category": "kyoto",
-    "type": ["cafe", "other"],
+    "type": ["cafe"],
     "hours": "11:30-21:00",
     "rating": 4.4,
     "address": "京都愛宕"
@@ -852,7 +852,7 @@
     "lat": 34.7010,
     "lng": 135.5000,
     "category": "osaka",
-    "type": ["other", "yakiniku"],
+    "type": ["yakiniku"],
     "hours": "17:00-23:00",
     "rating": 4.2,
     "address": "大阪梅田"
@@ -918,7 +918,7 @@
     "lat": 34.6950,
     "lng": 135.4750,
     "category": "osaka",
-    "type": ["other", "curry"],
+    "type": ["curry"],
     "hours": "11:30-14:00",
     "rating": 4.2,
     "address": "大阪野田"
@@ -995,7 +995,7 @@
     "lat": 34.7050,
     "lng": 135.4950,
     "category": "osaka",
-    "type": ["sukiyaki", "other"],
+    "type": ["sukiyaki"],
     "hours": "11:00-23:00",
     "rating": 4.2,
     "address": "大阪梅田"
