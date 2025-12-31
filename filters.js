@@ -32,21 +32,21 @@ export const SPECIAL_TYPES = [
 // 檢查是否為吃到飽
 export const checkIsAllYouCanEat = (shop) => {
     const text = (shop.name || '') + (shop.displayName || '');
-    const keywords = ['吃到飽', '食べ放題', '放題'];
+    const keywords = ['吃到飽', '放題'];
     return keywords.some(k => text.includes(k));
 };
 
 // 檢查是否為和牛 (包含牛舌)
 export const checkIsWagyu = (shop) => {
     const text = (shop.name || '') + (shop.displayName || '');
-    const keywords = ['和牛', 'Wagyu', '神戶牛', '神戸牛', '但馬牛', '近江牛', '宮崎牛', '仙台牛', '黒毛', '黑毛', '牛舌'];
+    const keywords = ['和牛', 'Wagyu', '神戶牛', '神戸牛', '但馬牛', '近江牛', '宮崎牛', '仙台牛', '黒毛', '黑毛'];
     return keywords.some(k => text.includes(k));
 };
 
 // 檢查是否為牛舌
 export const checkIsBeefTongue = (shop) => {
     const text = (shop.name || '') + (shop.displayName || '');
-    const keywords = ['牛舌', '牛タン', 'タン'];
+    const keywords = ['牛舌', '牛タン'];
     return keywords.some(k => text.includes(k));
 };
 
@@ -69,13 +69,13 @@ export const checkIsIzakaya = (shop) => {
 // 檢查是否為午間套餐 (不分大小寫)
 export const checkIsLunch = (shop) => {
     const text = (shop.name || '') + (shop.displayName || '');
-    const keywords = ['午間', 'lunch', 'ランチ', '午餐'];
+    const keywords = ['午間'];
     return keywords.some(k => text.toLowerCase().includes(k));
 };
 
 // 檢查是否為喫茶 (不分大小寫)
 export const checkIsKissaten = (shop) => {
     const text = (shop.name || '') + (shop.displayName || '');
-    const keywords = ['喫茶', 'afternoon tea', '甜點', 'dessert', 'tea', 'cafe', 'coffee'];
+    const keywords = ['喫茶', 'afternoon tea', '甜點', 'dessert', 'tea'];
     return keywords.some(k => text.toLowerCase().includes(k));
 };
