@@ -688,7 +688,7 @@
 
             const checkIsWagyu = (shop) => {
                 const text = (shop.name || '') + (shop.displayName || '');
-                const keywords = ['和牛', 'Wagyu', '神戶牛', '神戸牛', '但馬牛', '近江牛', '宮崎牛', '仙台牛', '黒毛', '黑毛', '牛舌'];
+                const keywords = ['和牛', 'Wagyu', '神戶牛', '神戸牛', '但馬牛', '近江牛', '宮崎牛', '仙台牛', '黒毛', '黑毛'];
                 return keywords.some(k => text.includes(k));
             };
 
@@ -1291,7 +1291,7 @@
                                                         key={activeFilterMenu ? 'dist-active' : 'dist-idle'}
                                                         style={{ animationDelay: activeFilterMenu === null ? '0ms' : '0ms' }}
                                                         disabled
-                                                        className={`${activeFilterMenu === null ? 'animate-drop flex-1' : 'min-w-[130px]'} px-2 py-2 rounded-lg shadow-sm transition-all flex flex-col items-center justify-center gap-0.5 bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200 shrink-0`}
+                                                        className={`${activeFilterMenu === null ? 'animate-drop flex-1' : 'flex-1'} py-2 rounded-lg shadow-sm transition-all flex flex-col items-center justify-center gap-0.5 bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200 shrink-0`}
                                                     >
                                                         <div className="flex items-center gap-1 font-bold text-sm">
                                                             <IconMapPin className="w-4 h-4"/>
