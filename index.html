@@ -1198,18 +1198,6 @@
                         {activeTab === 'map' && (
                             <div className="h-full flex flex-col relative overflow-hidden">
                                 
-                                {/* Map Transition Curtain - USING CLIP-PATH */}
-                                {mapTransition.active && (
-                                    <div 
-                                        className={`absolute inset-0 z-[2000] pointer-events-none map-wipe-transition ${mapTransition.color}`}
-                                        style={{
-                                            clipPath: mapTransition.phase === 'start' ? 'inset(0 0 100% 0)' :
-                                                      mapTransition.phase === 'in' ? 'inset(0 0 0 0)' :
-                                                      'inset(100% 0 0 0)'
-                                        }}
-                                    />
-                                )}
-
                                 {/* Map Controls... */}
                                 <div className="flex p-2 gap-2 bg-white shadow-sm z-20 shrink-0">
                                     <button
