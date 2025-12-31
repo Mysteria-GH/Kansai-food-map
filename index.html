@@ -36,7 +36,7 @@
         .filter-section {
             transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s ease-in-out;
             overflow: hidden;
-            /* 修改：將高度固定為 90px，略大於按鈕大小 */
+            /* 這裡設定展開時的內部高度，外部容器由 React 控制 */
             min-height: 90px;
         }
         .filter-section.closed {
@@ -47,7 +47,6 @@
             border-bottom: none;
         }
         .filter-section.open {
-            /* 修改：展開高度也設為 90px */
             max-height: 90px;
             opacity: 1;
         }
@@ -1244,15 +1243,10 @@
 
                                 <div className={`accordion-content bg-white shadow-sm z-10 ${isDetailMenuOpen ? 'open' : ''}`}>
                                     {/* UPDATED FILTER SECTION 
-                                      - Buttons are now colored full-width blocks
-                                      - Sub-options centered
-                                      - Rating button has star icon
-                                      - "All" renamed to "無限制"
-                                      - Return buttons added to far right
-                                      - Current selection style changed
-                                      - Source button has Home icon
+                                      - 修改：當進入 'category' 模式時，將 minHeight 設為 0px，收合上方空間
+                                      - 加入 transition-all 讓收合有動畫效果
                                     */}
-                                 <div className="flex flex-col justify-end" style={{ minHeight: '90px' }}>
+                                 <div className="flex flex-col justify-end transition-all duration-300 ease-in-out" style={{ minHeight: activeFilterMenu === 'category' ? '0px' : '90px' }}>
                                     {activeFilterMenu !== 'category' && (
                                         <div className={`filter-section border-b border-gray-100 flex items-center gap-2 p-2 whitespace-nowrap scrollbar-hide open ${activeFilterMenu === null ? 'justify-between overflow-hidden' : 'overflow-x-auto'}`}>
                                             
@@ -1472,7 +1466,9 @@
                                                 </span>
                                             </button>
                                         ) : (
-                                            <div className="w-full animate-fadeIn p-2">
+                                            /* 修改：這裡加上固定高度 h-[144px] 與垂直置中 flex-col justify-center，
+                                               讓這塊區域撐滿原本 (90px + 54px) 的空間，避免畫面跳動 */
+                                            <div className="w-full animate-fadeIn p-2 h-[144px] flex flex-col justify-center">
                                                 <div className="grid grid-cols-5 gap-2 overflow-hidden">
                                                     {FILTER_TYPES.map(t => (
                                                         <button
