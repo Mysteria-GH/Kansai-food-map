@@ -1044,7 +1044,21 @@
                                         ) : (
                                             currentShops.map(shop => {
                                                 const labels = getFoodTypeLabels(shop.type);
-                                                const isWagyu = checkIsWagyu(shop);
+                                                
+                                                // Identify all matching special types
+                                                const matchedSpecials = SPECIAL_TYPES.filter(type => {
+                                                    switch (type.id) {
+                                                        case 'wagyu': return checkIsWagyu(shop);
+                                                        case 'beef_tongue': return checkIsBeefTongue(shop);
+                                                        case 'all_you_can_eat': return checkIsAllYouCanEat(shop);
+                                                        case 'hamburger': return checkIsHamburger(shop);
+                                                        case 'izakaya': return checkIsIzakaya(shop);
+                                                        case 'lunch': return checkIsLunch(shop);
+                                                        case 'kissaten': return checkIsKissaten(shop);
+                                                        default: return false;
+                                                    }
+                                                });
+
                                                 return (
                                                     <div key={shop.id} className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 flex justify-between items-center group">
                                                         <div className="flex-1 min-w-0 pr-2">
@@ -1065,16 +1079,20 @@
                                                                 <span className={`text-xs px-2 py-0.5 rounded-full text-white shrink-0 ${shop.category === 'kyoto' ? 'bg-indigo-500' : 'bg-rose-500'}`}>
                                                                     {shop.category === 'kyoto' ? '京都' : '大阪'}
                                                                 </span>
+                                                                
+                                                                {/* Basic Types (Gray) */}
                                                                 {labels.map((label, idx) => (
                                                                     <span key={idx} className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 border border-gray-200 shrink-0">
                                                                         {label}
                                                                     </span>
                                                                 ))}
-                                                                {isWagyu && (
-                                                                    <span className="text-xs px-2 py-0.5 rounded-full bg-orange-100 text-orange-800 border border-orange-200 shrink-0">
-                                                                        和牛
+                                                                
+                                                                {/* Special Types (Orange) */}
+                                                                {matchedSpecials.map(s => (
+                                                                    <span key={s.id} className="text-xs px-2 py-0.5 rounded-full bg-orange-100 text-orange-800 border border-orange-200 shrink-0">
+                                                                        {s.label}
                                                                     </span>
-                                                                )}
+                                                                ))}
                                                             </div>
                                                             <p className="text-xs text-gray-500 truncate mt-1">{shop.address || '無地址資訊'}</p>
                                                             {shop.hours && (
