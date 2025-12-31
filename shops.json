@@ -1,44 +1,52 @@
 [
   {
     "id": 1,
-    "name": "花丸軒 法善寺店 (24小時/濃郁豚骨/炒飯)",
+    "name": "花丸軒 法善寺店(24小時+濃郁豚骨醬油+魯豬五花叉燒+蒜片+炒飯+煎餃)",
     "lat": 34.6685,
     "lng": 135.5035,
     "category": "osaka",
-    "type": ["ramen"],
+    "type": [
+      "ramen"
+    ],
     "hours": "24小時營業",
     "rating": 4.2,
     "address": "大阪難波・法善寺"
   },
   {
     "id": 2,
-    "name": "しゃぶしゃぶ・すき焼き専門店 しゃぶ長 (午間套餐/和牛)",
-    "lat": 34.6720,
-    "lng": 135.5010,
+    "name": "しゃぶしゃぶ・すき焼き専門店 しゃぶ長(午間套餐+和牛壽喜燒)",
+    "lat": 34.672,
+    "lng": 135.501,
     "category": "osaka",
-    "type": ["sukiyaki"],
+    "type": [
+      "sukiyaki"
+    ],
     "hours": "11:30-14:00, 17:00-22:00",
     "rating": 4.5,
     "address": "大阪心齋橋"
   },
   {
     "id": 3,
-    "name": "お食事処 美登里 (豬排丼/量大)",
-    "lat": 34.6650,
-    "lng": 135.5020,
+    "name": "お食事処 美登里(豬排丼+量大)",
+    "lat": 34.665,
+    "lng": 135.502,
     "category": "osaka",
-    "type": ["ricebowl"],
+    "type": [
+      "ricebowl"
+    ],
     "hours": "11:00-21:00",
     "rating": 4.0,
     "address": "大阪難波"
   },
   {
     "id": 4,
-    "name": "Melt Chocolate (甜點/現切熱巧克力)",
-    "lat": 34.7030,
-    "lng": 135.4960,
+    "name": "Melt Chocolate(甜點+現切熱巧克力)",
+    "lat": 34.703,
+    "lng": 135.496,
     "category": "osaka",
-    "type": ["cafe"],
+    "type": [
+      "cafe"
+    ],
     "hours": "11:00-20:00",
     "rating": 4.3,
     "address": "大阪梅田"
@@ -46,43 +54,53 @@
   {
     "id": 5,
     "name": "大阪燒 千房",
-    "lat": 34.6670,
-    "lng": 135.5030,
+    "lat": 34.667,
+    "lng": 135.503,
     "category": "osaka",
-    "type": ["other"],
+    "type": [
+      "other"
+    ],
     "hours": "11:00-23:00",
     "rating": 4.1,
     "address": "大阪道頓堀"
   },
   {
     "id": 6,
-    "name": "肉の隠れ家 おあがり 嵐山本店 (和牛火山/風景)",
-    "lat": 35.0110,
-    "lng": 135.6770,
+    "name": "肉の隠れ家 おあがり 嵐山本店(和牛火山+桂川風景)",
+    "lat": 35.011,
+    "lng": 135.677,
     "category": "kyoto",
-    "type": ["ricebowl", "yakiniku"],
+    "type": [
+      "ricebowl",
+      "yakiniku"
+    ],
     "hours": "11:00-15:00",
     "rating": 4.6,
     "address": "京都嵐山"
   },
   {
     "id": 7,
-    "name": "すきやき・しゃぶしゃぶ大牧場 千日前店 (神戶牛吃到飽)",
+    "name": "すきやき・しゃぶしゃぶ大牧場 千日前店(神戶牛壽喜燒吃到飽)",
     "lat": 34.6665,
-    "lng": 135.5040,
+    "lng": 135.504,
     "category": "osaka",
-    "type": ["sukiyaki", "yakiniku"],
+    "type": [
+      "sukiyaki",
+      "yakiniku"
+    ],
     "hours": "11:00-23:00",
     "rating": 4.4,
     "address": "大阪難波・千日前"
   },
   {
     "id": 8,
-    "name": "焼肉こじま離れ 大阪江坂 (漢堡排)",
-    "lat": 34.7590,
-    "lng": 135.4980,
+    "name": "焼肉こじま離れ 大阪江坂(漢堡排)",
+    "lat": 34.759,
+    "lng": 135.498,
     "category": "osaka",
-    "type": ["yakiniku"],
+    "type": [
+      "yakiniku"
+    ],
     "hours": "17:00-23:00",
     "rating": 4.2,
     "address": "大阪江坂"
@@ -90,604 +108,721 @@
   {
     "id": 9,
     "name": "厚切り仙台牛タンと黒毛和牛食べ放題 焼肉倶楽部 梅田店",
-    "lat": 34.7040,
-    "lng": 135.4990,
+    "lat": 34.704,
+    "lng": 135.499,
     "category": "osaka",
-    "type": ["yakiniku"],
+    "type": [
+      "yakiniku"
+    ],
     "hours": "16:00-23:00",
     "rating": 4.3,
     "address": "大阪梅田"
   },
   {
     "id": 10,
-    "name": "しゃぶ禅 梅田店 (黑毛和牛壽喜燒吃到飽)",
-    "lat": 34.6980,
-    "lng": 135.4950,
+    "name": "しゃぶ禅 梅田店(黑毛和牛壽喜燒吃到飽)",
+    "lat": 34.698,
+    "lng": 135.495,
     "category": "osaka",
-    "type": ["sukiyaki"],
+    "type": [
+      "sukiyaki"
+    ],
     "hours": "16:00-23:00",
     "rating": 4.5,
     "address": "大阪梅田"
   },
   {
     "id": 11,
-    "name": "焼肉ジャパン LINKS UMEDA店 (神戶牛)",
-    "lat": 34.7050,
-    "lng": 135.4970,
+    "name": "焼肉ジャパン LINKS UMEDA店(神戶牛)",
+    "lat": 34.705,
+    "lng": 135.497,
     "category": "osaka",
-    "type": ["yakiniku"],
+    "type": [
+      "yakiniku"
+    ],
     "hours": "11:00-23:00",
     "rating": 4.4,
     "address": "大阪梅田 LINKS"
   },
   {
     "id": 12,
-    "name": "すき焼 しゃぶしゃぶつかだ KITTE大阪 (關西和牛)",
-    "lat": 34.7010,
-    "lng": 135.4940,
+    "name": "すき焼 しゃぶしゃぶつかだ KITTE大阪(關西和牛壽喜燒)",
+    "lat": 34.701,
+    "lng": 135.494,
     "category": "osaka",
-    "type": ["sukiyaki"],
+    "type": [
+      "sukiyaki"
+    ],
     "hours": "11:00-22:00",
     "rating": 4.6,
     "address": "大阪梅田 KITTE"
   },
   {
     "id": 13,
-    "name": "和牛一頭買い 焼肉ホルモン黒野 ウラなんば本店",
-    "lat": 34.6640,
+    "name": "和牛一頭買い 焼肉ホルモン黒野 ウラなんば本店(黑毛和牛)",
+    "lat": 34.664,
     "lng": 135.5035,
     "category": "osaka",
-    "type": ["yakiniku"],
+    "type": [
+      "yakiniku"
+    ],
     "hours": "17:00-24:00",
     "rating": 4.5,
     "address": "大阪難波"
   },
   {
     "id": 14,
-    "name": "手づくりハンバーグの店 とくら 京都三条店 (肉汁漢堡排)",
+    "name": "手づくりハンバーグの店 とくら 京都三条店(漢堡排+ルクア大阪也有)",
     "lat": 35.0085,
-    "lng": 135.7620,
+    "lng": 135.762,
     "category": "kyoto",
-    "type": ["other"],
+    "type": [
+      "other"
+    ],
     "hours": "11:00-15:00, 17:00-21:30",
     "rating": 4.4,
     "address": "京都三條"
   },
   {
     "id": 15,
-    "name": "板前焼肉 一光 住之江本店 (黑毛和牛)",
-    "lat": 34.6090,
-    "lng": 135.4800,
+    "name": "板前焼肉 一光 住之江本店(黑毛和牛)",
+    "lat": 34.609,
+    "lng": 135.48,
     "category": "osaka",
-    "type": ["yakiniku"],
+    "type": [
+      "yakiniku"
+    ],
     "hours": "17:00-23:00",
     "rating": 4.3,
     "address": "大阪住之江"
   },
   {
     "id": 16,
-    "name": "TAKUMEAT STORE (燒肉)",
-    "lat": 34.6700,
-    "lng": 135.5050,
+    "name": "TAKUMEAT STORE(燒肉)",
+    "lat": 34.67,
+    "lng": 135.505,
     "category": "osaka",
-    "type": ["yakiniku"],
+    "type": [
+      "yakiniku"
+    ],
     "hours": "11:30-22:00",
     "rating": 4.2,
     "address": "大阪心齋橋/難波"
   },
   {
     "id": 17,
-    "name": "地焼うなぎ 法善寺山かづ (關西地燒鰻魚)",
-    "lat": 34.6680,
-    "lng": 135.5030,
+    "name": "地焼うなぎ 法善寺山かづ(關西地燒鰻魚飯)",
+    "lat": 34.668,
+    "lng": 135.503,
     "category": "osaka",
-    "type": ["eel"],
+    "type": [
+      "eel"
+    ],
     "hours": "11:00-21:00",
     "rating": 4.7,
     "address": "大阪法善寺"
   },
   {
     "id": 18,
-    "name": "黄金出汁しゃぶと江戸前寿司 肉のあさつ 梅田お初天神店",
-    "lat": 34.7000,
-    "lng": 135.5010,
+    "name": "黄金出汁しゃぶと江戸前寿司 肉のあさつ 梅田お初天神店(黑毛和牛壽喜燒定食+免費白飯?+特定時間)",
+    "lat": 34.7,
+    "lng": 135.501,
     "category": "osaka",
-    "type": ["sukiyaki", "sushi"],
+    "type": [
+      "sukiyaki",
+      "sushi"
+    ],
     "hours": "16:00-23:00",
     "rating": 4.3,
     "address": "大阪梅田"
   },
   {
     "id": 19,
-    "name": "スキヤキフジオ なんばCITY店 (個人壽喜燒)",
-    "lat": 34.6630,
-    "lng": 135.5020,
+    "name": "スキヤキフジオ なんばCITY店(個人壽喜燒)",
+    "lat": 34.663,
+    "lng": 135.502,
     "category": "osaka",
-    "type": ["sukiyaki"],
+    "type": [
+      "sukiyaki"
+    ],
     "hours": "11:00-22:00",
     "rating": 4.2,
     "address": "大阪難波 CITY"
   },
   {
     "id": 20,
-    "name": "焼肉ごりちゃん お初天神店 (黑毛和牛)",
+    "name": "焼肉ごりちゃんお初天神店(黑毛和牛)",
     "lat": 34.7005,
     "lng": 135.5005,
     "category": "osaka",
-    "type": ["yakiniku"],
+    "type": [
+      "yakiniku"
+    ],
     "hours": "17:00-24:00",
     "rating": 4.5,
     "address": "大阪梅田"
   },
   {
     "id": 21,
-    "name": "CAFE ANNON なんば本店 (鬆餅)",
+    "name": "CAFE ANNON なんば本店(鬆餅?)",
     "lat": 34.6655,
-    "lng": 135.5030,
+    "lng": 135.503,
     "category": "osaka",
-    "type": ["cafe"],
+    "type": [
+      "cafe"
+    ],
     "hours": "11:00-23:00",
     "rating": 4.3,
     "address": "大阪難波"
   },
   {
     "id": 22,
-    "name": "和牛専門 牛めし 前田優 (A5和牛丼)",
-    "lat": 34.6690,
-    "lng": 135.5040,
+    "name": "和牛専門 牛めし 前田優(A5和牛丼)",
+    "lat": 34.669,
+    "lng": 135.504,
     "category": "osaka",
-    "type": ["ricebowl", "yakiniku"],
+    "type": [
+      "ricebowl",
+      "yakiniku"
+    ],
     "hours": "11:00-22:00",
     "rating": 4.4,
     "address": "大阪日本橋"
   },
   {
     "id": 23,
-    "name": "釜飯と海鮮 暁 (創作海鮮/釜飯)",
-    "lat": 34.7020,
-    "lng": 135.4980,
+    "name": "釜飯と海鮮 暁(創作海鮮+海鮮釜飯)",
+    "lat": 34.702,
+    "lng": 135.498,
     "category": "osaka",
-    "type": ["ricebowl", "sushi"],
+    "type": [
+      "ricebowl",
+      "sushi"
+    ],
     "hours": "17:00-23:00",
     "rating": 4.2,
     "address": "大阪梅田"
   },
   {
     "id": 24,
-    "name": "かつ丼 千代松豪仁 (厚切豬排丼)",
+    "name": "かつ丼 千代松豪仁",
     "lat": 34.6645,
     "lng": 135.5045,
     "category": "osaka",
-    "type": ["ricebowl"],
+    "type": [
+      "ricebowl"
+    ],
     "hours": "11:00-21:30",
     "rating": 4.1,
     "address": "大阪難波・日本橋"
   },
   {
     "id": 25,
-    "name": "厚切り仙台牛タンと黒毛和牛食べ放題 焼肉倶楽部 天王寺店 (夜景)",
-    "lat": 34.6470,
-    "lng": 135.5130,
+    "name": "厚切り仙台牛タンと黒毛和牛食べ放題 焼肉倶楽部 天王寺店(厚牛舌+吃到飽套餐+夜景)",
+    "lat": 34.647,
+    "lng": 135.513,
     "category": "osaka",
-    "type": ["yakiniku"],
+    "type": [
+      "yakiniku"
+    ],
     "hours": "16:00-23:00",
     "rating": 4.3,
     "address": "大阪天王寺"
   },
   {
     "id": 26,
-    "name": "＃KOKUBAN (歐姆飯/漢堡排)",
-    "lat": 34.6680,
-    "lng": 135.5050,
+    "name": "＃KOKUBAN (コクバン)(歐姆飯+漢堡排)",
+    "lat": 34.668,
+    "lng": 135.505,
     "category": "osaka",
-    "type": ["cafe"],
+    "type": [
+      "cafe"
+    ],
     "hours": "11:00-21:00",
     "rating": 4.0,
     "address": "大阪難波"
   },
   {
     "id": 27,
-    "name": "焼き鳥 おでん 坊っちゃん茶屋町店 (平價串燒)",
-    "lat": 34.7070,
-    "lng": 135.5000,
+    "name": "焼き鳥 おでん 坊っちゃん茶屋町店(平價串燒+昭和風?)",
+    "lat": 34.707,
+    "lng": 135.5,
     "category": "osaka",
-    "type": ["other"],
+    "type": [
+      "other"
+    ],
     "hours": "17:00-24:00",
     "rating": 3.9,
     "address": "大阪梅田茶屋町"
   },
   {
     "id": 28,
-    "name": "焼肉 㐂舌 法善寺 (午間定食/茶泡飯)",
+    "name": "焼肉 㐂舌 法善寺(午間定食+牛蓋飯+茶泡飯+包間)",
     "lat": 34.6685,
     "lng": 135.5032,
     "category": "osaka",
-    "type": ["yakiniku", "ricebowl"],
+    "type": [
+      "yakiniku",
+      "ricebowl"
+    ],
     "hours": "11:30-15:00, 17:00-23:00",
     "rating": 4.6,
     "address": "大阪法善寺"
   },
   {
     "id": 29,
-    "name": "帰ってきた 宮田麺児 (沾麵)",
-    "lat": 34.6710,
-    "lng": 135.5040,
+    "name": "帰ってきた 宮田麺児(沾麵)",
+    "lat": 34.671,
+    "lng": 135.504,
     "category": "osaka",
-    "type": ["ramen"],
+    "type": [
+      "ramen"
+    ],
     "hours": "11:00-15:00, 17:30-22:00",
     "rating": 4.1,
     "address": "大阪心齋橋"
   },
   {
     "id": 30,
-    "name": "まるよし (木津壽司)",
-    "lat": 34.6590,
-    "lng": 135.4970,
+    "name": "まるよし(木津壽司)",
+    "lat": 34.659,
+    "lng": 135.497,
     "category": "osaka",
-    "type": ["sushi"],
+    "type": [
+      "sushi"
+    ],
     "hours": "09:00-13:00",
     "rating": 4.4,
     "address": "大阪木津市場"
   },
   {
     "id": 31,
-    "name": "焼肉うしごろ 梅田店 (和牛/代烤)",
+    "name": "焼肉うしごろ 梅田店(和牛燒肉+全程代烤)",
     "lat": 34.7045,
     "lng": 135.4975,
     "category": "osaka",
-    "type": ["yakiniku"],
+    "type": [
+      "yakiniku"
+    ],
     "hours": "17:00-23:30",
     "rating": 4.7,
     "address": "大阪梅田"
   },
   {
     "id": 32,
-    "name": "大和茶大福專門店 GRAN CHA (奈良大福)",
-    "lat": 34.6850,
-    "lng": 135.8050,
+    "name": "大和茶大福專門店 GRAN CHA(奈良+大福)",
+    "lat": 34.685,
+    "lng": 135.805,
     "category": "osaka",
-    "type": ["cafe"],
+    "type": [
+      "cafe"
+    ],
     "hours": "10:00-19:00",
     "rating": 4.3,
     "address": "奈良 (顯示於大阪區)"
   },
   {
     "id": 33,
-    "name": "中谷堂 (艾草麻糬)",
-    "lat": 34.6820,
-    "lng": 135.8280,
+    "name": "中谷堂(奈良+艾草麻糬)",
+    "lat": 34.682,
+    "lng": 135.828,
     "category": "osaka",
-    "type": ["other"],
+    "type": [
+      "other"
+    ],
     "hours": "10:00-19:00",
     "rating": 4.5,
     "address": "奈良 (顯示於大阪區)"
   },
   {
     "id": 34,
-    "name": "三大和牛食べ比べ 焼肉 つなぐ (個室/神戶牛)",
+    "name": "三大和牛食べ比べ 焼肉 つなぐ(個室燒肉+神戶牛)",
     "lat": 34.6675,
     "lng": 135.5035,
     "category": "osaka",
-    "type": ["yakiniku"],
+    "type": [
+      "yakiniku"
+    ],
     "hours": "17:00-23:00",
     "rating": 4.6,
     "address": "大阪難波"
   },
   {
     "id": 35,
-    "name": "すき焼き・しゃぶしゃぶ・肉寿司 食べ放題 和牛ざんまい 心斎橋店",
-    "lat": 34.6730,
-    "lng": 135.5010,
+    "name": "すき焼き しゃぶしゃぶ 肉寿司 食べ放題 和牛ざんまい 心斎橋店(宮崎牛壽喜燒+串燒+吃到飽+四種套餐)",
+    "lat": 34.673,
+    "lng": 135.501,
     "category": "osaka",
-    "type": ["sukiyaki", "sushi"],
+    "type": [
+      "sukiyaki",
+      "sushi"
+    ],
     "hours": "16:00-23:00",
     "rating": 4.2,
     "address": "大阪心齋橋"
   },
   {
     "id": 36,
-    "name": "すき焼き・しゃぶしゃぶ きよ助 (個人鍋)",
-    "lat": 34.6660,
-    "lng": 135.5040,
+    "name": "すき焼き・しゃぶしゃぶ きよ助(個人鍋)",
+    "lat": 34.666,
+    "lng": 135.504,
     "category": "osaka",
-    "type": ["sukiyaki"],
+    "type": [
+      "sukiyaki"
+    ],
     "hours": "11:30-22:00",
     "rating": 4.1,
     "address": "大阪難波"
   },
   {
     "id": 37,
-    "name": "大阪福島 WAgyu鬼く 焼肉 (和牛/冷麵)",
-    "lat": 34.6960,
-    "lng": 135.4850,
+    "name": "大阪福島 WAgyu鬼く 焼肉(黑毛和牛+冷麵)",
+    "lat": 34.696,
+    "lng": 135.485,
     "category": "osaka",
-    "type": ["yakiniku"],
+    "type": [
+      "yakiniku"
+    ],
     "hours": "17:00-24:00",
     "rating": 4.4,
     "address": "大阪福島"
   },
   {
     "id": 38,
-    "name": "人類みな麵類 (醬油拉麵/炒飯/18-22)",
-    "lat": 34.7250,
-    "lng": 135.5000,
+    "name": "人類みな麵類(應該是這家?+18~22+炒飯+醬油拉麵+鮭魚卵)",
+    "lat": 34.725,
+    "lng": 135.5,
     "category": "osaka",
-    "type": ["ramen"],
+    "type": [
+      "ramen"
+    ],
     "hours": "10:00-03:00",
     "rating": 4.5,
     "address": "大阪西中島南方"
   },
   {
     "id": 39,
-    "name": "牛舌的柠檬 (厚切牛舌/檸檬飲/京都店)",
-    "lat": 35.0040,
-    "lng": 135.7690,
+    "name": "牛舌的柠檬(超厚碳烤牛舌+牛舌後段[軟嫩]+味噌醬+檸檬飲+咖哩牛舌+免費續飯)",
+    "lat": 35.004,
+    "lng": 135.769,
     "category": "kyoto",
-    "type": ["yakiniku", "ricebowl"],
+    "type": [
+      "yakiniku",
+      "ricebowl"
+    ],
     "hours": "11:30-15:00, 17:00-22:00",
     "rating": 4.3,
     "address": "京都河原町"
   },
   {
     "id": 40,
-    "name": "やさい串巻き なるとや (野菜捲/居酒屋)",
-    "lat": 34.6670,
+    "name": "やさい串巻き なるとや(應該是這家?+野菜捲+居酒屋)",
+    "lat": 34.667,
     "lng": 135.5038,
     "category": "osaka",
-    "type": ["other"],
+    "type": [
+      "other"
+    ],
     "hours": "17:00-24:00",
     "rating": 4.1,
     "address": "大阪難波"
   },
   {
     "id": 41,
-    "name": "MooM Cafe (舒芙蕾煎餅)",
+    "name": "MooM Cafe(舒芙蕾煎餅)",
     "lat": 34.6705,
-    "lng": 135.5070,
+    "lng": 135.507,
     "category": "osaka",
-    "type": ["cafe"],
+    "type": [
+      "cafe"
+    ],
     "hours": "11:00-19:00",
     "rating": 4.2,
     "address": "大阪島之內"
   },
   {
     "id": 42,
-    "name": "黒毛和牛タンとハラミ 焼肉龍 難波千日前店 (海鮮/吃到飽)",
+    "name": "黒毛和牛タンとハラミ 焼肉龍 難波千日前店(黑毛和牛燒肉+螃蟹海鮮+吃到飽)",
     "lat": 34.6655,
     "lng": 135.5045,
     "category": "osaka",
-    "type": ["yakiniku"],
+    "type": [
+      "yakiniku"
+    ],
     "hours": "16:00-23:00",
     "rating": 4.3,
     "address": "大阪難波"
   },
   {
     "id": 43,
-    "name": "めん処 つるはん KITTE大阪店 (壽喜燒烏冬)",
+    "name": "めん処 つるはん KITTE大阪店(黑毛和牛+壽喜燒烏冬)",
     "lat": 34.7015,
     "lng": 135.4945,
     "category": "osaka",
-    "type": ["sukiyaki"],
+    "type": [
+      "sukiyaki"
+    ],
     "hours": "11:00-22:00",
     "rating": 4.0,
     "address": "大阪梅田 KITTE"
   },
   {
     "id": 44,
-    "name": "パンとエスプレッソと堺筋俱楽部 (Brunch/百年銀行)",
-    "lat": 34.6790,
-    "lng": 135.5070,
+    "name": "パンとエスプレッソと堺筋俱楽部(Brunch+百年銀行+麵包咖啡廳+一個月前預約)",
+    "lat": 34.679,
+    "lng": 135.507,
     "category": "osaka",
-    "type": ["cafe"],
+    "type": [
+      "cafe"
+    ],
     "hours": "08:00-22:00",
     "rating": 4.4,
     "address": "大阪長堀橋"
   },
   {
     "id": 45,
-    "name": "らーめん志高 (豚骨/炒飯)",
-    "lat": 34.6550,
-    "lng": 135.5050,
+    "name": "らーめん志高(豚骨+炒飯+座位少)",
+    "lat": 34.655,
+    "lng": 135.505,
     "category": "osaka",
-    "type": ["ramen"],
+    "type": [
+      "ramen"
+    ],
     "hours": "11:00-14:00, 18:00-23:00",
     "rating": 3.9,
     "address": "大阪"
   },
   {
     "id": 46,
-    "name": "The 33 Tea＆Bar Terrace (風景/歐姆飯)",
-    "lat": 34.7000,
-    "lng": 135.4930,
+    "name": "The 33 Tea＆Bar Terrace(梅田+風景+歐姆飯+午間套餐)",
+    "lat": 34.7,
+    "lng": 135.493,
     "category": "osaka",
-    "type": ["cafe"],
+    "type": [
+      "cafe"
+    ],
     "hours": "11:00-23:00",
     "rating": 4.3,
     "address": "大阪梅田 Breeze Breeze"
   },
   {
     "id": 47,
-    "name": "鶏Soba 座銀 本店 (雞白湯拉麵)",
-    "lat": 34.6900,
-    "lng": 135.4980,
+    "name": "鶏Soba 座銀 本店(地點為大版本店+連結為東京本店)",
+    "lat": 34.69,
+    "lng": 135.498,
     "category": "osaka",
-    "type": ["ramen"],
+    "type": [
+      "ramen"
+    ],
     "hours": "11:00-22:30",
     "rating": 4.6,
     "address": "大阪肥後橋"
   },
   {
     "id": 48,
-    "name": "Gion Duck Rice (鴨肉飯)",
+    "name": "Gion Duck Rice",
     "lat": 35.0045,
-    "lng": 135.7720,
+    "lng": 135.772,
     "category": "kyoto",
-    "type": ["ricebowl"],
+    "type": [
+      "ricebowl"
+    ],
     "hours": "11:00-15:00, 17:30-21:00",
     "rating": 4.5,
     "address": "京都祇園"
   },
   {
     "id": 49,
-    "name": "カレーショップ ダール (歐風咖哩)",
-    "lat": 34.6850,
-    "lng": 135.5000,
+    "name": "カレーショップ ダール(歐風咖哩+小菜)",
+    "lat": 34.685,
+    "lng": 135.5,
     "category": "osaka",
-    "type": ["curry"],
+    "type": [
+      "curry"
+    ],
     "hours": "11:00-20:00",
     "rating": 4.0,
     "address": "大阪本町"
   },
   {
     "id": 50,
-    "name": "炭ト羽釜 どげん (親子丼/燒肉)",
-    "lat": 34.6690,
-    "lng": 135.5000,
+    "name": "炭ト羽釜 どげん(親子丼+燒肉)",
+    "lat": 34.669,
+    "lng": 135.5,
     "category": "osaka",
-    "type": ["ricebowl", "yakiniku"],
+    "type": [
+      "ricebowl",
+      "yakiniku"
+    ],
     "hours": "17:00-24:00",
     "rating": 4.1,
     "address": "大阪難波"
   },
   {
     "id": 51,
-    "name": "鰻屋 瀬がわ (鰻魚飯/町家)",
-    "lat": 35.0060,
-    "lng": 135.7650,
+    "name": "鰻屋 瀬がわ(町家+鰻魚飯)",
+    "lat": 35.006,
+    "lng": 135.765,
     "category": "kyoto",
-    "type": ["eel"],
+    "type": [
+      "eel"
+    ],
     "hours": "11:00-15:00",
     "rating": 4.3,
     "address": "京都"
   },
   {
     "id": 52,
-    "name": "大阪焼肉 焼肉Lab 難波店 (吃到飽)",
-    "lat": 34.6650,
+    "name": "大阪焼肉 焼肉Lab 難波店(吃到飽)",
+    "lat": 34.665,
     "lng": 135.5025,
     "category": "osaka",
-    "type": ["yakiniku"],
+    "type": [
+      "yakiniku"
+    ],
     "hours": "12:00-23:00",
     "rating": 4.0,
     "address": "大阪難波"
   },
   {
     "id": 53,
-    "name": "お晩酌 芽 (和牛居酒屋)",
-    "lat": 34.6950,
-    "lng": 135.4900,
+    "name": "お晩酌 芽(和牛+居酒屋)",
+    "lat": 34.695,
+    "lng": 135.49,
     "category": "osaka",
-    "type": ["yakiniku"],
+    "type": [
+      "yakiniku"
+    ],
     "hours": "17:00-23:00",
     "rating": 4.1,
     "address": "大阪"
   },
   {
     "id": 54,
-    "name": "屋台餃子 (無蒜餃子/居酒屋)",
-    "lat": 34.6700,
-    "lng": 135.5060,
+    "name": "屋台餃子(居酒屋+不用大蒜)",
+    "lat": 34.67,
+    "lng": 135.506,
     "category": "osaka",
-    "type": ["other"],
+    "type": [
+      "other"
+    ],
     "hours": "17:00-02:00",
     "rating": 3.9,
     "address": "大阪"
   },
   {
     "id": 55,
-    "name": "牡蠣だ (Kakeda)",
-    "lat": 34.7030,
+    "name": "〒530-0018 Osaka, Kita Ward, Komatsubarachō, 1 モコビル(牡蠣だ)",
+    "lat": 34.703,
     "lng": 135.5015,
     "category": "osaka",
-    "type": ["other"],
+    "type": [
+      "other"
+    ],
     "hours": "17:00-23:00",
     "rating": 4.2,
     "address": "大阪梅田・小松原"
   },
   {
     "id": 56,
-    "name": "モリタ屋 四条猪熊本店 (150年壽喜燒)",
+    "name": "モリタ屋 四条猪熊本店(大阪也有+150年關西和牛壽喜燒+全程專人服務+5種價位套餐)",
     "lat": 35.0035,
-    "lng": 135.7510,
+    "lng": 135.751,
     "category": "kyoto",
-    "type": ["sukiyaki"],
+    "type": [
+      "sukiyaki"
+    ],
     "hours": "11:30-15:00, 17:00-22:00",
     "rating": 4.6,
     "address": "京都四条"
   },
   {
     "id": 57,
-    "name": "焼肉藤もと 心斎橋店 (燒肉+蛋)",
-    "lat": 34.6740,
+    "name": "焼肉藤もと 心斎橋店(福島名店燒肉+蛋)",
+    "lat": 34.674,
     "lng": 135.5005,
     "category": "osaka",
-    "type": ["yakiniku"],
+    "type": [
+      "yakiniku"
+    ],
     "hours": "17:00-23:00",
     "rating": 4.5,
     "address": "大阪心齋橋"
   },
   {
     "id": 58,
-    "name": "丸正餃子店 阪奈店 (中華料理)",
-    "lat": 34.7050,
-    "lng": 135.6000,
+    "name": "丸正餃子店 阪奈店(本店在附近+中華料理)",
+    "lat": 34.705,
+    "lng": 135.6,
     "category": "osaka",
-    "type": ["other"],
+    "type": [
+      "other"
+    ],
     "hours": "16:00-22:00",
     "rating": 4.0,
     "address": "大阪大東"
   },
   {
     "id": 59,
-    "name": "力丸 炉ばた焼 馬籠 (爐端燒)",
-    "lat": 34.7010,
-    "lng": 135.4990,
+    "name": "力丸 炉ばた焼 馬籠(爐端燒)",
+    "lat": 34.701,
+    "lng": 135.499,
     "category": "osaka",
-    "type": ["other"],
+    "type": [
+      "other"
+    ],
     "hours": "16:00-23:00",
     "rating": 4.1,
     "address": "大阪梅田"
   },
   {
     "id": 60,
-    "name": "まきの 天神橋四丁目店 (天婦羅丼)",
-    "lat": 34.7060,
-    "lng": 135.5110,
+    "name": "まきの 天神橋四丁目店(天婦羅+丼)",
+    "lat": 34.706,
+    "lng": 135.511,
     "category": "osaka",
-    "type": ["ricebowl"],
+    "type": [
+      "ricebowl"
+    ],
     "hours": "11:00-21:30",
     "rating": 4.3,
     "address": "大阪天滿"
   },
   {
     "id": 61,
-    "name": "雌牛専門店 板前焼肉一牛 心斎橋店",
-    "lat": 34.6720,
-    "lng": 135.5020,
+    "name": "雌牛専門店 板前焼肉一牛 心斎橋店(各地和牛)",
+    "lat": 34.672,
+    "lng": 135.502,
     "category": "osaka",
-    "type": ["yakiniku"],
+    "type": [
+      "yakiniku"
+    ],
     "hours": "17:00-23:00",
     "rating": 4.4,
     "address": "大阪心齋橋"
   },
   {
     "id": 62,
-    "name": "インセプション 大阪 (冰磚咖啡)",
-    "lat": 34.7080,
-    "lng": 135.5050,
+    "name": "インセプション 大阪(冰磚咖啡+京都也有)",
+    "lat": 34.708,
+    "lng": 135.505,
     "category": "osaka",
-    "type": ["cafe"],
+    "type": [
+      "cafe"
+    ],
     "hours": "11:00-19:00",
     "rating": 4.2,
     "address": "大阪堂山"
   },
   {
     "id": 63,
-    "name": "Kusaka Curry (座位少)",
-    "lat": 34.6680,
-    "lng": 135.5060,
+    "name": "Kusaka Curry(七個位置)",
+    "lat": 34.668,
+    "lng": 135.506,
     "category": "osaka",
-    "type": ["curry"],
+    "type": [
+      "curry"
+    ],
     "hours": "11:30-15:30",
     "rating": 4.1,
     "address": "大阪難波"
@@ -695,340 +830,402 @@
   {
     "id": 64,
     "name": "寿しのむさし 京都駅八条口店",
-    "lat": 34.9840,
-    "lng": 135.7590,
+    "lat": 34.984,
+    "lng": 135.759,
     "category": "kyoto",
-    "type": ["sushi"],
+    "type": [
+      "sushi"
+    ],
     "hours": "10:30-22:00",
     "rating": 4.2,
     "address": "京都車站"
   },
   {
     "id": 65,
-    "name": "Japanese Noodle 一寸法師 (拉麵)",
-    "lat": 34.6700,
-    "lng": 135.5000,
+    "name": "Japanese Noodle 一寸法師(拉麵)",
+    "lat": 34.67,
+    "lng": 135.5,
     "category": "osaka",
-    "type": ["ramen"],
+    "type": [
+      "ramen"
+    ],
     "hours": "11:00-15:00",
     "rating": 4.0,
     "address": "大阪"
   },
   {
     "id": 66,
-    "name": "鳥岩楼 (親子丼)",
-    "lat": 35.0310,
-    "lng": 135.7480,
+    "name": "鳥岩楼(親子丼)",
+    "lat": 35.031,
+    "lng": 135.748,
     "category": "kyoto",
-    "type": ["ricebowl"],
+    "type": [
+      "ricebowl"
+    ],
     "hours": "12:00-14:00 (親子丼)",
     "rating": 4.3,
     "address": "京都西陣"
   },
   {
     "id": 67,
-    "name": "仙豆 (炸豬排?)",
-    "lat": 35.0050,
-    "lng": 135.7600,
+    "name": "仙豆（センズ）(炸豬排?)",
+    "lat": 35.005,
+    "lng": 135.76,
     "category": "kyoto",
-    "type": ["other"],
+    "type": [
+      "other"
+    ],
     "hours": "11:30-15:00",
     "rating": 4.0,
     "address": "京都"
   },
   {
     "id": 68,
-    "name": "茶寮 寶泉 (和菓子/喫茶)",
-    "lat": 35.0430,
-    "lng": 135.7680,
+    "name": "茶寮 寶泉(和菓子餐廳+喫茶)",
+    "lat": 35.043,
+    "lng": 135.768,
     "category": "kyoto",
-    "type": ["cafe"],
+    "type": [
+      "cafe"
+    ],
     "hours": "10:00-17:00",
     "rating": 4.6,
     "address": "京都下鴨"
   },
   {
     "id": 69,
-    "name": "鮎茶屋 平野屋 (喫茶)",
-    "lat": 35.0290,
-    "lng": 135.6600,
+    "name": "鮎茶屋平野屋(喫茶)",
+    "lat": 35.029,
+    "lng": 135.66,
     "category": "kyoto",
-    "type": ["cafe"],
+    "type": [
+      "cafe"
+    ],
     "hours": "11:30-21:00",
     "rating": 4.4,
     "address": "京都愛宕"
   },
   {
     "id": 70,
-    "name": "Bread, Espresso & 嵐山庭園",
-    "lat": 35.0130,
-    "lng": 135.6760,
+    "name": "Bread, Espresso & 嵐山庭園(咖啡廳+喫茶)",
+    "lat": 35.013,
+    "lng": 135.676,
     "category": "kyoto",
-    "type": ["cafe"],
+    "type": [
+      "cafe"
+    ],
     "hours": "08:00-18:00",
     "rating": 4.5,
     "address": "京都嵐山"
   },
   {
     "id": 71,
-    "name": "甘味どころ ぎをん 小森 (和菓子/喫茶)",
-    "lat": 35.0060,
-    "lng": 135.7730,
+    "name": "甘味どころ ぎをん 小森(和菓子餐廳+喫茶)",
+    "lat": 35.006,
+    "lng": 135.773,
     "category": "kyoto",
-    "type": ["cafe"],
+    "type": [
+      "cafe"
+    ],
     "hours": "11:00-20:00",
     "rating": 4.4,
     "address": "京都祇園"
   },
   {
     "id": 72,
-    "name": "麓寿庵 (咖啡廳/喫茶)",
-    "lat": 35.0070,
-    "lng": 135.7550,
+    "name": "麓寿庵(咖啡廳+喫茶)",
+    "lat": 35.007,
+    "lng": 135.755,
     "category": "kyoto",
-    "type": ["cafe"],
+    "type": [
+      "cafe"
+    ],
     "hours": "11:00-18:00",
     "rating": 4.2,
     "address": "京都六角"
   },
   {
     "id": 73,
-    "name": "歐風料理 重亭 (漢堡排)",
-    "lat": 34.6650,
-    "lng": 135.5020,
+    "name": "歐風料理 重亭(漢堡排)",
+    "lat": 34.665,
+    "lng": 135.502,
     "category": "osaka",
-    "type": ["other"],
+    "type": [
+      "other"
+    ],
     "hours": "11:30-15:00, 17:00-20:30",
     "rating": 4.3,
     "address": "大阪難波"
   },
   {
     "id": 74,
-    "name": "柳小路 (居酒屋/漢堡排)",
-    "lat": 35.0040,
-    "lng": 135.7700,
+    "name": "柳小路(京都有更多家+居酒屋+漢堡排)",
+    "lat": 35.004,
+    "lng": 135.77,
     "category": "kyoto",
-    "type": ["other"],
+    "type": [
+      "other"
+    ],
     "hours": "17:00-23:00",
     "rating": 4.1,
     "address": "京都河原町"
   },
   {
     "id": 75,
-    "name": "蕎麥麵 嵐山よしむら (風景/紅葉季)",
+    "name": "蕎麥麵 嵐山よしむら(180度風景+紅葉季+可能要排隊)",
     "lat": 35.0135,
     "lng": 135.6775,
     "category": "kyoto",
-    "type": ["other"],
+    "type": [
+      "other"
+    ],
     "hours": "11:00-17:00",
     "rating": 4.5,
     "address": "京都嵐山"
   },
   {
     "id": 76,
-    "name": "肉の天満屋 神楽亭 (黑毛和牛)",
-    "lat": 34.7080,
-    "lng": 135.5100,
+    "name": "肉の天満屋 神楽亭(黑毛和牛套餐)",
+    "lat": 34.708,
+    "lng": 135.51,
     "category": "osaka",
-    "type": ["yakiniku"],
+    "type": [
+      "yakiniku"
+    ],
     "hours": "17:00-23:00",
     "rating": 4.3,
     "address": "大阪天滿"
   },
   {
     "id": 77,
-    "name": "めん次郎 (烏冬/白飯)",
-    "lat": 35.0030,
-    "lng": 135.7650,
+    "name": "めん次郎(烏冬+套餐免費白飯+位置少)",
+    "lat": 35.003,
+    "lng": 135.765,
     "category": "kyoto",
-    "type": ["other"],
+    "type": [
+      "other"
+    ],
     "hours": "11:00-20:00",
     "rating": 4.0,
     "address": "京都"
   },
   {
     "id": 78,
-    "name": "炭火焼き鳥 鴨尽 お初天神店 (近江鴨)",
-    "lat": 34.7010,
-    "lng": 135.5000,
+    "name": "炭火焼き鳥 鴨尽 お初天神店(燒肉+近江鴨+大和肉雞+2025鳥料理百名店)",
+    "lat": 34.701,
+    "lng": 135.5,
     "category": "osaka",
-    "type": ["yakiniku"],
+    "type": [
+      "yakiniku"
+    ],
     "hours": "17:00-23:00",
     "rating": 4.2,
     "address": "大阪梅田"
   },
   {
     "id": 79,
-    "name": "酒場 ラジカル (芳醇豚/居酒屋)",
-    "lat": 34.6950,
-    "lng": 135.5000,
+    "name": "酒場 ラジカル(居酒屋+芳醇豚+焦燒雞蛋+ig介紹大推)",
+    "lat": 34.695,
+    "lng": 135.5,
     "category": "osaka",
-    "type": ["other"],
+    "type": [
+      "other"
+    ],
     "hours": "17:00-24:00",
     "rating": 4.1,
     "address": "大阪"
   },
   {
     "id": 80,
-    "name": "中國菜 心香 (米其林/麻婆豆腐)",
-    "lat": 34.6900,
-    "lng": 135.5100,
+    "name": "中國菜 心香(米其林+鐵鍋麻婆豆腐+午間套餐)",
+    "lat": 34.69,
+    "lng": 135.51,
     "category": "osaka",
-    "type": ["other"],
+    "type": [
+      "other"
+    ],
     "hours": "11:30-14:00, 18:00-22:00",
     "rating": 4.4,
     "address": "大阪西天滿"
   },
   {
     "id": 81,
-    "name": "羽柴家 beef (平價燒肉)",
-    "lat": 34.6600,
-    "lng": 135.5000,
+    "name": "羽柴家 beef(燒肉+可能比大阪市中心便宜)",
+    "lat": 34.66,
+    "lng": 135.5,
     "category": "osaka",
-    "type": ["yakiniku"],
+    "type": [
+      "yakiniku"
+    ],
     "hours": "17:00-23:00",
     "rating": 4.0,
     "address": "大阪"
   },
   {
     "id": 82,
-    "name": "焼肉ホルモンとくちゃん 十三店 (牛舌)",
-    "lat": 34.7200,
-    "lng": 135.4820,
+    "name": "焼肉ホルモンとくちゃん 十三店(牛舌)",
+    "lat": 34.72,
+    "lng": 135.482,
     "category": "osaka",
-    "type": ["yakiniku"],
+    "type": [
+      "yakiniku"
+    ],
     "hours": "17:00-24:00",
     "rating": 3.9,
     "address": "大阪十三"
   },
   {
     "id": 83,
-    "name": "中華そば 紆折 (醬油拉麵)",
-    "lat": 34.7250,
-    "lng": 135.5010,
+    "name": "中華そば 紆折(醬油拉麵)",
+    "lat": 34.725,
+    "lng": 135.501,
     "category": "osaka",
-    "type": ["ramen"],
+    "type": [
+      "ramen"
+    ],
     "hours": "11:00-14:30",
     "rating": 4.1,
     "address": "大阪"
   },
   {
     "id": 84,
-    "name": "裏野田 英 (咖哩烏冬)",
-    "lat": 34.6950,
-    "lng": 135.4750,
+    "name": "裏野田 英(うらのだ はなぶさ)(咖哩烏冬)",
+    "lat": 34.695,
+    "lng": 135.475,
     "category": "osaka",
-    "type": ["curry"],
+    "type": [
+      "curry"
+    ],
     "hours": "11:30-14:00",
     "rating": 4.2,
     "address": "大阪野田"
   },
   {
     "id": 85,
-    "name": "豚々亭 (豬排)",
-    "lat": 34.7000,
-    "lng": 135.4990,
+    "name": "豚々亭(豬排)",
+    "lat": 34.7,
+    "lng": 135.499,
     "category": "osaka",
-    "type": ["ricebowl"],
+    "type": [
+      "ricebowl"
+    ],
     "hours": "11:00-21:00",
     "rating": 4.1,
     "address": "大阪梅田"
   },
   {
     "id": 86,
-    "name": "立呑またた灯 (定食)",
-    "lat": 34.6800,
-    "lng": 135.5000,
+    "name": "立呑またた灯(定食)",
+    "lat": 34.68,
+    "lng": 135.5,
     "category": "osaka",
-    "type": ["other"],
+    "type": [
+      "other"
+    ],
     "hours": "16:00-23:00",
     "rating": 4.0,
     "address": "大阪"
   },
   {
     "id": 87,
-    "name": "麦と麺助 (拉麵)",
-    "lat": 34.7080,
-    "lng": 135.5020,
+    "name": "麦と麺助(拉麵)",
+    "lat": 34.708,
+    "lng": 135.502,
     "category": "osaka",
-    "type": ["ramen"],
+    "type": [
+      "ramen"
+    ],
     "hours": "11:00-15:30",
     "rating": 4.6,
     "address": "大阪中津"
   },
   {
     "id": 88,
-    "name": "ラーメンあかぎ (拉麵)",
-    "lat": 34.7220,
-    "lng": 135.5000,
+    "name": "ラーメンあかぎ",
+    "lat": 34.722,
+    "lng": 135.5,
     "category": "osaka",
-    "type": ["ramen"],
+    "type": [
+      "ramen"
+    ],
     "hours": "11:30-14:30, 18:00-22:00",
     "rating": 4.1,
     "address": "大阪"
   },
   {
     "id": 89,
-    "name": "揚子江ラーメン 名門",
-    "lat": 34.7030,
-    "lng": 135.5010,
+    "name": "揚子江ラーメン名門",
+    "lat": 34.703,
+    "lng": 135.501,
     "category": "osaka",
-    "type": ["ramen"],
+    "type": [
+      "ramen"
+    ],
     "hours": "12:00-05:00",
     "rating": 3.8,
     "address": "大阪梅田"
   },
   {
     "id": 90,
-    "name": "佐勘 本店 (稲庭烏冬)",
-    "lat": 34.7000,
-    "lng": 135.5000,
+    "name": "佐勘 本店(梅田稲庭うどん)",
+    "lat": 34.7,
+    "lng": 135.5,
     "category": "osaka",
-    "type": ["other"],
+    "type": [
+      "other"
+    ],
     "hours": "11:00-22:00",
     "rating": 4.0,
     "address": "大阪梅田"
   },
   {
     "id": 91,
-    "name": "にし家 グランフロント大阪店 (壽喜燒/烏冬)",
-    "lat": 34.7050,
-    "lng": 135.4950,
+    "name": "にし家 グランフロント大阪店(壽喜燒)",
+    "lat": 34.705,
+    "lng": 135.495,
     "category": "osaka",
-    "type": ["sukiyaki"],
+    "type": [
+      "sukiyaki"
+    ],
     "hours": "11:00-23:00",
     "rating": 4.2,
     "address": "大阪梅田"
   },
   {
     "id": 92,
-    "name": "炭焼きBAR 心 (特大親子丼)",
-    "lat": 34.6980,
-    "lng": 135.4900,
+    "name": "炭焼きBAR 心(炭燒特大親子丼)",
+    "lat": 34.698,
+    "lng": 135.49,
     "category": "osaka",
-    "type": ["ricebowl"],
+    "type": [
+      "ricebowl"
+    ],
     "hours": "11:30-14:00, 17:30-23:00",
     "rating": 4.1,
     "address": "大阪福島"
   },
   {
     "id": 93,
-    "name": "らーめん大王 岸部本店 (四川拉麵)",
-    "lat": 34.7750,
-    "lng": 135.5350,
+    "name": "らーめん大王 岸部本店(四川拉麵+炒飯)",
+    "lat": 34.775,
+    "lng": 135.535,
     "category": "osaka",
-    "type": ["ramen"],
+    "type": [
+      "ramen"
+    ],
     "hours": "11:00-23:00",
     "rating": 3.8,
     "address": "大阪岸部"
   },
   {
     "id": 94,
-    "name": "焼鳥と小皿 宵 yoi (居酒屋)",
-    "lat": 34.6920,
-    "lng": 135.5000,
+    "name": "焼鳥と小皿 宵 yoi(居酒屋)",
+    "lat": 34.692,
+    "lng": 135.5,
     "category": "osaka",
-    "type": ["other"],
+    "type": [
+      "other"
+    ],
     "hours": "17:00-23:00",
     "rating": 4.0,
     "address": "大阪北濱"
@@ -1036,142 +1233,170 @@
   {
     "id": 95,
     "name": "湯豆腐 嵯峨野",
-    "lat": 35.0120,
-    "lng": 135.6740,
+    "lat": 35.012,
+    "lng": 135.674,
     "category": "kyoto",
-    "type": ["other"],
+    "type": [
+      "other"
+    ],
     "hours": "11:00-19:00",
     "rating": 4.3,
     "address": "京都嵐山"
   },
   {
     "id": 96,
-    "name": "きしめん あまの (牛腸味噌烏冬)",
-    "lat": 34.7010,
-    "lng": 135.5000,
+    "name": "きしめん あまの(牛腸+味噌+烏冬)",
+    "lat": 34.701,
+    "lng": 135.5,
     "category": "osaka",
-    "type": ["other"],
+    "type": [
+      "other"
+    ],
     "hours": "11:00-22:00",
     "rating": 4.1,
     "address": "大阪梅田"
   },
   {
     "id": 97,
-    "name": "吟味屋 新大阪店 (燒肉)",
-    "lat": 34.7350,
-    "lng": 135.5000,
+    "name": "吟味屋 新大阪店(燒肉)",
+    "lat": 34.735,
+    "lng": 135.5,
     "category": "osaka",
-    "type": ["yakiniku"],
+    "type": [
+      "yakiniku"
+    ],
     "hours": "17:00-23:00",
     "rating": 4.3,
     "address": "大阪新大阪"
   },
   {
     "id": 98,
-    "name": "大阪焼肉 ミナミ 梅田店 (燒肉放題/厚切牛舌)",
-    "lat": 34.7020,
-    "lng": 135.5010,
+    "name": "大阪焼肉 ミナミ 梅田店(燒肉放題+厚切牛舌)",
+    "lat": 34.702,
+    "lng": 135.501,
     "category": "osaka",
-    "type": ["yakiniku"],
+    "type": [
+      "yakiniku"
+    ],
     "hours": "16:00-23:00",
     "rating": 4.2,
     "address": "大阪梅田"
   },
   {
     "id": 99,
-    "name": "粉もん處 光圀 (大阪燒)",
-    "lat": 34.7040,
-    "lng": 135.5020,
+    "name": "粉もん處 光圀(大阪燒+需要預約?)",
+    "lat": 34.704,
+    "lng": 135.502,
     "category": "osaka",
-    "type": ["other"],
+    "type": [
+      "other"
+    ],
     "hours": "17:00-23:00",
     "rating": 4.0,
     "address": "大阪梅田"
   },
   {
     "id": 100,
-    "name": "焼肉1000円食べ放題 298 梅田3号店",
+    "name": "焼肉1000円食べ放題 298(にくや) 梅田3号店(A5和牛)",
     "lat": 34.7035,
-    "lng": 135.5000,
+    "lng": 135.5,
     "category": "osaka",
-    "type": ["yakiniku"],
+    "type": [
+      "yakiniku"
+    ],
     "hours": "11:30-23:00",
     "rating": 3.8,
     "address": "大阪梅田"
   },
   {
     "id": 101,
-    "name": "Dynamic Kitchen & Bar 燦 (風景/鯛魚飯放題)",
-    "lat": 34.6930,
-    "lng": 135.5330,
+    "name": "Dynamic Kitchen & Bar 燦 －SUN－ OBPツインタワー店(150 m風景+鯛めし放題+午間套餐)",
+    "lat": 34.693,
+    "lng": 135.533,
     "category": "osaka",
-    "type": ["other"],
+    "type": [
+      "other"
+    ],
     "hours": "11:30-14:30, 17:00-22:30",
     "rating": 4.3,
     "address": "大阪京橋"
   },
   {
     "id": 102,
-    "name": "善 京都四条河原町店 (黑毛和牛放題)",
-    "lat": 35.0040,
-    "lng": 135.7690,
+    "name": "善 京都四条河原町店(黑毛和牛放題)",
+    "lat": 35.004,
+    "lng": 135.769,
     "category": "kyoto",
-    "type": ["sukiyaki", "yakiniku"],
+    "type": [
+      "sukiyaki",
+      "yakiniku"
+    ],
     "hours": "16:00-23:00",
     "rating": 4.2,
     "address": "京都河原町"
   },
   {
     "id": 103,
-    "name": "天王寺 焼鳥 祐 (居酒屋)",
-    "lat": 34.6490,
-    "lng": 135.5150,
+    "name": "天王寺 焼鳥 祐(居酒屋)",
+    "lat": 34.649,
+    "lng": 135.515,
     "category": "osaka",
-    "type": ["other"],
+    "type": [
+      "other"
+    ],
     "hours": "17:00-24:00",
     "rating": 4.1,
     "address": "大阪天王寺"
   },
   {
     "id": 104,
-    "name": "Panel Cafe Kyoto (河畔風景/舒芙蕾)",
+    "name": "Panel Cafe Kyoto(京都河畔風景+舒芙蕾)",
     "lat": 35.0045,
     "lng": 135.7715,
     "category": "kyoto",
-    "type": ["cafe"],
+    "type": [
+      "cafe"
+    ],
     "hours": "10:00-18:00",
     "rating": 4.3,
     "address": "京都祇園"
   },
   {
     "id": 105,
-    "name": "リバーサイド鮨和食 堀江燈花 なんば店 (和牛/壽喜燒)",
-    "lat": 34.6680,
-    "lng": 135.4950,
+    "name": "リバーサイド鮨和食 堀江燈花 なんば店(和牛+壽喜燒+生魚片+包間)",
+    "lat": 34.668,
+    "lng": 135.495,
     "category": "osaka",
-    "type": ["sukiyaki", "sushi"],
+    "type": [
+      "sukiyaki",
+      "sushi"
+    ],
     "hours": "11:00-15:00, 17:00-23:00",
     "rating": 4.4,
     "address": "大阪堀江"
   },
   {
     "id": 106,
-    "name": "あべのルシアス 16 (牛排/披薩放題)",
-    "lat": 34.6460,
-    "lng": 135.5110,
+    "name": "日本〒545-0052 Osaka, AbenoWard, Abenosuji, 1 Chome−5−1 あべのルシアス 16(和牛牛排放題+披薩放題+起司)",
+    "lat": 34.646,
+    "lng": 135.511,
     "category": "osaka",
-    "type": ["other"],
+    "type": [
+      "other"
+    ],
     "hours": "11:00-23:00",
     "rating": 4.0,
     "address": "大阪天王寺"
   },
   {
     "id": 107,
-    "name": "堂島焼肉料理店 (但馬牛/個室)",
-    "lat": 34.6970,
-    "lng": 135.4940,
+    "name": "堂島焼肉料理店(但馬神戶牛+完全個室+代客烤肉?+冰淇淋+酒)",
+    "lat": 34.697,
+    "lng": 135.494,
     "category": "osaka",
-    "type": ["yakiniku"],
+    "type": [
+      "yakiniku"
+    ],
     "hours": "17:00-23:00",
     "rating": 4.5,
     "address": "大阪北新地"
