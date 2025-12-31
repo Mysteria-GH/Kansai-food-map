@@ -36,7 +36,8 @@
         .filter-section {
             transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s ease-in-out;
             overflow: hidden;
-            min-height: 74px;
+            /* 修改：將高度固定為 90px，略大於按鈕大小 */
+            min-height: 90px;
         }
         .filter-section.closed {
             max-height: 0;
@@ -46,7 +47,8 @@
             border-bottom: none;
         }
         .filter-section.open {
-            max-height: 80px;
+            /* 修改：展開高度也設為 90px */
+            max-height: 90px;
             opacity: 1;
         }
 
@@ -1250,7 +1252,7 @@
                                       - Current selection style changed
                                       - Source button has Home icon
                                     */}
-                                 <div className="flex flex-col justify-end" style={{ minHeight: '128px' }}>
+                                 <div className="flex flex-col justify-end" style={{ minHeight: '90px' }}>
                                     {activeFilterMenu !== 'category' && (
                                         <div className={`filter-section border-b border-gray-100 flex items-center gap-2 p-2 whitespace-nowrap scrollbar-hide open ${activeFilterMenu === null ? 'justify-between overflow-hidden' : 'overflow-x-auto'}`}>
                                             
@@ -1539,4 +1541,3 @@
     </script>
 </body>
 </html>
-
