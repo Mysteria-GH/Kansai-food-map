@@ -100,7 +100,20 @@
 <body class="bg-gray-50 text-gray-800 font-sans h-screen w-screen overflow-hidden">
     <div id="root" class="h-full w-full"></div>
 
-    <script type="text/babel">
+    <script type="text/babel" data-type="module">
+        // 引入外部定義的篩選標準與函式
+        import { 
+            FOOD_TYPES, 
+            SPECIAL_TYPES, 
+            checkIsWagyu, 
+            checkIsBeefTongue, 
+            checkIsAllYouCanEat, 
+            checkIsHamburger, 
+            checkIsIzakaya, 
+            checkIsLunch, 
+            checkIsKissaten 
+        } from './filters.js';
+
         const { useState, useEffect, useMemo, useRef, useCallback } = React;
 
         // --- Icons ---
@@ -141,18 +154,7 @@
             kyoto_other: { id: 'kyoto_other', name: "其它區域", lat: 34.9858, lng: 135.7588 }
         };
 
-        const FOOD_TYPES = [
-            { id: 'ramen', label: '拉麵' },
-            { id: 'sukiyaki', label: '壽喜燒' },
-            { id: 'yakiniku', label: '燒肉' },
-            { id: 'sushi', label: '壽司' },
-            { id: 'ricebowl', label: '丼飯' },
-            { id: 'curry', label: '咖哩' }, 
-            { id: 'eel', label: '鰻魚' },
-            { id: 'cafe', label: '咖啡廳' },
-            { id: 'other', label: '其它' }
-        ];
-
+        // FILTER_TYPES 依賴於 import 進來的 FOOD_TYPES
         const FILTER_TYPES = [
             { id: 'all', label: '所有種類' },
             ...FOOD_TYPES
@@ -169,17 +171,6 @@
             { id: 'near', label: '≤ 1 KM' },
             { id: 'far', label: '1 KM ~ 2 KM' },
             { id: 'very_far', label: '2 KM ~ 5 KM' }
-        ];
-
-        // 特徵篩選
-        const SPECIAL_TYPES = [
-            { id: 'wagyu', label: '和牛' },
-            { id: 'beef_tongue', label: '牛舌' },
-            { id: 'all_you_can_eat', label: '吃到飽' },
-            { id: 'hamburger', label: '漢堡排' }, 
-            { id: 'izakaya', label: '居酒屋' },
-            { id: 'lunch', label: '午間套餐' },
-            { id: 'kissaten', label: '喫茶' }
         ];
 
         // --- Helper: Shop Status (Open, Closing Soon, Closed, Unknown) ---
@@ -680,49 +671,7 @@
                 return [...userShops, ...systemShops];
             }, [userShops, systemShops]);
 
-            const checkIsAllYouCanEat = (shop) => {
-                const text = (shop.name || '') + (shop.displayName || '');
-                const keywords = ['吃到飽', '食べ放題', '放題'];
-                return keywords.some(k => text.includes(k));
-            };
-
-            const checkIsWagyu = (shop) => {
-                const text = (shop.name || '') + (shop.displayName || '');
-                const keywords = ['和牛', 'Wagyu', '神戶牛', '神戸牛', '但馬牛', '近江牛', '宮崎牛', '仙台牛', '黒毛', '黑毛'];
-                return keywords.some(k => text.includes(k));
-            };
-
-            const checkIsBeefTongue = (shop) => {
-                const text = (shop.name || '') + (shop.displayName || '');
-                const keywords = ['牛舌', '牛タン', 'タン'];
-                return keywords.some(k => text.includes(k));
-            };
-            
-            const checkIsHamburger = (shop) => {
-                if (shop.type && shop.type.includes('hamburger')) return true;
-                const text = (shop.name || '') + (shop.displayName || '');
-                const keywords = ['漢堡排', 'ハンバーグ', 'Hamburg'];
-                return keywords.some(k => text.includes(k));
-            };
-            
-            const checkIsIzakaya = (shop) => {
-                if (shop.type && shop.type.includes('izakaya')) return true;
-                const text = (shop.name || '') + (shop.displayName || '');
-                const keywords = ['居酒屋', '串燒', '焼き鳥', 'おでん', '串', '酒場', 'Izakaya', 'Yakitori'];
-                return keywords.some(k => text.includes(k));
-            };
-            
-            const checkIsLunch = (shop) => {
-                const text = (shop.name || '') + (shop.displayName || '');
-                const keywords = ['午間', 'lunch', 'ランチ', '午餐'];
-                return keywords.some(k => text.toLowerCase().includes(k));
-            }
-            
-            const checkIsKissaten = (shop) => {
-                const text = (shop.name || '') + (shop.displayName || '');
-                const keywords = ['喫茶', 'afternoon tea', '甜點', 'dessert', 'tea', 'cafe', 'coffee'];
-                return keywords.some(k => text.toLowerCase().includes(k));
-            };
+            // [已移除] 本地定義的 checkIs... 函式，因為已經改為 import
 
             const filteredShops = useMemo(() => {
                 return allShopsForMap.filter(shop => {
@@ -775,6 +724,7 @@
 
                     let matchSpecial = true;
                     if (mapFilterSpecial.length > 0) {
+                        // 使用 import 進來的函式
                         const isWagyu = checkIsWagyu(shop);
                         const isBeefTongue = checkIsBeefTongue(shop);
                         const isAllYouCanEat = checkIsAllYouCanEat(shop);
